@@ -1,0 +1,10 @@
+Trying to change property 'svn:ignore'
+but the property has already been locally changed to a different value.
+Local property value:
+atlassian-ide-plugin.xml
+
+.idea
+
+Incoming property value:
+atlassian-ide-plugin.xml
+

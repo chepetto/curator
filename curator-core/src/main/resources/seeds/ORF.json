@@ -1,0 +1,22 @@
+{
+    "id":"ORF",
+    "contentType":"HTML",
+    "mediaType":"VIDEO",
+    "roots":[
+        "http://tvthek.orf.at/schedule/last/monday",
+        "http://tvthek.orf.at/schedule/last/tuesday",
+        "http://tvthek.orf.at/schedule/last/wednesday",
+        "http://tvthek.orf.at/schedule/last/thursday",
+        "http://tvthek.orf.at/schedule/last/friday",
+        "http://tvthek.orf.at/schedule/last/saturday",
+        "http://tvthek.orf.at/schedule/last/sunday"
+    ],
+    "updateable":false,
+
+    "article":"TABLE#broadcasts TR",
+    "link":".episode a",
+    "duration":".duration",
+    "title":".info H4 a",
+    "text":".descr",
+    "tags":".recentTracksCont .tags"
+}

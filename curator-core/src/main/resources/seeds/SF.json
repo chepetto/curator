@@ -1,0 +1,14 @@
+{
+    "id":"SF",
+    "contentType":"HTML",
+    "mediaType":"VIDEO",
+    "roots":["http://www.videoportal.sf.tv/verpasst/"],
+    "updateable":false,
+
+    "path":["A.day_line", "DIV#right_day DIV.sendung_item a"],
+
+    "duration":".duration",
+    "title":"#video_info H1.video_detail",
+    "text":"#video_info P.video_detail",
+    "tags":".left_video_infos a>strong"
+}

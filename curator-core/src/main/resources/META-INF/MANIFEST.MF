@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Dependencies: org.codehaus.jackson.jackson-core-asl, org.codehaus.jackson.jackson-mapper-asl, org.apache.httpcomponents, org.infinispan

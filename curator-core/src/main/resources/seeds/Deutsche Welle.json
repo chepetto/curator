@@ -1,0 +1,20 @@
+{
+    "id":"Deutsche Welle",
+    "contentType":"RSS",
+    "mediaType":"AUDIO",
+    "roots":[
+        "http://rss.dw-world.de/rdf/rss-de-wissenschaft",
+        "http://rss.dw-world.de/rdf/rss-de-sport",
+        "http://rss.dw-world.de/rdf/rss-de-deutschlandentdecken",
+        "http://rss.dw-world.de/rdf/rss-de-pol",
+        "http://rss.dw-world.de/rdf/rss-de-eco",
+        "http://rss.dw-world.de/rdf/rss-de-cul",
+        "http://rss.dw-world.de/rdf/rss-de-cul-buch",
+        "http://rss.dw-world.de/rdf/rss-de-cul-film",
+        "http://rss.dw-world.de/rdf/rss-de-cul-musik"
+    ],
+    "updateable":false,
+    "followUrl":true,
+
+    "text":".longText"
+}

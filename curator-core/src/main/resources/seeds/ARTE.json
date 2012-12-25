@@ -1,0 +1,14 @@
+{
+    "id":"ARTE",
+    "contentType":"HTML",
+    "mediaType":"VIDEO",
+    "roots":["http://videos.arte.tv/de/do_delegate/videos/index--3188698,view,asList.html?hash=tv/list///1/120/"],
+    "updateable":true,
+
+    "path":["td.col1 a"],
+
+    "views":".viewCount strong",
+    "title":".recentTracksMast",
+    "text":".recentTracksCont",
+    "tags":".recentTracksCont .tags"
+}

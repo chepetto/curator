@@ -1,0 +1,105 @@
+[
+    {
+        "id":"Deutsche Welle",
+        "contentType":"RSS",
+        "mediaType":"AUDIO",
+        "roots":[
+            "http://rss.dw-world.de/rdf/rss-de-wissenschaft",
+            "http://rss.dw-world.de/rdf/rss-de-sport",
+            "http://rss.dw-world.de/rdf/rss-de-deutschlandentdecken",
+            "http://rss.dw-world.de/rdf/rss-de-pol",
+            "http://rss.dw-world.de/rdf/rss-de-eco",
+            "http://rss.dw-world.de/rdf/rss-de-cul",
+            "http://rss.dw-world.de/rdf/rss-de-cul-buch",
+            "http://rss.dw-world.de/rdf/rss-de-cul-film",
+            "http://rss.dw-world.de/rdf/rss-de-cul-musik"
+        ],
+        "updateable":false,
+        "followUrl":true,
+
+        "text":".longText"
+    },
+    {
+        "id":"MDR",
+        "mediaType":"AUDIO",
+        "contentType":"RSS",
+        "roots":[
+            "http://www.mdr.de/mdr-info/podcast/beste/audiogalerie146-podcast.xml"
+        ],
+        "updateable":false
+    },
+    {
+        "id":"Oe1",
+        "mediaType":"AUDIO",
+        "contentType":"RSS",
+        "roots":[
+            "http://static.orf.at/podcast/oe1/oe1_geschichte.xml",
+            "http://static.orf.at/podcast/oe1/oe1_digitalleben.xml",
+            "http://static.orf.at/podcast/oe1/oe1_natur.xml",
+            "http://static.orf.at/podcast/oe1/oe1_wissen.xml",
+            "http://static.orf.at/podcast/oe1/oe1_religion.xml",
+            "http://static.orf.at/podcast/oe1/oe1_gedanken.xml",
+            "http://static.orf.at/podcast/oe1/oe1_leporello.xml",
+            "http://static.orf.at/podcast/oe1/oe1_kultur.xml",
+            "http://static.orf.at/podcast/oe1/oe1_ambiente.xml"
+        ],
+        "updateable":false
+    },
+    {
+        "id":"3SAT",
+        "mediaType":"VIDEO",
+        "contentType":"RSS",
+        "roots":["http://www.3sat.de/mediathek/rss/mediathek.xml"],
+        "updateable":false
+    },
+    {
+        "id":"ARTE",
+        "mediaType":"VIDEO",
+        "contentType":"HTML",
+        "roots":["http://videos.arte.tv/de/do_delegate/videos/index--3188698,view,asList.html?hash=tv/list///1/120/"],
+        "updateable":true,
+
+        "path":["td.col1 a"],
+
+        "views":".viewCount strong",
+        "title":".recentTracksMast",
+        "text":".recentTracksCont",
+        "tags":".recentTracksCont .tags"
+    },
+    {
+        "id":"ORF",
+        "mediaType":"VIDEO",
+        "contentType":"HTML",
+        "roots":[
+            "http://tvthek.orf.at/schedule/last/monday",
+            "http://tvthek.orf.at/schedule/last/tuesday",
+            "http://tvthek.orf.at/schedule/last/wednesday",
+            "http://tvthek.orf.at/schedule/last/thursday",
+            "http://tvthek.orf.at/schedule/last/friday",
+            "http://tvthek.orf.at/schedule/last/saturday",
+            "http://tvthek.orf.at/schedule/last/sunday"
+        ],
+        "updateable":false,
+
+        "article":"TABLE#broadcasts TR",
+        "link":".episode a",
+        "duration":".duration",
+        "title":".info H4 a",
+        "text":".descr",
+        "tags":".recentTracksCont .tags"
+    },
+    {
+        "id":"SF",
+        "mediaType":"VIDEO",
+        "contentType":"HTML",
+        "roots":["http://www.videoportal.sf.tv/verpasst/"],
+        "updateable":false,
+
+        "path":["A.day_line", "DIV#right_day DIV.sendung_item a"],
+
+        "duration":".duration",
+        "title":"#video_info H1.video_detail",
+        "text":"#video_info P.video_detail",
+        "tags":".left_video_infos a>strong"
+    }
+]

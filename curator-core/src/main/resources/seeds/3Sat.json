@@ -1,0 +1,7 @@
+{
+    "id":"3SAT",
+    "contentType":"RSS",
+    "mediaType":"VIDEO",
+    "roots":["http://www.3sat.de/mediathek/rss/mediathek.xml"],
+    "updateable":false
+}
