@@ -45,7 +45,7 @@ public class ArticleService {
     @Path(value = "/publish/{id}")
     public Response publish(
             @PathParam("id") long articleId,
-            @PathParam("custom") String customText
+            @QueryParam("custom") @DefaultValue("") String customText
     ) throws Exception {
         Article article = articleManager.publish(articleId, customText);
         return Response.ok(article);

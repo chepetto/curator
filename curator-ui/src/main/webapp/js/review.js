@@ -107,7 +107,7 @@ $.widget("curator.publish", {
                 width:700,
                 buttons: {
                     Publish: function(event, ui) {
-                        util.jsonCall('POST', '/curator/rest/article/publish/{id}', {'{id}': articleId}, null, function(article) {
+                        util.jsonCall('POST', '/curator/rest/article/publish/{id}', {'{id}': $this.options.articleId}, null, function(article) {
                             $this.oTable.dataTable().fnUpdate(article.publishedTime, pos[0], pos[1]);
                         });
                     },
@@ -116,13 +116,5 @@ $.widget("curator.publish", {
 
             });
         });
-
-        /*
-         var pos = $this.oTable.dataTable().fnGetPosition($(this).parent()[0]);
-         var articleId = $(this).parent().parent().children().first().text();
-         util.jsonCall('POST', '/curator/rest/article/publish/{id}', {'{id}': articleId}, null, function(article) {
-         $this.oTable.dataTable().fnUpdate(article.publishedTime, pos[0], pos[1]);
-         })
-         */
     }
 });

@@ -15,15 +15,34 @@ $.widget("curator.suggest", {
         $this.element.empty();
 
         $this.clusters = $('<div></div>');
+        var pagination = $('<div></div>');
 
         $this.element.append($this.clusters);
+        $this.element.append(pagination);
 
+        pagination.paginate({
+            start 		: 1,
+            count 		: 500,
+            display  	: 5,
+            rotate      : false,
+            border_color			: '#fff',
+            text_color  			: '#fff',
+            background_color    	: 'black',
+            border_hover_color		: '#ccc',
+            text_hover_color  		: '#000',
+            background_hover_color	: '#fff',
+            images					: false,
+            mouse					: 'press',
+            onChange:function(element) {
+                alert(element)
+            }
+        });
         util.jsonCall('GET', '/curator/rest/article/list/published', null, null, function(response) {
 
-            var lastDate = util.strToDate(response.lastDate);
+            var firstDate = util.strToDate(response.firstDate);
 
-            var interval = 1000*60*60;
-            var daysToArticlesMap =  $this._clusterList(interval, lastDate, response.list);
+            var interval = 1000*60*60*24;
+            var daysToArticlesMap =  $this._clusterList(interval, firstDate, response.list);
 
             for(var intervalIndex in daysToArticlesMap) {
 
@@ -35,8 +54,9 @@ $.widget("curator.suggest", {
                     //noinspection JSUnfilteredForInLoop
                     var article = articles[articleIndex];
                     var title = $('<a></a>').attr('href', '/curator/rest/link/'+article.id).text(article.title);
+                    var desc = $('<div style="overflow: hidden; height: 50px"></div>').text(article.text);
 
-                    var line = $('<div></div>').append(title);
+                    var line = $('<div></div>').append(title).append(desc);
 
                     cluster.append(line);
 
@@ -52,7 +72,7 @@ $.widget("curator.suggest", {
     },
 
     _newCluster:function(index, interval) {
-        var cluster = $('<div></div>');
+        var cluster = $('<div class="cluster"></div>');
         var t;
         switch(parseInt(index)) {
             case 0: t = 'Today'; break;
@@ -64,7 +84,7 @@ $.widget("curator.suggest", {
         return cluster;
     },
 
-    _clusterList:function(interval, lastDate, articleList) {
+    _clusterList:function(interval, firstTime, articleList) {
         var daysToArticlesMap = {};
 
         // cluster data by days
@@ -74,7 +94,7 @@ $.widget("curator.suggest", {
 
             var publishedTime = util.strToDate(article.publishedTime);
 
-            var dayIndex = parseInt((publishedTime-lastDate)/interval);
+            var dayIndex = parseInt((firstTime-publishedTime)/interval);
 
             if(daysToArticlesMap[dayIndex] == null) {
                 daysToArticlesMap[dayIndex] = [];
