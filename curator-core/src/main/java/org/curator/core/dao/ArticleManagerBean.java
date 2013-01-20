@@ -246,6 +246,19 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void removeIfUnrated() {
+        try {
+
+            Query update = em.createNamedQuery(Article.DELETE_UNRATED);
+            update.executeUpdate();
+
+        } catch (Throwable t) {
+            throw new CuratorRollbackException("getById failed", t);
+        }
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<Article> getList(int firstResult, int maxResults) {
         try {
             _verifyLimits(firstResult, maxResults);
@@ -269,7 +282,7 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public List<Article> getBest(int firstResult, int maxResults, Date lastDate) {
+    public List<Article> getBest(int firstResult, int maxResults, Date firstDate, Date lastDate) {
         try {
             _verifyLimits(firstResult, maxResults);
 
@@ -278,6 +291,37 @@ public class ArticleManagerBean implements ArticleManager {
             }
 
             Query query = em.createNamedQuery(Article.QUERY_BEST);
+            query.setParameter("FIRST_DATE", firstDate);
+            query.setParameter("LAST_DATE", lastDate);
+            query.setFirstResult(firstResult);
+            query.setMaxResults(maxResults);
+
+            @SuppressWarnings("unchecked")
+            List<Article> articles = query.getResultList();
+            for (Article article : articles) {
+                em.detach(article);
+                article.setMetrics(null);
+                article.setTopics(null);
+            }
+            return articles;
+        } catch (Throwable t) {
+            throw new CuratorRollbackException("getBest failed: "+t.getMessage(), t);
+        }
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public List<Article> getSuggest(int firstResult, int maxResults, Date firstDate, Date lastDate) {
+        try {
+            _verifyLimits(firstResult, maxResults);
+
+            if(lastDate==null) {
+                throw new IllegalArgumentException("lastDate is null");
+            }
+
+            Query query = em.createNamedQuery(Article.QUERY_SUGGEST);
+            query.setParameter("START_TODAY", firstDate);
+            query.setParameter("END_TODAY", new Date(firstDate.getTime() + 60*1000*60*24));
             query.setParameter("LAST_DATE", lastDate);
             query.setFirstResult(firstResult);
             query.setMaxResults(maxResults);

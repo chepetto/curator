@@ -85,6 +85,7 @@ public class ArticleService {
     public Response getBest(
             @QueryParam("firstResult") int firstResult,
             @QueryParam("maxResults") int maxResults,
+            @QueryParam("firstDate") long firstDate,
             @QueryParam("lastDate") long lastDate
     ) throws Exception {
         Map<String, Object> response = new HashMap<String, Object>(5);
@@ -93,17 +94,69 @@ public class ArticleService {
 
         Date _lastDate;
         if(lastDate==0) {
-            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 7);
+            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
         } else {
             _lastDate = new Date(lastDate);
         }
         response.put("lastDate", dateFormat.format(_lastDate));
 
+        Date _firstDate;
+        if(firstDate==0) {
+            _firstDate = new Date();
+        } else {
+            _firstDate = new Date(firstDate);
+        }
+        response.put("firstDate", dateFormat.format(_firstDate));
+
+
         if(maxResults==0) {
             maxResults = this.maxResults;
         }
 
-        List<Article> list = articleManager.getBest(firstResult, maxResults, _lastDate);
+        List<Article> list = articleManager.getSuggest(firstResult, maxResults, _firstDate, _lastDate);
+        response.put("maxResults", list.size());
+        response.put("list", list);
+        return Response.ok(response);
+    }
+
+
+    // -- SUGGEST -- ---------------------------------------------------------------------------------------------------
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/list/suggest")
+    public Response getSuggest(
+            @QueryParam("firstResult") int firstResult,
+            @QueryParam("maxResults") int maxResults,
+            @QueryParam("firstDate") long firstDate,
+            @QueryParam("lastDate") long lastDate
+    ) throws Exception {
+        Map<String, Object> response = new HashMap<String, Object>(5);
+
+        response.put("firstResult", firstResult);
+
+        Date _lastDate;
+        if(lastDate==0) {
+            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
+        } else {
+            _lastDate = new Date(lastDate);
+        }
+        response.put("lastDate", dateFormat.format(_lastDate));
+
+        Date _firstDate;
+        if(firstDate==0) {
+            _firstDate = new Date();
+        } else {
+            _firstDate = new Date(firstDate);
+        }
+        response.put("firstDate", dateFormat.format(_firstDate));
+
+
+        if(maxResults==0) {
+            maxResults = this.maxResults;
+        }
+
+        List<Article> list = articleManager.getSuggest(firstResult, maxResults, _firstDate, _lastDate);
         response.put("maxResults", list.size());
         response.put("list", list);
         return Response.ok(response);

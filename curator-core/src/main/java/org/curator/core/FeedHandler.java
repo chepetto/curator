@@ -5,6 +5,7 @@ import org.curator.common.configuration.Configuration;
 import org.curator.common.model.Feed;
 import org.curator.core.crawler.Harvester;
 import org.curator.core.crawler.impl.FeedHarvestInstruction;
+import org.curator.core.interfaces.ArticleManager;
 import org.curator.core.interfaces.FeedManager;
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -29,6 +30,8 @@ public class FeedHandler {
 
     @Inject
     private Harvester harvester;
+    @Inject
+    private ArticleManager articleMgr;
 
     private boolean available = true;
 
@@ -67,7 +70,7 @@ public class FeedHandler {
         }
     }
 
-    @Schedule(persistent=false, minute="*", second="0", hour="*")
+    //@Schedule(persistent=false, minute="*", second="0", hour="*")
     public void watchFeeds() {
         try {
             if (available) {
@@ -126,7 +129,8 @@ public class FeedHandler {
 
     private void _callFeedImports() {
 
-        //for(FeedHarvestInstruction feed: getFeedsFromFile()) {
+        articleMgr.removeIfUnrated();
+
         Collection<Feed> outdated = feedManager.getOutdatedFeeds();
         if(!outdated.isEmpty()) {
             LOGGER.info("update "+outdated.size()+" feeds");

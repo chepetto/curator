@@ -20,10 +20,12 @@ import java.util.*;
         @NamedQuery(name = Article.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_BY_URL, query = "SELECT a FROM Article a where LOWER(a.url)=LOWER(:URL)"),
         @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a"),
-        @NamedQuery(name = Article.QUERY_BEST, query = "SELECT a FROM Article a WHERE a.published=false AND a.date>:LAST_DATE ORDER BY a.quality desc"),
+        @NamedQuery(name = Article.QUERY_BEST, query = "SELECT a FROM Article a WHERE a.published=false AND a.date<:FIRST_DATE AND a.date>:LAST_DATE ORDER BY a.quality desc"),
+        @NamedQuery(name = Article.QUERY_SUGGEST, query = "SELECT a FROM Article a WHERE ((a.date<:START_TODAY AND a.date>:END_TODAY) or (a.date>:LAST_DATE and a.voteCount>0)) ORDER BY a.date, a.voteCount desc"),
         @NamedQuery(name = Article.QUERY_PUBLISHED, query = "SELECT a FROM Article a where a.published=true AND a.publishedTime<=:FIRST_DATE and a.publishedTime>=:LAST_DATE order by a.publishedTime desc"),
         @NamedQuery(name = Article.QUERY_REDIRECT_URL_BY_ID, query = "SELECT a.url FROM Article a where a.id=:ID"),
-        @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID")
+        @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID"),
+        @NamedQuery(name = Article.DELETE_UNRATED, query = "DELETE FROM Article a WHERE a.voteCount=0")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Article implements Serializable {
@@ -35,6 +37,8 @@ public class Article implements Serializable {
     public static final String QUERY_PUBLISHED = "Article.QUERY_PUBLISHED";
     public static final String QUERY_REDIRECT_URL_BY_ID = "Article.QUERY_REDIRECT_URL_BY_ID";
     public static final String UPDATE_INC_VIEWS = "Article.UPDATE_INC_VIEWS";
+    public static final String DELETE_UNRATED = "Article.DELETE_UNRATED";
+    public static final String QUERY_SUGGEST = "Article.QUERY_SUGGEST";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +81,15 @@ public class Article implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private MediaType mediaType;
+
+    // -- User Feedback -- ---------------------------------------------------------------------------------------------
+
+    @Basic
+    private Integer voteCount;
+
+    @Basic
+    private Integer voteSum;
+
 
     // -- Metrics -- ---------------------------------------------------------------------------------------------------
 
@@ -371,5 +384,21 @@ public class Article implements Serializable {
 
     public void setSpecialId(Long specialId) {
         this.specialId = specialId;
+    }
+
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
+    }
+
+    public Integer getVoteSum() {
+        return voteSum;
+    }
+
+    public void setVoteSum(Integer voteSum) {
+        this.voteSum = voteSum;
     }
 }

@@ -37,7 +37,7 @@ $.widget("curator.suggest", {
                 alert(element)
             }
         });
-        util.jsonCall('GET', '/curator/rest/article/list/published', null, null, function(response) {
+        util.jsonCall('GET', '/curator/rest/article/list/suggest', null, null, function(response) {
 
             var firstDate = util.strToDate(response.firstDate);
 
@@ -50,18 +50,50 @@ $.widget("curator.suggest", {
                 //noinspection JSUnfilteredForInLoop
                 var articles = daysToArticlesMap[intervalIndex];
 
+
+//                <div class="article-group">
+//
+//                    <h3 class="date">Heute, 19. Januar 2013</h3>
+//
+//                    <div class="more"><a href="javascript:;">Show 3 more</a></div>
+//
+//                </div>
+
+
                 for(var articleIndex in articles) {
                     //noinspection JSUnfilteredForInLoop
                     var article = articles[articleIndex];
-                    var title = $('<a></a>').attr('href', '/curator/rest/link/'+article.id).text(article.title);
-                    var desc = $('<div style="overflow: hidden; height: 50px"></div>').text(article.text);
 
-                    var line = $('<div></div>').append(title).append(desc);
+//                    <div class="article">
+//                        <div class="title"><a href="">Geiselnahme in Algerien zu Ende: Sicherheitskräfte stürmen Erdgasanlage</a></div>
+//                        <div class="rating">
+//                            <span>&#9733;</span>
+//                            <span>&#9733;</span>
+//                            <span>&#9733;</span>
+//                            <span>&#9733;</span>
+//                            <span>&#9734;</span>
+//                        </div>
+//                        <div class="abstract">Elf Terroristen und sieben Geiseln wurden getötet - Österreicher ausgeflogen und auf dem Weg in die Heimat</div>
+//                        <div class="misc">on derstandard.at</div>
+//                        <div style="clear: both"></div>
+//                    </div>
 
-                    cluster.append(line);
+                    var container = $('<div class="article"></div>');
 
-//                var _quality = Math.max(0, parseInt(article.quality * 100));
-//                var _published = $this._newDateField(article.publishedTime).html();
+                    var _title = $('<a></a>').attr('href', '/curator/rest/link/'+article.id).text(article.title).wrap('<div></div>');
+                    var _rating = $this._getRating(article.voteCount, article.voteSum);
+                    var _abstract = $('<div class="abstract"></div>').text(article.text);
+                    var _misc = $('<div class="misc"></div>').text(article.text);
+
+                    container
+                        .append(_title)
+                        .append(_rating)
+                        .append(_abstract)
+                        .append(_misc)
+                        .append('<div style="clear: both"></div>');
+
+                    cluster.append(container);
+
                 }
 
                 $this.clusters.append(cluster);
@@ -69,6 +101,29 @@ $.widget("curator.suggest", {
 
         });
 
+    },
+
+    _getRating : function (voteCount, voteSum) {
+
+        var rating = $('<div class="rating"></div>');
+        // <div class="rating"></div>
+        //   <span>&#9733;</span>
+        //   <span>&#9733;</span>
+        //   <span>&#9733;</span>
+        //   <span>&#9733;</span>
+        //   <span>&#9734;</span>
+        // </div>
+
+        var score = parseInt(voteSum/voteCount);
+        for(var i=0; i<5; i++) {
+            var star = '<span>&#9733;</span>';
+            if(score<i) {
+                star = '<span>&#9734;</span>';
+            }
+            rating.append(star);
+        }
+
+        return rating;
     },
 
     _newCluster:function(index, interval) {
@@ -92,7 +147,7 @@ $.widget("curator.suggest", {
             //noinspection JSUnfilteredForInLoop
             var article = articleList[id];
 
-            var publishedTime = util.strToDate(article.publishedTime);
+            var publishedTime = util.strToDate(article.date);
 
             var dayIndex = parseInt((firstTime-publishedTime)/interval);
 

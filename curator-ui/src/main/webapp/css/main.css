@@ -95,18 +95,28 @@ textarea {
 
 
 
+html,
+body,
+div {
+    font: 12px "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+}
 
-body{
+body {
     font-size: 12px;
     font-family: "Trebuchet MS", sans-serif;
+    background-color: #efefef;
 }
 .ui-widget {
     font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
     font-size: 11px!important;
 }
+.box {
+    padding: 10px;
+    background-color: white;
+    margin-right: 10px;
+}
 #review,
 #feeds {
-    font: 80%/1.45em "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     color: #333;
@@ -117,12 +127,25 @@ body{
 }
 .article {
     clear: both;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #efefef;
 }
-.title {
+
+.title,
+.abstract {
     float: left;
-    width: 500px;
+    width: 80%;
+    clear: both;
 }
+.misc,
+.rating {
+    float: left;
+    width: 20%;
+    text-align: right;
+}
+
+
 .quality {
     float: left;
     width: 100px;

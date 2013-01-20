@@ -31,7 +31,7 @@ public class SeedHandler {
     @Resource(shareable = false)
     private TimerService timerService;
 
-    @Schedule(persistent = false, minute = "0", second = "0", hour = "*/12")
+    //@Schedule(persistent = false, minute = "0", second = "0", hour = "*/12")
     public void watchSeeds() {
         try {
             if (available) {
