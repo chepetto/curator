@@ -129,7 +129,7 @@ public class FeedHandler {
 
     private void _callFeedImports() {
 
-        articleMgr.removeIfUnrated();
+        //articleMgr.removeIfUnrated();
 
         Collection<Feed> outdated = feedManager.getOutdatedFeeds();
         if(!outdated.isEmpty()) {

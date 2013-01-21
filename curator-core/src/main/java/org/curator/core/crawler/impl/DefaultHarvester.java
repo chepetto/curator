@@ -132,8 +132,8 @@ public class DefaultHarvester implements Harvester {
                     feed.setReviewRequired(false);
                     feed.setArticlesCount(feed.getArticlesCount() + articles.size());
 
-                } catch (Exception e) {
-                    LOGGER.error("Cannot extract articles: "+e.getMessage());
+                } catch (Throwable t) {
+                    LOGGER.error("Cannot extract articles: "+t.getMessage());
                     feed.setReviewRequired(true);
                     feed.setActive(false);
                 }
@@ -225,7 +225,7 @@ public class DefaultHarvester implements Harvester {
             try {
                 articleManager.addArticle(article);
             } catch (Throwable e) {
-                LOGGER.error("Cannot add article: "+e.getMessage(), e);
+                LOGGER.error("Cannot add article: "+e.getMessage());
             }
         }
     }

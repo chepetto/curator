@@ -140,7 +140,9 @@ body {
 }
 .misc,
 .rating {
-    float: left;
+    float: right;
+    white-space:nowrap;
+    overflow: hidden;
     width: 20%;
     text-align: right;
 }

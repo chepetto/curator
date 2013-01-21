@@ -80,13 +80,13 @@ $.widget("curator.suggest", {
 
                     var container = $('<div class="article"></div>');
 
-                    var _title = $('<a></a>').attr('href', '/curator/rest/link/'+article.id).text(article.title).wrap('<div></div>');
+                    var _title = $('<a></a>').attr('href', '/curator/rest/link/'+article.id).text(article.title);
                     var _rating = $this._getRating(article.voteCount, article.voteSum);
-                    var _abstract = $('<div class="abstract"></div>').text(article.text);
-                    var _misc = $('<div class="misc"></div>').text(article.text);
+                    var _abstract = $('<div class="abstract"></div>').text(article.text.substr(0,200));
+                    var _misc = $('<div class="misc"></div>').text('on '+$this._shortUrl(article.url)+'<br>'+parseInt(article.quality));
 
                     container
-                        .append(_title)
+                        .append($('<div class="title"></div>').append(_title))
                         .append(_rating)
                         .append(_abstract)
                         .append(_misc)
@@ -103,27 +103,24 @@ $.widget("curator.suggest", {
 
     },
 
+    _shortUrl : function (url) {
+        return url
+            .replace(/http:\/\//g, '')
+            .replace(/www./g, '')
+            .replace(/\/.*/g, '')
+    },
+
     _getRating : function (voteCount, voteSum) {
 
-        var rating = $('<div class="rating"></div>');
-        // <div class="rating"></div>
-        //   <span>&#9733;</span>
-        //   <span>&#9733;</span>
-        //   <span>&#9733;</span>
-        //   <span>&#9733;</span>
-        //   <span>&#9734;</span>
-        // </div>
+        // doku see http://wbotelhos.com/raty/
+        return $('<div class="rating" style="float:right"></div>')
+            .raty({
+                score: voteCount==0?0:parseInt(voteSum/voteCount),
+                noRatedMsg : 'anyone rated this product yet!',
+                click       : function(score, evt) {
 
-        var score = parseInt(voteSum/voteCount);
-        for(var i=0; i<5; i++) {
-            var star = '<span>&#9733;</span>';
-            if(score<i) {
-                star = '<span>&#9734;</span>';
-            }
-            rating.append(star);
-        }
-
-        return rating;
+                }
+            });
     },
 
     _newCluster:function(index, interval) {

@@ -249,11 +249,16 @@ public class ArticleManagerBean implements ArticleManager {
     public void removeIfUnrated() {
         try {
 
-            Query update = em.createNamedQuery(Article.DELETE_UNRATED);
-            update.executeUpdate();
+            Query unrated = em.createNamedQuery(Article.QUERY_UNRATED);
+            List<Article> list = (List<Article>) unrated.getResultList();
+
+            for(Article article:list) {
+                em.remove(article);
+                em.flush();
+            }
 
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRollbackException("cannot delete unrated articles", t);
         }
     }
 
@@ -321,7 +326,7 @@ public class ArticleManagerBean implements ArticleManager {
 
             Query query = em.createNamedQuery(Article.QUERY_SUGGEST);
             query.setParameter("START_TODAY", firstDate);
-            query.setParameter("END_TODAY", new Date(firstDate.getTime() + 60*1000*60*24));
+            query.setParameter("END_TODAY", new Date(firstDate.getTime() - 60 * 1000 * 60 * 24 * 2));
             query.setParameter("LAST_DATE", lastDate);
             query.setFirstResult(firstResult);
             query.setMaxResults(maxResults);

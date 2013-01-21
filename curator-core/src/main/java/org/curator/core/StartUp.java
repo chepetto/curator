@@ -49,7 +49,7 @@ public class StartUp implements Extension {
 
                 if(Configuration.getBooleanValue("retrieve.seeds.onstartup")) {
                     LOGGER.info("Trigger retrieve seeds/feeds");
-                    seedHandler.watchSeeds();
+                    //seedHandler.watchSeeds();
                     feedHandler.watchFeeds();
                 }
                 _initDataImport();

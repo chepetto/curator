@@ -25,7 +25,7 @@ import java.util.*;
         @NamedQuery(name = Article.QUERY_PUBLISHED, query = "SELECT a FROM Article a where a.published=true AND a.publishedTime<=:FIRST_DATE and a.publishedTime>=:LAST_DATE order by a.publishedTime desc"),
         @NamedQuery(name = Article.QUERY_REDIRECT_URL_BY_ID, query = "SELECT a.url FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID"),
-        @NamedQuery(name = Article.DELETE_UNRATED, query = "DELETE FROM Article a WHERE a.voteCount=0")
+        @NamedQuery(name = Article.QUERY_UNRATED, query = "SELECT a FROM Article a WHERE a.voteCount=0")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Article implements Serializable {
@@ -37,7 +37,7 @@ public class Article implements Serializable {
     public static final String QUERY_PUBLISHED = "Article.QUERY_PUBLISHED";
     public static final String QUERY_REDIRECT_URL_BY_ID = "Article.QUERY_REDIRECT_URL_BY_ID";
     public static final String UPDATE_INC_VIEWS = "Article.UPDATE_INC_VIEWS";
-    public static final String DELETE_UNRATED = "Article.DELETE_UNRATED";
+    public static final String QUERY_UNRATED = "Article.QUERY_UNRATED";
     public static final String QUERY_SUGGEST = "Article.QUERY_SUGGEST";
 
     @Id
@@ -85,10 +85,10 @@ public class Article implements Serializable {
     // -- User Feedback -- ---------------------------------------------------------------------------------------------
 
     @Basic
-    private Integer voteCount;
+    private int voteCount;
 
     @Basic
-    private Integer voteSum;
+    private int voteSum;
 
 
     // -- Metrics -- ---------------------------------------------------------------------------------------------------
@@ -386,19 +386,19 @@ public class Article implements Serializable {
         this.specialId = specialId;
     }
 
-    public Integer getVoteCount() {
+    public int getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(Integer voteCount) {
+    public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
     }
 
-    public Integer getVoteSum() {
+    public int getVoteSum() {
         return voteSum;
     }
 
-    public void setVoteSum(Integer voteSum) {
+    public void setVoteSum(int voteSum) {
         this.voteSum = voteSum;
     }
 }

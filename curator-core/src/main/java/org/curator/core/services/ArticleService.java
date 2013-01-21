@@ -113,7 +113,7 @@ public class ArticleService {
             maxResults = this.maxResults;
         }
 
-        List<Article> list = articleManager.getSuggest(firstResult, maxResults, _firstDate, _lastDate);
+        List<Article> list = articleManager.getBest(firstResult, maxResults, _firstDate, _lastDate);
         response.put("maxResults", list.size());
         response.put("list", list);
         return Response.ok(response);
@@ -137,7 +137,7 @@ public class ArticleService {
 
         Date _lastDate;
         if(lastDate==0) {
-            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
+            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 5);
         } else {
             _lastDate = new Date(lastDate);
         }

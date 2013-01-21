@@ -19,7 +19,7 @@
   <feed url="http://feeds.feedburner.com/citronengras?format=xml" />
   <feed url="http://www.blogsgesang.de/feed/" />
   <feed url="http://feeds.feedburner.com/Gonorrea?format=xml" />
-  <feed url="https://netzpolitik.org/feed/" />
+  <!--feed url="https://netzpolitik.org/feed/" /-->
   <feed url="http://www.freitag.de/rss" />
   <feed url="http://www.meinpolitikblog.de/feed/" />
   <feed url="http://endlessgoodnews.blogspot.com/feeds/posts/default?alt=rss" />
@@ -152,10 +152,8 @@
   <feed url="http://www.ruhrbarone.de/feed/" />
   <feed url="http://blog.tirol.org/feed/" />
   <feed url="http://www.ehrenhauser.at/feed/" />
-
   <feed url="http://www.humana-conditio.de/?feed=rss2" />
   <feed url="http://blog.delegibus.com/feed/" />
-
   <feed url="http://uhupardo.wordpress.com/feed" />
   <feed url="http://almabu.wordpress.com/feed/" />
   <feed url="http://www.krisenfrei.de/rss.xml" />
@@ -169,7 +167,7 @@
   <feed url="http://www.relativ-kritisch.net/blog/feed" />
   <feed url="http://www.rettet-das-internet.de/rss_news.xml" />
   <feed url="http://www.gegenfrage.com/feed/" />
-  <feed url="https://www.radio-utopie.de/feed/" />
+  <!--feed url="https://www.radio-utopie.de/feed/" /-->
   <feed url="http://schnittpunkt2012.blogspot.com/feeds/posts/default?alt=rss" />
   <feed url="http://www.wirtschaftsfacts.de/feed/" />
   <feed url="http://www.querschuesse.de/feed/" />
