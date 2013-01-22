@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
@@ -115,7 +114,7 @@ public class DefaultHarvester implements Harvester {
 
     private void postProcessResult(CrawlerResult result) throws CuratorException, MalformedURLException {
 
-        if(result.getInstruction() instanceof FeedHarvestInstruction) {
+        if (result.getInstruction() instanceof FeedHarvestInstruction) {
 
             // -- Feeds -- ---------------------------------------------------------------------------------------------
 
@@ -133,7 +132,7 @@ public class DefaultHarvester implements Harvester {
                     feed.setArticlesCount(feed.getArticlesCount() + articles.size());
 
                 } catch (Throwable t) {
-                    LOGGER.error("Cannot extract articles: "+t.getMessage());
+                    LOGGER.error("Cannot extract articles: " + t.getMessage());
                     feed.setReviewRequired(true);
                     feed.setActive(false);
                 }
@@ -188,7 +187,6 @@ public class DefaultHarvester implements Harvester {
 //        return feedManager;
 //    }
 
-    
 
     private void postProcessHtmlResult(CrawlerResult result) throws CuratorException, MalformedURLException {
 
@@ -221,11 +219,11 @@ public class DefaultHarvester implements Harvester {
     }
 
     private void _addArticles(List<Article> list) {
-        for(Article article:list) {
+        for (Article article : list) {
             try {
                 articleManager.addArticle(article);
-            } catch (Throwable e) {
-                LOGGER.error("Cannot add article: "+e.getMessage());
+            } catch (Throwable t) {
+                LOGGER.error("Cannot add article: " + t.getMessage());
             }
         }
     }
@@ -280,10 +278,10 @@ public class DefaultHarvester implements Harvester {
             return result;
 
         } catch (Throwable t) {
-            if(method!=null) {
+            if (method != null) {
                 method.abort();
             }
-            LOGGER.error("Failed to retrieve " + instruction.getUrl()+": "+t.getMessage());
+            LOGGER.error("Failed to retrieve " + instruction.getUrl() + ": " + t.getMessage());
             result.setStatus(CrawlerResult.ERROR);
             result.setResponse(t.getMessage());
             return result;
@@ -291,7 +289,7 @@ public class DefaultHarvester implements Harvester {
         } finally {
 
             try {
-                if(method!=null) {
+                if (method != null) {
                     method.releaseConnection();
                 }
             } catch (Throwable t) {
@@ -299,7 +297,7 @@ public class DefaultHarvester implements Harvester {
             }
 
             try {
-                if(method!=null) {
+                if (method != null) {
                     method.releaseConnection();
                 }
             } catch (Throwable t) {

@@ -4,16 +4,16 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.common.model.Article;
-import org.curator.common.service.CustomDateSerializer;
 import org.curator.core.interfaces.ArticleManager;
-import org.json.JSONObject;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @CuratorInterceptors
 @Path("/article")
@@ -48,6 +48,17 @@ public class ArticleService {
             @QueryParam("custom") @DefaultValue("") String customText
     ) throws Exception {
         Article article = articleManager.publish(articleId, customText);
+        return Response.ok(article);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/rate/{id}")
+    public Response rate(
+            @PathParam("id") long articleId,
+            @QueryParam("rating") int rating
+    ) throws Exception {
+        Article article = articleManager.rate(articleId, rating);
         return Response.ok(article);
     }
 
@@ -93,7 +104,7 @@ public class ArticleService {
         response.put("firstResult", firstResult);
 
         Date _lastDate;
-        if(lastDate==0) {
+        if (lastDate == 0) {
             _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
         } else {
             _lastDate = new Date(lastDate);
@@ -101,7 +112,7 @@ public class ArticleService {
         response.put("lastDate", dateFormat.format(_lastDate));
 
         Date _firstDate;
-        if(firstDate==0) {
+        if (firstDate == 0) {
             _firstDate = new Date();
         } else {
             _firstDate = new Date(firstDate);
@@ -109,7 +120,7 @@ public class ArticleService {
         response.put("firstDate", dateFormat.format(_firstDate));
 
 
-        if(maxResults==0) {
+        if (maxResults == 0) {
             maxResults = this.maxResults;
         }
 
@@ -136,15 +147,15 @@ public class ArticleService {
         response.put("firstResult", firstResult);
 
         Date _lastDate;
-        if(lastDate==0) {
-            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 5);
+        if (lastDate == 0) {
+            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
         } else {
             _lastDate = new Date(lastDate);
         }
         response.put("lastDate", dateFormat.format(_lastDate));
 
         Date _firstDate;
-        if(firstDate==0) {
+        if (firstDate == 0) {
             _firstDate = new Date();
         } else {
             _firstDate = new Date(firstDate);
@@ -152,7 +163,7 @@ public class ArticleService {
         response.put("firstDate", dateFormat.format(_firstDate));
 
 
-        if(maxResults==0) {
+        if (maxResults == 0) {
             maxResults = this.maxResults;
         }
 
@@ -171,7 +182,7 @@ public class ArticleService {
 
     ) throws Exception {
         Date now = new Date();
-        Date oneWeekAgo = new Date(now.getTime() - 1000*60*60*24*7);
+        Date oneWeekAgo = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 7);
         return _getPublished(now, oneWeekAgo);
     }
 

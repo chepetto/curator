@@ -20,12 +20,12 @@ import java.util.*;
         @NamedQuery(name = Article.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_BY_URL, query = "SELECT a FROM Article a where LOWER(a.url)=LOWER(:URL)"),
         @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a"),
-        @NamedQuery(name = Article.QUERY_BEST, query = "SELECT a FROM Article a WHERE a.published=false AND a.date<:FIRST_DATE AND a.date>:LAST_DATE ORDER BY a.quality desc"),
-        @NamedQuery(name = Article.QUERY_SUGGEST, query = "SELECT a FROM Article a WHERE ((a.date<:START_TODAY AND a.date>:END_TODAY) or (a.date>:LAST_DATE and a.voteCount>0)) ORDER BY a.date, a.voteCount desc"),
+        @NamedQuery(name = Article.QUERY_BEST, query = "SELECT a FROM Article a WHERE a.published=true AND a.date<:FIRST_DATE AND a.date>:LAST_DATE ORDER BY a.quality desc"),
+        @NamedQuery(name = Article.QUERY_SUGGEST, query = "SELECT a FROM Article a WHERE a.date<:FIRST_DATE AND a.date>:LAST_DATE and a.ratingsCount>0 ORDER BY a.quality desc, a.ratingsCount desc"),
         @NamedQuery(name = Article.QUERY_PUBLISHED, query = "SELECT a FROM Article a where a.published=true AND a.publishedTime<=:FIRST_DATE and a.publishedTime>=:LAST_DATE order by a.publishedTime desc"),
         @NamedQuery(name = Article.QUERY_REDIRECT_URL_BY_ID, query = "SELECT a.url FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID"),
-        @NamedQuery(name = Article.QUERY_UNRATED, query = "SELECT a FROM Article a WHERE a.voteCount=0")
+        @NamedQuery(name = Article.QUERY_UNRATED, query = "SELECT a FROM Article a WHERE a.ratingsCount=0")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Article implements Serializable {
@@ -85,10 +85,10 @@ public class Article implements Serializable {
     // -- User Feedback -- ---------------------------------------------------------------------------------------------
 
     @Basic
-    private int voteCount;
+    private int ratingsCount;
 
     @Basic
-    private int voteSum;
+    private int ratingsSum;
 
 
     // -- Metrics -- ---------------------------------------------------------------------------------------------------
@@ -386,19 +386,19 @@ public class Article implements Serializable {
         this.specialId = specialId;
     }
 
-    public int getVoteCount() {
-        return voteCount;
+    public int getRatingsCount() {
+        return ratingsCount;
     }
 
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
+    public void setRatingsCount(int voteCount) {
+        this.ratingsCount = voteCount;
     }
 
-    public int getVoteSum() {
-        return voteSum;
+    public int getRatingsSum() {
+        return ratingsSum;
     }
 
-    public void setVoteSum(int voteSum) {
-        this.voteSum = voteSum;
+    public void setRatingsSum(int voteSum) {
+        this.ratingsSum = voteSum;
     }
 }

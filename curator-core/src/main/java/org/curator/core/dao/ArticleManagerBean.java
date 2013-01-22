@@ -17,7 +17,9 @@ import org.curator.core.interfaces.ArticleManager;
 import org.hibernate.Hibernate;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -89,7 +91,7 @@ public class ArticleManagerBean implements ArticleManager {
         }
 
         Article old = getByUrl(article.getUrl());
-        if(old!=null) {
+        if (old != null) {
             LOGGER.trace(String.format("article already exists %s", article.getUrl()));
             return;
         }
@@ -127,7 +129,7 @@ public class ArticleManagerBean implements ArticleManager {
             em.merge(article);
 
         } catch (ConstraintViolation e) {
-            LOGGER.error("rejected "+article.getUrl());
+            LOGGER.error("rejected " + article.getUrl());
         }
         em.flush();
     }
@@ -156,7 +158,7 @@ public class ArticleManagerBean implements ArticleManager {
             Query query = em.createNamedQuery(Article.QUERY_BY_URL);
             query.setParameter("URL", url);
             List list = query.getResultList();
-            if(list==null || list.isEmpty()) {
+            if (list == null || list.isEmpty()) {
                 return null;
             }
             Article article = (Article) list.get(0);
@@ -177,14 +179,14 @@ public class ArticleManagerBean implements ArticleManager {
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
 
-            if(article.isPublished()) {
+            if (article.isPublished()) {
                 throw new CuratorException("Already published");
             }
 
             article.setPublished(true);
             article.setPublishedTime(new Date());
 
-            if(StringUtils.isBlank(customText)) {
+            if (StringUtils.isBlank(customText)) {
                 article.setCustomText(StringUtils.trim(customText));
             }
 
@@ -199,6 +201,40 @@ public class ArticleManagerBean implements ArticleManager {
             return article;
         } catch (Throwable t) {
             throw new CuratorRollbackException("getById failed", t);
+        }
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Article rate(long articleId, int rating) throws CuratorException {
+        try {
+            Query query = em.createNamedQuery(Article.QUERY_BY_ID);
+            query.setParameter("ID", articleId);
+            Article article = (Article) query.getSingleResult();
+
+            long yesterday = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
+            boolean laterThanYesterday = yesterday > article.getDate().getTime();
+            if (laterThanYesterday) {
+                throw new CuratorException("Time frame to rate is expired");
+            }
+
+            article.setRatingsCount(article.getRatingsCount() + 1);
+            article.setRatingsSum(article.getRatingsSum() + rating);
+
+            em.merge(article);
+            em.flush();
+            em.refresh(article);
+
+            em.detach(article);
+            article.setTopics(null);
+            article.setMetrics(null);
+
+            return article;
+
+        } catch (CuratorException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new CuratorRollbackException("rate failed", t);
         }
     }
 
@@ -221,7 +257,7 @@ public class ArticleManagerBean implements ArticleManager {
 
             return articles;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRollbackException("getPublished failed", t);
         }
     }
 
@@ -240,7 +276,7 @@ public class ArticleManagerBean implements ArticleManager {
 
             return new URL(url);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRollbackException("redirect failed", t);
         }
     }
 
@@ -252,7 +288,7 @@ public class ArticleManagerBean implements ArticleManager {
             Query unrated = em.createNamedQuery(Article.QUERY_UNRATED);
             List<Article> list = (List<Article>) unrated.getResultList();
 
-            for(Article article:list) {
+            for (Article article : list) {
                 em.remove(article);
                 em.flush();
             }
@@ -281,7 +317,7 @@ public class ArticleManagerBean implements ArticleManager {
             }
             return articles;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getList failed: "+t.getMessage(), t);
+            throw new CuratorRollbackException("getList failed: " + t.getMessage(), t);
         }
     }
 
@@ -291,7 +327,7 @@ public class ArticleManagerBean implements ArticleManager {
         try {
             _verifyLimits(firstResult, maxResults);
 
-            if(lastDate==null) {
+            if (lastDate == null) {
                 throw new IllegalArgumentException("lastDate is null");
             }
 
@@ -310,7 +346,7 @@ public class ArticleManagerBean implements ArticleManager {
             }
             return articles;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getBest failed: "+t.getMessage(), t);
+            throw new CuratorRollbackException("getBest failed: " + t.getMessage(), t);
         }
     }
 
@@ -320,13 +356,12 @@ public class ArticleManagerBean implements ArticleManager {
         try {
             _verifyLimits(firstResult, maxResults);
 
-            if(lastDate==null) {
+            if (lastDate == null) {
                 throw new IllegalArgumentException("lastDate is null");
             }
 
             Query query = em.createNamedQuery(Article.QUERY_SUGGEST);
-            query.setParameter("START_TODAY", firstDate);
-            query.setParameter("END_TODAY", new Date(firstDate.getTime() - 60 * 1000 * 60 * 24 * 2));
+            query.setParameter("START_DATE", firstDate);
             query.setParameter("LAST_DATE", lastDate);
             query.setFirstResult(firstResult);
             query.setMaxResults(maxResults);
@@ -340,18 +375,18 @@ public class ArticleManagerBean implements ArticleManager {
             }
             return articles;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getBest failed: "+t.getMessage(), t);
+            throw new CuratorRollbackException("getSuggest failed: " + t.getMessage(), t);
         }
     }
 
     private void _verifyLimits(int firstResult, int customMaxResults) {
-        if(customMaxResults==0) {
+        if (customMaxResults == 0) {
             throw new IllegalArgumentException("maxResults is 0");
         }
-        if(customMaxResults>maxResults) {
-            throw new IllegalArgumentException("maxResults exceeds upper limit "+maxResults);
+        if (customMaxResults > maxResults) {
+            throw new IllegalArgumentException("maxResults exceeds upper limit " + maxResults);
         }
-        if(firstResult<0) {
+        if (firstResult < 0) {
             throw new IllegalArgumentException("firstResult < 0");
         }
     }
