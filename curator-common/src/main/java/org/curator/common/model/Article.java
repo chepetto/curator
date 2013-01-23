@@ -20,12 +20,11 @@ import java.util.*;
         @NamedQuery(name = Article.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_BY_URL, query = "SELECT a FROM Article a where LOWER(a.url)=LOWER(:URL)"),
         @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a"),
-        @NamedQuery(name = Article.QUERY_BEST, query = "SELECT a FROM Article a WHERE a.published=true AND a.date<:FIRST_DATE AND a.date>:LAST_DATE ORDER BY a.quality desc"),
-        @NamedQuery(name = Article.QUERY_SUGGEST, query = "SELECT a FROM Article a WHERE a.date<:FIRST_DATE AND a.date>:LAST_DATE and a.ratingsCount>0 ORDER BY a.quality desc, a.ratingsCount desc"),
+        @NamedQuery(name = Article.QUERY_SUGGEST, query = "SELECT a FROM Article a WHERE a.date<:FIRST_DATE AND a.date>:LAST_DATE and a.published=false ORDER BY a.quality desc, a.ratingsCount desc"),
         @NamedQuery(name = Article.QUERY_PUBLISHED, query = "SELECT a FROM Article a where a.published=true AND a.publishedTime<=:FIRST_DATE and a.publishedTime>=:LAST_DATE order by a.publishedTime desc"),
         @NamedQuery(name = Article.QUERY_REDIRECT_URL_BY_ID, query = "SELECT a.url FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID"),
-        @NamedQuery(name = Article.QUERY_UNRATED, query = "SELECT a FROM Article a WHERE a.ratingsCount=0")
+        @NamedQuery(name = Article.QUERY_UNPUBLISHED, query = "SELECT a FROM Article a WHERE a.published=false")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Article implements Serializable {
@@ -33,11 +32,10 @@ public class Article implements Serializable {
     public static final String QUERY_BY_ID = "Article.QUERY_BY_ID";
     public static final String QUERY_BY_URL = "Article.QUERY_BY_URL";
     public static final String QUERY_ALL = "Article.QUERY_ALL";
-    public static final String QUERY_BEST = "Article.QUERY_BEST";
     public static final String QUERY_PUBLISHED = "Article.QUERY_PUBLISHED";
     public static final String QUERY_REDIRECT_URL_BY_ID = "Article.QUERY_REDIRECT_URL_BY_ID";
     public static final String UPDATE_INC_VIEWS = "Article.UPDATE_INC_VIEWS";
-    public static final String QUERY_UNRATED = "Article.QUERY_UNRATED";
+    public static final String QUERY_UNPUBLISHED = "Article.QUERY_UNPUBLISHED";
     public static final String QUERY_SUGGEST = "Article.QUERY_SUGGEST";
 
     @Id

@@ -123,6 +123,7 @@ $.widget("curator.suggest", {
             .raty({
                 score:article.voteCount == 0 ? 0 : parseInt(article.voteSum / article.voteCount),
                 noRatedMsg:'anyone rated this product yet!',
+
                 click:function (score, evt) {
                     var params = {'{articleId}':article.id, '{rating}':score};
                     util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {

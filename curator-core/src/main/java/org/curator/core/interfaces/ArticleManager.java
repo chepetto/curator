@@ -15,8 +15,6 @@ public interface ArticleManager {
 
     List<Article> getList(int firstResult, int maxResults);
 
-    List<Article> getBest(int firstResult, int maxResults, Date _firstDate, Date lastDate);
-
     List<Article> getSuggest(int firstResult, int maxResults, Date _firstDate, Date lastDate);
 
     void addArticle(Article article) throws CuratorException;
@@ -31,5 +29,5 @@ public interface ArticleManager {
 
     URL redirect(long articleId);
 
-    void removeIfUnrated();
+    void removeUnpublished();
 }

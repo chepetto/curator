@@ -212,11 +212,11 @@ public class ArticleManagerBean implements ArticleManager {
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
 
-            long yesterday = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
-            boolean laterThanYesterday = yesterday > article.getDate().getTime();
-            if (laterThanYesterday) {
-                throw new CuratorException("Time frame to rate is expired");
-            }
+//            long yesterday = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
+//            boolean laterThanYesterday = yesterday > article.getDate().getTime();
+//            if (laterThanYesterday) {
+//                throw new CuratorException("Time frame to rate is expired");
+//            }
 
             article.setRatingsCount(article.getRatingsCount() + 1);
             article.setRatingsSum(article.getRatingsSum() + rating);
@@ -231,8 +231,6 @@ public class ArticleManagerBean implements ArticleManager {
 
             return article;
 
-        } catch (CuratorException e) {
-            throw e;
         } catch (Throwable t) {
             throw new CuratorRollbackException("rate failed", t);
         }
@@ -282,10 +280,10 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void removeIfUnrated() {
+    public void removeUnpublished() {
         try {
 
-            Query unrated = em.createNamedQuery(Article.QUERY_UNRATED);
+            Query unrated = em.createNamedQuery(Article.QUERY_UNPUBLISHED);
             List<Article> list = (List<Article>) unrated.getResultList();
 
             for (Article article : list) {
@@ -323,35 +321,6 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public List<Article> getBest(int firstResult, int maxResults, Date firstDate, Date lastDate) {
-        try {
-            _verifyLimits(firstResult, maxResults);
-
-            if (lastDate == null) {
-                throw new IllegalArgumentException("lastDate is null");
-            }
-
-            Query query = em.createNamedQuery(Article.QUERY_BEST);
-            query.setParameter("FIRST_DATE", firstDate);
-            query.setParameter("LAST_DATE", lastDate);
-            query.setFirstResult(firstResult);
-            query.setMaxResults(maxResults);
-
-            @SuppressWarnings("unchecked")
-            List<Article> articles = query.getResultList();
-            for (Article article : articles) {
-                em.detach(article);
-                article.setMetrics(null);
-                article.setTopics(null);
-            }
-            return articles;
-        } catch (Throwable t) {
-            throw new CuratorRollbackException("getBest failed: " + t.getMessage(), t);
-        }
-    }
-
-    @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<Article> getSuggest(int firstResult, int maxResults, Date firstDate, Date lastDate) {
         try {
             _verifyLimits(firstResult, maxResults);
@@ -361,7 +330,7 @@ public class ArticleManagerBean implements ArticleManager {
             }
 
             Query query = em.createNamedQuery(Article.QUERY_SUGGEST);
-            query.setParameter("START_DATE", firstDate);
+            query.setParameter("FIRST_DATE", firstDate);
             query.setParameter("LAST_DATE", lastDate);
             query.setFirstResult(firstResult);
             query.setMaxResults(maxResults);

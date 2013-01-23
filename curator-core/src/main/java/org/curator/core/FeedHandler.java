@@ -15,7 +15,6 @@ import org.jdom.xpath.XPath;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
-import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.util.*;
@@ -45,15 +44,15 @@ public class FeedHandler {
     public void onInit() {
         List<Feed> feeds = feedManager.getList(0, 1000);
         Set<String> existingUrls = new HashSet<String>(feeds.size());
-        for(Feed feed:feeds) {
+        for (Feed feed : feeds) {
             existingUrls.add(feed.getUrl());
         }
 
         Collection<String> otherUrls = getFeedsFromFile();
 
-        for(String newUrl:otherUrls) {
+        for (String newUrl : otherUrls) {
 
-            if(existingUrls.contains(newUrl)) {
+            if (existingUrls.contains(newUrl)) {
                 continue;
             }
 
@@ -77,7 +76,7 @@ public class FeedHandler {
                 timerService.createSingleActionTimer(new Date(), new TimerConfig());
             }
         } catch (Throwable t) {
-            LOGGER.error("Cannot import feeds: "+t.getMessage());
+            LOGGER.error("Cannot import feeds: " + t.getMessage());
         }
     }
 
@@ -86,7 +85,7 @@ public class FeedHandler {
 
         boolean retrieve = Configuration.getBooleanValue(Configuration.RETRIEVE_SEEDS);
 
-        if(retrieve && available) {
+        if (retrieve && available) {
 
             LOGGER.trace("import feeds");
 
@@ -129,12 +128,12 @@ public class FeedHandler {
 
     private void _callFeedImports() {
 
-        //articleMgr.removeIfUnrated();
+        //articleMgr.removeUnpublished();
 
         Collection<Feed> outdated = feedManager.getOutdatedFeeds();
-        if(!outdated.isEmpty()) {
-            LOGGER.info("update "+outdated.size()+" feeds");
-            for(Feed feed: outdated) {
+        if (!outdated.isEmpty()) {
+            LOGGER.info("update " + outdated.size() + " feeds");
+            for (Feed feed : outdated) {
                 harvester.schedule(new FeedHarvestInstruction(feed));
             }
         }

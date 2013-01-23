@@ -262,7 +262,7 @@ public class DefaultHarvester implements Harvester {
                 throw new CuratorException(String.format("Bad http status %s for %s.", status, instruction.getUrl()));
             }
 
-            LOGGER.info("Receiving status " + status + " for url " + instruction.getUrl());
+            LOGGER.debug("Receiving status " + status + " for url " + instruction.getUrl());
 
             result.setStatus(CrawlerResult.OK);
             result.setInstruction(instruction);
