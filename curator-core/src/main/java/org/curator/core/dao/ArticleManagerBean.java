@@ -280,11 +280,13 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void removeUnpublished() {
+    public void cleanup() {
         try {
 
-            Query unrated = em.createNamedQuery(Article.QUERY_UNPUBLISHED);
-            List<Article> list = (List<Article>) unrated.getResultList();
+            Query cleanup = em.createNamedQuery(Article.QUERY_CLEANUP);
+            cleanup.setParameter("A_DAY_AGO", new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24));
+
+            List<Article> list = (List<Article>) cleanup.getResultList();
 
             for (Article article : list) {
                 em.remove(article);

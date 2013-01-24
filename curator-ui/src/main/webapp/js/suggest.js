@@ -43,6 +43,8 @@ $.widget("curator.suggest", {
 
     _retrieve:function (url) {
 
+        var $this = this;
+
         util.jsonCall('GET', url, null, null, function (response) {
 
             var firstDate = util.strToDate(response.firstDate);
@@ -55,7 +57,7 @@ $.widget("curator.suggest", {
                 var cluster = $this._newCluster(intervalIndex, interval);
 
                 var visible = $('<div></div>');
-                var visibleLimit = 5;
+                var visibleLimit = 10;
                 var hidden = $('<div style="display:none"></div>');
 
                 //noinspection JSUnfilteredForInLoop
@@ -82,7 +84,7 @@ $.widget("curator.suggest", {
                         .append(_misc)
                         .append('<div style="clear: both"></div>');
 
-                    if (index > visibleLimit) {
+                    if (index <= visibleLimit) {
                         visible.append(container);
                     } else {
                         hidden.append(container);
@@ -103,7 +105,7 @@ $.widget("curator.suggest", {
 
     _getToggleHiddenArticlesButton:function (articlesCount, hiddenContainer) {
         var label = 'Show ' + articlesCount + ' links';
-        return $('<div class="more"></div>').text(label).click(function () {
+        return $('<div class="more"></div>').append($('<a href="#"></a>').text(label)).click(function () {
             hiddenContainer.show();
             $(this).hide();
         });
@@ -121,7 +123,7 @@ $.widget("curator.suggest", {
         // doku see http://wbotelhos.com/raty/
         return $('<div class="rating" style="float:right"></div>')
             .raty({
-                score:article.voteCount == 0 ? 0 : parseInt(article.voteSum / article.voteCount),
+                score:article.ratingsCount == 0 ? 0 : parseInt(article.ratingsSum / article.ratingsCount),
                 noRatedMsg:'anyone rated this product yet!',
 
                 click:function (score, evt) {
@@ -150,7 +152,7 @@ $.widget("curator.suggest", {
                 t = $.timeago(new Date() - index * interval);
                 break;
         }
-        cluster.append($('<div></div>').text(t));
+        cluster.append($('<div></div>').append($('<h3></h3>').text(t)));
         return cluster;
     },
 

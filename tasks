@@ -1,1 +1,3 @@
-- feeds into db
+- texte schreiben
+- sortierung der suggest liste in zusammenhang mit der date-clustering logik:
+innerhalb eines tages muss nach qualität sortiert werden, das manuelle sollte dabei bevorzugt werden

@@ -128,7 +128,7 @@ public class FeedHandler {
 
     private void _callFeedImports() {
 
-        //articleMgr.removeUnpublished();
+        articleMgr.cleanup();
 
         Collection<Feed> outdated = feedManager.getOutdatedFeeds();
         if (!outdated.isEmpty()) {

@@ -4,10 +4,6 @@ $.widget("curator.review", {
         articles:null
     },
 
-    _create:function () {
-
-    },
-
     _init:function () {
         var $this = this;
 

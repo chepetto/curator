@@ -29,5 +29,5 @@ public interface ArticleManager {
 
     URL redirect(long articleId);
 
-    void removeUnpublished();
+    void cleanup();
 }
