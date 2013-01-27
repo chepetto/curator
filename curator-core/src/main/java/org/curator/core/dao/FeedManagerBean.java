@@ -4,19 +4,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.model.Feed;
-import org.curator.core.crawler.Harvester;
-import org.curator.core.crawler.impl.FeedHarvestInstruction;
 import org.curator.core.interfaces.FeedManager;
+import org.curator.core.status.FeedStatus;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 //@LocalBean
 @Stateless
@@ -45,7 +45,7 @@ public class FeedManagerBean implements FeedManager {
         }
 
         Feed old = getByUrl(feed.getUrl());
-        if(old!=null) {
+        if (old != null) {
             LOGGER.trace(String.format("article already exists %s", feed.getUrl()));
             return;
         }
@@ -79,7 +79,7 @@ public class FeedManagerBean implements FeedManager {
             Query query = em.createNamedQuery(Feed.QUERY_BY_URL);
             query.setParameter("URL", url);
             List list = query.getResultList();
-            if(list==null || list.isEmpty()) {
+            if (list == null || list.isEmpty()) {
                 return null;
             }
             Feed feed = (Feed) list.get(0);
@@ -148,7 +148,21 @@ public class FeedManagerBean implements FeedManager {
         } catch (Throwable t) {
             throw new CuratorRollbackException("forceHarvest failed", t);
         }
+    }
 
+    @Override
+    public FeedStatus getStatus() {
+        try {
+            FeedStatus status = new FeedStatus();
+
+            Query query = em.createNamedQuery(Feed.QUERY_COUNT);
+            long count = (Long) query.getSingleResult();
+
+            status.setTotalFeedCount(count);
+            return status;
+        } catch (Throwable t) {
+            throw new CuratorRollbackException("forceHarvest failed", t);
+        }
     }
 
     @Override
@@ -173,10 +187,10 @@ public class FeedManagerBean implements FeedManager {
     }
 
     private void _verifyLimits(int firstResult, int maxResults) {
-        if(maxResults==0) {
+        if (maxResults == 0) {
             throw new IllegalArgumentException("maxResults is 0");
         }
-        if(firstResult<0) {
+        if (firstResult < 0) {
             throw new IllegalArgumentException("firstResult < 0");
         }
     }

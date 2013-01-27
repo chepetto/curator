@@ -50,7 +50,7 @@ $.widget("curator.suggest", {
             var firstDate = util.strToDate(response.firstDate);
 
             var interval = 1000 * 60 * 60 * 24;
-            var daysToArticlesMap = $this._clusterList(interval, firstDate, response.list);
+            var daysToArticlesMap = $this._clusterArticlesPerDay(interval, firstDate, response.list);
 
             for (var intervalIndex in daysToArticlesMap) {
 
@@ -62,6 +62,9 @@ $.widget("curator.suggest", {
 
                 //noinspection JSUnfilteredForInLoop
                 var articles = daysToArticlesMap[intervalIndex];
+
+                // todo: sort articles by quality
+                util.sortJSONArrayDESC(articles, 'quality');
 
                 var index = 0;
                 for (var articleIndex in articles) {
@@ -156,7 +159,7 @@ $.widget("curator.suggest", {
         return cluster;
     },
 
-    _clusterList:function (interval, firstTime, articleList) {
+    _clusterArticlesPerDay:function (interval, firstTime, articleList) {
         var daysToArticlesMap = {};
 
         // cluster data by days

@@ -1,102 +1,117 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/vendor/layout-default-latest.css">
-        <link rel="stylesheet" href="css/vendor/jquery-ui-1.9.2.custom.css">
-        <link rel="stylesheet" href="css/vendor/jquery.dataTables.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/vendor/layout-default-latest.css">
+    <link rel="stylesheet" href="css/vendor/jquery-ui-1.9.2.custom.css">
+    <link rel="stylesheet" href="css/vendor/jquery.dataTables.css">
 
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 
-        <script src="js/vendor/jquery-1.8.2.min.js"></script>
-        <script src="js/vendor/jquery.raty.js"></script>
-        <script src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
-        <script src="js/vendor/jquery.dataTables.js"></script>
-        <script src="js/vendor/jquery.timeago.js"></script>
-        <script src="js/vendor/jquery.paginate.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/util.js"></script>
-        <script src="js/suggest.js"></script>
+    <script src="js/vendor/jquery-1.8.2.min.js"></script>
+    <script src="js/vendor/jquery.raty.js"></script>
+    <script src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
+    <script src="js/vendor/jquery.dataTables.js"></script>
+    <script src="js/vendor/jquery.timeago.js"></script>
+    <script src="js/vendor/jquery.paginate.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/suggest.js"></script>
+    <script src="js/feedmanager.js"></script>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                $('#suggest').suggest();
+            $('#suggest').suggest();
+            $('#feed-manager').feedmanager();
 
-            });
+        });
 
-        </script>
+    </script>
 
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a></p>
-        <![endif]-->
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a></p>
+<![endif]-->
 
-        <!-- ARTICLES -->
-        <div id="suggest" class="box" style="float: left; width: 600px">
+<!-- ARTICLES -->
+<div id="suggest" class="box" style="float: left; width: 600px">
 
-            <div class="article-group">
+    <!-- content generated -->
 
-                <h3 class="date">Heute, 19. Januar 2013</h3>
+    <div class="article-group">
 
-                <div class="article">
-                    <div class="title"><a href="">Geiselnahme in Algerien zu Ende: Sicherheitskräfte stürmen Erdgasanlage</a></div>
-                    <div class="rating">
-                        <span>&#9733;</span>
-                        <span>&#9733;</span>
-                        <span>&#9733;</span>
-                        <span>&#9733;</span>
-                        <span>&#9734;</span>
-                    </div>
-                    <div class="abstract">Elf Terroristen und sieben Geiseln wurden getötet - Österreicher ausgeflogen und auf dem Weg in die Heimat</div>
-                    <div class="misc">on derstandard.at</div>
-                    <div style="clear: both"></div>
-                </div>
+        <h3 class="date">Heute, 19. Januar 2013</h3>
 
-                <div class="more"><a href="javascript:;">Show 3 more</a></div>
-
+        <div class="article">
+            <div class="title"><a href="">Geiselnahme in Algerien zu Ende: Sicherheitskräfte stürmen Erdgasanlage</a>
             </div>
-
+            <div class="rating">
+                <span>&#9733;</span>
+                <span>&#9733;</span>
+                <span>&#9733;</span>
+                <span>&#9733;</span>
+                <span>&#9734;</span>
+            </div>
+            <div class="abstract">Elf Terroristen und sieben Geiseln wurden getötet - Österreicher ausgeflogen und auf
+                dem Weg in die Heimat
+            </div>
+            <div class="misc">on derstandard.at</div>
+            <div style="clear: both"></div>
         </div>
 
-        <!-- SIDEBAR -->
-        <div style="float: left; width: 400px" class="box">
+        <div class="more"><a href="javascript:">Show 3 more</a></div>
 
-            <div id="feeds">
-                <h3>Feeds</h3>
+    </div>
 
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-                    dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-                    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-                    consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-                    sed diam voluptua.</p>
-            </div>
+</div>
 
-            <div id="about">
-                <h3>About</h3>
+<!-- SIDEBAR -->
+<div style="float: left; width: 400px" class="box">
 
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-                    dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-                    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-                    consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-                    sed diam voluptua.</p>
-            </div>
+    <div id="feeds">
+        <h3>Feeds</h3>
 
+        <div id="feed-manager">
+            <!-- content generated -->
         </div>
+    </div>
 
-    </body>
+    <div id="about">
+        <h3>About</h3>
+
+        <p>
+            Curator is a project that aims to overcome the flood of information by identifying the relevant currently
+            relevant articles.
+        </p>
+
+        <p>
+            The algorithm collects articles from feeds and calculates the quality based on features like text-quality,
+            impact in the internet and many more.
+        </p>
+
+    </div>
+
+</div>
+
+</body>
 </html>

@@ -105,7 +105,7 @@ public class ArticleService {
 
         Date _lastDate;
         if (lastDate == 0) {
-            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2);
+            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 5);
         } else {
             _lastDate = new Date(lastDate);
         }

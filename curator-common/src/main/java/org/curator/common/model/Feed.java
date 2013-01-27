@@ -8,7 +8,7 @@ import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 /**
  * Feed only for now, cause complex Seeds are more complicated to store
@@ -19,7 +19,8 @@ import java.util.*;
         @NamedQuery(name = Feed.QUERY_BY_ID, query = "SELECT a FROM Feed a where a.id=:ID"),
         @NamedQuery(name = Feed.QUERY_BY_URL, query = "SELECT a FROM Feed a where LOWER(a.url)=LOWER(:URL)"),
         @NamedQuery(name = Feed.QUERY_ALL, query = "SELECT a FROM Feed a"),
-        @NamedQuery(name = Feed.QUERY_OUTDATED_FEEDS, query = "SELECT a FROM Feed a WHERE a.active=true AND (a.lastHarvestTime IS NULL OR a.lastHarvestTime<:TIMEOUT) AND a.harvestRequired=false")
+        @NamedQuery(name = Feed.QUERY_OUTDATED_FEEDS, query = "SELECT a FROM Feed a WHERE a.active=true AND (a.lastHarvestTime IS NULL OR a.lastHarvestTime<:TIMEOUT) AND a.harvestRequired=false"),
+        @NamedQuery(name = Feed.QUERY_COUNT, query = "SELECT Count(a) FROM Feed a")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Feed implements Serializable {
@@ -28,6 +29,7 @@ public class Feed implements Serializable {
     public static final String QUERY_BY_URL = "Feed.QUERY_BY_URL";
     public static final String QUERY_ALL = "Feed.QUERY_ALL";
     public static final String QUERY_OUTDATED_FEEDS = "Feed.QUERY_OUTDATED_FEEDS";
+    public static final String QUERY_COUNT = "Feed.COUNT";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

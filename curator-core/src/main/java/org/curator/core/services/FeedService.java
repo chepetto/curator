@@ -1,10 +1,9 @@
 package org.curator.core.services;
 
 import org.curator.common.configuration.CuratorInterceptors;
-import org.curator.common.model.Article;
 import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
-import org.curator.core.interfaces.TopicManager;
+import org.curator.core.status.FeedStatus;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -19,6 +18,14 @@ public class FeedService {
 
     @Inject
     private FeedManager feedManager;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/status")
+    public Response getStatus() throws Exception {
+        FeedStatus status = feedManager.getStatus();
+        return Response.ok(status);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,6 +46,7 @@ public class FeedService {
         return Response.ok(feedManager.setStatus(feedId, activate));
     }
 
+    // todo secure or delete if unused
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/harvest/{feedId}")

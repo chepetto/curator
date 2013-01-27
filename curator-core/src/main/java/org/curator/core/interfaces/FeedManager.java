@@ -1,13 +1,10 @@
 package org.curator.core.interfaces;
 
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.curator.common.model.Feed;
+import org.curator.core.status.FeedStatus;
 
 import javax.ejb.Local;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,4 +26,6 @@ public interface FeedManager {
     Feed setStatus(long feedId, boolean activate);
 
     void forceHarvest(long feedId);
+
+    FeedStatus getStatus();
 }
