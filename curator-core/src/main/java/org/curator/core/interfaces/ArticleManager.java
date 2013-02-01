@@ -15,7 +15,7 @@ public interface ArticleManager {
 
     List<Article> getList(int firstResult, int maxResults);
 
-    List<Article> getSuggest(int firstResult, int maxResults, Date _firstDate, Date lastDate);
+    List<Article> getReview(int firstResult, int maxResults, Date _firstDate, Date lastDate);
 
     void addArticle(Article article) throws CuratorException;
 

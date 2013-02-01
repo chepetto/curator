@@ -9,11 +9,21 @@ $.widget("curator.review", {
 
         $this.element.empty();
 
+        $this._menu();
+        $this._table();
+    },
+
+    _menu:function () {
+        // todo menu like "publish new article"
+    },
+
+    _table:function () {
+
         var table = $('<table></table>');
 
         $this.element.append(table);
 
-        util.jsonCall('GET', '/curator/rest/article/list/suggest', null, null, function (response) {
+        util.jsonCall('GET', '/curator/rest/article/list/review', null, null, function (response) {
 
             var data = [];
             for (var id in response.list) {
@@ -24,7 +34,9 @@ $.widget("curator.review", {
                 var _quality = Math.max(0, parseInt(article.quality * 100));
                 var _rating = $this._getRating(article);
 
-                data.push([article.id, _title, _source, _quality, $this._newDateField(article.date).html(), _rating.html()]);
+                var _published = '<span class="publish">Publish</span>';
+
+                data.push([article.id, _title, _source, _quality, $this._newDateField(article.date).html(), _rating.html(), _published]);
             }
 
             $this.oTable = table.dataTable({
@@ -40,14 +52,18 @@ $.widget("curator.review", {
                     { 'sTitle':'Title' },
                     { 'sTitle':'Source' },
                     { 'sTitle':'Quality', 'sClass':'center' },
-                    { 'sTitle':'Date', 'sWidth':'150px' },
-                    { 'sTitle':'Rating', 'sWidth':'150px' }
+                    { 'sTitle':'Date', 'sWidth':'70px' },
+                    { 'sTitle':'Rating', 'sWidth':'150px' },
+                    { 'sTitle':'Publish', 'sWidth':'40px' }
                 ],
                 'aaSorting':[
                     [4, 'desc'],
                     [5, 'desc']
                 ],
                 fnDrawCallback:function () {
+
+                    table.find('.publish').button();
+
                     // doku see http://wbotelhos.com/raty/
                     table.find('.rating').each(function () {
 
@@ -71,6 +87,15 @@ $.widget("curator.review", {
 
                     });
                 }
+            });
+
+            $('.publish').live('click', function (e) {
+
+                var articleId = $(this).parent().parent().children().first().text();
+
+                //$('#dialog-publish-template').clone().publish({articleId:articleId});
+                $('#dialog-publish-template').publish({articleId:articleId});
+
             });
 
         });
@@ -108,21 +133,27 @@ $.widget("curator.publish", {
         var customText = $this.element.find('.custom-text').text();
 
         util.jsonCall('GET', '/curator/rest/article/{id}?custom={custom}', {'{id}':$this.options.articleId, '{custom}':customText}, null, function (article) {
-            target.find('#text').text(article.text);
+
+            var link = $('<a></a>').attr('href', article.url).text(article.url.replace(/http[s]?:\/\/[w.]?]/g, ''));
+
+            target.find('.org-link').empty().append(link);
+            target.find('.org-text').text(article.text);
             target.find('.button').button();
             target.dialog({
                 modal:true,
                 resizable:false,
                 closeOnEscape:true,
+                sticky:true,
                 width:700,
                 buttons:{
                     Publish:function (event, ui) {
                         util.jsonCall('POST', '/curator/rest/article/publish/{id}', {'{id}':$this.options.articleId}, null, function (article) {
-                            $this.oTable.dataTable().fnUpdate(article.publishedTime, pos[0], pos[1]);
+                            //$this.oTable.dataTable().fnUpdate(article.publishedTime, pos[0], pos[1]);
+                            target.dialog('destroy');
                         });
                     },
                     Cancel:function (event, ui) {
-                        $(this).dialog('close');
+                        target.dialog('destroy');
                     }
                 }
 

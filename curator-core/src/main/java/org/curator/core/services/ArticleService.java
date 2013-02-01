@@ -92,8 +92,8 @@ public class ArticleService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/list/suggest")
-    public Response getSuggest(
+    @Path(value = "/list/review")
+    public Response getReview(
             @QueryParam("firstResult") int firstResult,
             @QueryParam("maxResults") int maxResults,
             @QueryParam("firstDate") long firstDate,
@@ -124,7 +124,7 @@ public class ArticleService {
             maxResults = this.maxResults;
         }
 
-        List<Article> list = articleManager.getSuggest(firstResult, maxResults, _firstDate, _lastDate);
+        List<Article> list = articleManager.getReview(firstResult, maxResults, _firstDate, _lastDate);
         response.put("maxResults", list.size());
         response.put("list", list);
         return Response.ok(response);

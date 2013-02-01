@@ -323,7 +323,7 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public List<Article> getSuggest(int firstResult, int maxResults, Date firstDate, Date lastDate) {
+    public List<Article> getReview(int firstResult, int maxResults, Date firstDate, Date lastDate) {
         try {
             _verifyLimits(firstResult, maxResults);
 
@@ -331,7 +331,7 @@ public class ArticleManagerBean implements ArticleManager {
                 throw new IllegalArgumentException("lastDate is null");
             }
 
-            Query query = em.createNamedQuery(Article.QUERY_SUGGEST);
+            Query query = em.createNamedQuery(Article.QUERY_REVIEW);
             query.setParameter("FIRST_DATE", firstDate);
             query.setParameter("LAST_DATE", lastDate);
             query.setFirstResult(firstResult);
@@ -346,7 +346,7 @@ public class ArticleManagerBean implements ArticleManager {
             }
             return articles;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getSuggest failed: " + t.getMessage(), t);
+            throw new CuratorRollbackException("getReview failed: " + t.getMessage(), t);
         }
     }
 

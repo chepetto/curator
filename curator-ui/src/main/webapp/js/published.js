@@ -38,7 +38,7 @@ $.widget("curator.suggest", {
             }
         });
 
-        $this._retrieve('/curator/rest/article/list/suggest');
+        $this._retrieve('/curator/rest/article/list/published');
     },
 
     _retrieve:function (url) {
