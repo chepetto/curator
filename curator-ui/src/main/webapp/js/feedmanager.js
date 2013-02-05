@@ -13,7 +13,7 @@ $.widget("curator.feedmanager", {
 
         $this.element.empty();
 
-        util.jsonCall('GET', '/curator/rest/feed/status', null, null, function (status) {
+        util.jsonCall('GET', '/curator/rest/feed/status/all', null, null, function (status) {
             var count = $('<div></div>').text(status.totalFeedCount + ' under service');
             $this.element.append(count);
 

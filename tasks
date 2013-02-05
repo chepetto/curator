@@ -1,1 +1,11 @@
 - die date zuordnung verwendet bei vielen artikeln das harvest datum
+- wiki text unterstützung für custom text
+- edit custom text
+- bei review auf die publishten anzeigen, aber mit einem edit button, published at
+- im frontend nach der published time sortieren
+- pagination
+- jenkins
+- feed status abfragen
+- url rewrite
+- jaas
+- feedback möglichkeit (modul)

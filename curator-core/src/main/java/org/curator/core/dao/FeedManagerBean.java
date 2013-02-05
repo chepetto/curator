@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
-import org.curator.core.status.FeedStatus;
+import org.curator.core.status.FeedsStatus;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -151,9 +151,9 @@ public class FeedManagerBean implements FeedManager {
     }
 
     @Override
-    public FeedStatus getStatus() {
+    public FeedsStatus getStatusOfAll() {
         try {
-            FeedStatus status = new FeedStatus();
+            FeedsStatus status = new FeedsStatus();
 
             Query query = em.createNamedQuery(Feed.QUERY_COUNT);
             long count = (Long) query.getSingleResult();

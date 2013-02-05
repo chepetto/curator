@@ -17,11 +17,11 @@ public interface ArticleManager {
 
     List<Article> getReview(int firstResult, int maxResults, Date _firstDate, Date lastDate);
 
-    void addArticle(Article article) throws CuratorException;
+    Article addArticleInternal(Article article) throws CuratorException;
 
     Article getByUrl(String url);
 
-    Article publish(long articleId, String customText);
+    Article publish(long articleId, String customText, String customTitle);
 
     Article rate(long articleId, int rating) throws CuratorException;
 
@@ -30,4 +30,6 @@ public interface ArticleManager {
     URL redirect(long articleId);
 
     void cleanup();
+
+    Article addArticle(Article article) throws CuratorException;
 }

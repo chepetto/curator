@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.model.Article;
+import org.curator.common.model.MediaType;
 import org.curator.common.model.MetricProvider;
 import org.curator.common.model.MetricResult;
 import org.curator.core.constraint.ConstraintViolation;
@@ -81,7 +82,26 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void addArticle(Article article) throws CuratorException {
+    public Article addArticle(Article article) throws CuratorException {
+
+        if (article == null) {
+            throw new IllegalArgumentException("article is null");
+        }
+        if (StringUtils.isBlank(article.getUrl())) {
+            throw new IllegalArgumentException("url is null");
+        }
+
+        article.setPublished(false);
+        article.setDate(new Date());
+        article.setMediaType(MediaType.TEXT);
+        article.setLocale(Locale.GERMAN);
+
+        return addArticleInternal(article);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Article addArticleInternal(Article article) throws CuratorException {
 
         if (article == null) {
             throw new IllegalArgumentException("article is null");
@@ -93,7 +113,7 @@ public class ArticleManagerBean implements ArticleManager {
         Article old = getByUrl(article.getUrl());
         if (old != null) {
             LOGGER.trace(String.format("article already exists %s", article.getUrl()));
-            return;
+            throw new CuratorException(String.format("article already exists %s", article.getUrl()));
         }
 
         LOGGER.trace(String.format("add article %s", article.getUrl()));
@@ -132,6 +152,8 @@ public class ArticleManagerBean implements ArticleManager {
             LOGGER.error("rejected " + article.getUrl());
         }
         em.flush();
+
+        return article;
     }
 
     @Override
@@ -173,8 +195,16 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Article publish(long articleId, String customText) {
+    public Article publish(long articleId, String customText, String customTitle) {
         try {
+
+            if (StringUtils.isBlank(customText)) {
+                throw new IllegalArgumentException("Custom text is empty");
+            }
+            if (StringUtils.isBlank(customTitle)) {
+                throw new IllegalArgumentException("Custom title is empty");
+            }
+
             Query query = em.createNamedQuery(Article.QUERY_BY_ID);
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
@@ -186,9 +216,8 @@ public class ArticleManagerBean implements ArticleManager {
             article.setPublished(true);
             article.setPublishedTime(new Date());
 
-            if (StringUtils.isBlank(customText)) {
-                article.setCustomText(StringUtils.trim(customText));
-            }
+            article.setCustomText(StringUtils.trim(customText));
+            article.setCustomTitle(StringUtils.trim(customTitle));
 
             em.merge(article);
             em.flush();

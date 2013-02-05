@@ -45,9 +45,10 @@ public class ArticleService {
     @Path(value = "/publish/{id}")
     public Response publish(
             @PathParam("id") long articleId,
-            @QueryParam("custom") @DefaultValue("") String customText
+            @QueryParam("text") @DefaultValue("") String customText,
+            @QueryParam("title") @DefaultValue("") String customTitle
     ) throws Exception {
-        Article article = articleManager.publish(articleId, customText);
+        Article article = articleManager.publish(articleId, customText, customTitle);
         return Response.ok(article);
     }
 
@@ -59,6 +60,17 @@ public class ArticleService {
             @QueryParam("rating") int rating
     ) throws Exception {
         Article article = articleManager.rate(articleId, rating);
+        return Response.ok(article);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/add")
+    public Response add(
+            Article article
+    ) throws Exception {
+        article = articleManager.addArticleInternal(article);
         return Response.ok(article);
     }
 
@@ -105,7 +117,7 @@ public class ArticleService {
 
         Date _lastDate;
         if (lastDate == 0) {
-            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 5);
+            _lastDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 3);
         } else {
             _lastDate = new Date(lastDate);
         }

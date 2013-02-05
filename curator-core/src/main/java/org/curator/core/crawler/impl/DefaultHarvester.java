@@ -221,7 +221,9 @@ public class DefaultHarvester implements Harvester {
     private void _addArticles(List<Article> list) {
         for (Article article : list) {
             try {
-                articleManager.addArticle(article);
+                articleManager.addArticleInternal(article);
+            } catch (CuratorException e) {
+                LOGGER.info("Cannot add article: " + e.getMessage());
             } catch (Throwable t) {
                 LOGGER.error("Cannot add article: " + t.getMessage());
             }

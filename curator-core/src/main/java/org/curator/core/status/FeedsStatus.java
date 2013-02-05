@@ -5,7 +5,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import java.io.Serializable;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class FeedStatus implements Serializable {
+public class FeedsStatus implements Serializable {
 
     private long totalFeedCount;
 

@@ -3,7 +3,7 @@ package org.curator.core.services;
 import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
-import org.curator.core.status.FeedStatus;
+import org.curator.core.status.FeedsStatus;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,10 +21,17 @@ public class FeedService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/status")
-    public Response getStatus() throws Exception {
-        FeedStatus status = feedManager.getStatus();
+    @Path(value = "/status/all")
+    public Response getStatusAll() throws Exception {
+        FeedsStatus status = feedManager.getStatusOfAll();
         return Response.ok(status);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/status/{feedId}")
+    public Response getStatus(@PathParam("feedId") long feedId) throws Exception {
+        return Response.ok(feedManager.getById(feedId));
     }
 
     @GET
@@ -46,7 +53,6 @@ public class FeedService {
         return Response.ok(feedManager.setStatus(feedId, activate));
     }
 
-    // todo secure or delete if unused
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/harvest/{feedId}")
@@ -57,4 +63,18 @@ public class FeedService {
         return Response.ok();
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path(value = "/new/")
+    public Response newFeed(
+            @QueryParam("feedUrl") @DefaultValue("") String feedUrl
+    ) throws Exception {
+
+        Feed f = new Feed();
+        f.setUrl(feedUrl);
+        f.setActive(false);
+
+        feedManager.add(f);
+        return Response.ok();
+    }
 }
