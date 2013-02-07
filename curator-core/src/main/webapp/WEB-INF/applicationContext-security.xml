@@ -1,0 +1,29 @@
+<http use-expressions="true">
+    <intercept-url pattern="/user_authenticated.jsp" access="isAuthenticated()" />
+    <intercept-url pattern="/supervisor.jsp" access="hasRole('ROLE_SUPERVISOR')" />
+    <intercept-url pattern="/teller.jsp" access="hasRole('ROLE_TELLER')" />
+    <intercept-url pattern="/user.jsp" access="hasRole('ROLE_USER')" />
+    <intercept-url pattern="/**"  access="permitAll" />
+    <form-login login-page='/login.jsp'/>
+    <logout />
+    <remember-me />
+    <!--
+
+    Uncomment to enable X509 client authentication support
+
+    <x509 />
+
+    -->
+
+    <!-- Uncomment to limit the number of sessions a user can have -->
+    <session-management invalid-session-url="/timeout.jsp">
+        <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+    </session-management>
+</http>
+
+<authentication-manager>
+<authentication-provider>
+    <password-encoder hash="md5"/>
+    <jdbc-user-service data-source-ref="mysqlds"/>
+</authentication-provider>
+</authentication-manager>

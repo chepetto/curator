@@ -1,3 +1,7 @@
+Review
+- feed status abfragen
+
+Todo
 - die date zuordnung verwendet bei vielen artikeln das harvest datum
 - wiki text unterstützung für custom text
 - edit custom text
@@ -5,7 +9,9 @@
 - im frontend nach der published time sortieren
 - pagination
 - jenkins
-- feed status abfragen
 - url rewrite
-- jaas
+- spring security
 - feedback möglichkeit (modul)
+- spider config mit http://crawljax.com/
+  https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
+- captchas for db requests

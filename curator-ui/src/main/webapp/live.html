@@ -36,15 +36,16 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
+        (function(curator) {
+            curator.I18n = {};
 
-            $('#review').review();
+        })('curator');
 
-        });
-
-        //            window.onbeforeunload = function() {
-        //                return "Hey, you're leaving the site. Bye!";
-        //            };
+//        $(document).ready(function () {
+//
+//            $('#review').review();
+//
+//        });
 
     </script>
 
@@ -54,6 +55,15 @@
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a></p>
 <![endif]-->
+
+<div id="nav">
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about">About</a></li>
+    </ul>
+</div>
 
 <div id="review">
 

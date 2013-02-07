@@ -15,6 +15,8 @@ import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.Evaluator;
 import org.curator.core.extract.TopicExtractor;
 import org.curator.core.interfaces.ArticleManager;
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
+import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.hibernate.Hibernate;
 
 import javax.annotation.PostConstruct;
@@ -216,8 +218,12 @@ public class ArticleManagerBean implements ArticleManager {
             article.setPublished(true);
             article.setPublishedTime(new Date());
 
-            article.setCustomText(StringUtils.trim(customText));
-            article.setCustomTitle(StringUtils.trim(customTitle));
+            MarkupParser markupParser = new MarkupParser();
+            markupParser.setMarkupLanguage(new MediaWikiLanguage());
+            String htmlContent = markupParser.parseToHtml(customText);
+            article.setCustomText(htmlContent);
+
+            article.setCustomTitle(customTitle);
 
             em.merge(article);
             em.flush();
