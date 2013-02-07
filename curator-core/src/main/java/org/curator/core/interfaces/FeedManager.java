@@ -15,7 +15,7 @@ public interface FeedManager {
 
     List<Feed> getList(int firstResult, int maxResults);
 
-    void add(Feed feed) throws CuratorException;
+    boolean add(Feed feed) throws CuratorException;
 
     Feed getByUrl(String url);
 

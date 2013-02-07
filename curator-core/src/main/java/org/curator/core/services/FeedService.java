@@ -74,7 +74,6 @@ public class FeedService {
         f.setUrl(feedUrl);
         f.setActive(false);
 
-        feedManager.add(f);
-        return Response.ok();
+        return Response.ok(feedManager.add(f));
     }
 }

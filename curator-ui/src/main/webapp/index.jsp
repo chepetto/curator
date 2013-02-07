@@ -32,11 +32,18 @@
     <script src="js/vendor/jquery.dataTables.js"></script>
     <script src="js/vendor/jquery.timeago.js"></script>
     <script src="js/vendor/jquery.paginate.js"></script>
+
+    <!-- notifications -->
+    <script src="js/vendor/jquery.noty.js"></script>
+    <script src="js/vendor/noty/layouts/top.js"></script>
+    <script src="js/vendor/noty/themes/default.js"></script>
+
     <script src="js/plugins.js"></script>
     <script src="js/util.js"></script>
     <script src="js/review.js"></script>
 
     <script type="text/javascript">
+
         (function(curator) {
             curator.I18n = {
                 <% for (Map.Entry<String, String> entry : ResourceBundle.getEntries(request.getLocale(), "ui").entrySet()) { %>

@@ -17,7 +17,7 @@ $.widget("curator.feeds", {
 
         $this.element.append(table);
 
-        util.jsonCall('GET', '/curator/rest/feed/list', null, null, function (response) {
+        curator.util.jsonCall('GET', '/curator/rest/feed/list', null, null, function (response) {
 
             var data = [];
             for (var id in response.list) {
@@ -37,8 +37,8 @@ $.widget("curator.feeds", {
                     _active = '<span class="button status activate">Activate</span>';
                 }
 
-                var lastHarvestTime = feed.lastHarvestTime == null ? '-' : $.timeago(util.strToDate(feed.lastHarvestTime));
-                var lastArticleTime = feed.lastArticleTime == null ? '-' : $.timeago(util.strToDate(feed.lastArticleTime));
+                var lastHarvestTime = feed.lastHarvestTime == null ? '-' : $.timeago(curator.util.strToDate(feed.lastHarvestTime));
+                var lastArticleTime = feed.lastArticleTime == null ? '-' : $.timeago(curator.util.strToDate(feed.lastArticleTime));
 
                 data.push([feed.id, _title, feed.creationTime, feed.articlesCount, feed.reviewRequired, lastHarvestTime, lastArticleTime, _triggerHarvest, _active]);
             }
@@ -75,13 +75,13 @@ $.widget("curator.feeds", {
 
             if($(this).hasClass('status')) {
                 var activate = $(this).hasClass('activate');
-                util.jsonCall('POST', '/curator/rest/feed/status/{id}/'+activate, {'{id}':feedId}, null, function (feed) {
+                curator.util.jsonCall('POST', '/curator/rest/feed/status/{id}/'+activate, {'{id}':feedId}, null, function (feed) {
                     $this.oTable.dataTable().fnUpdate('<span class="button status">'+(activate?'Deactivate':'Activate')+'</span>', pos[0], pos[1]);
                 })
             } else
 
             if($(this).hasClass('harvest')) {
-                util.jsonCall('POST', '/curator/rest/feed/harvest/{id}/', {'{id}':feedId}, null, function (feed) {
+                curator.util.jsonCall('POST', '/curator/rest/feed/harvest/{id}/', {'{id}':feedId}, null, function (feed) {
                     $this.oTable.dataTable().fnUpdate('Scheduled', pos[0], pos[1]);
                 })
             }

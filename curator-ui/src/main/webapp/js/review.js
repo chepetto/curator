@@ -16,7 +16,7 @@ $.widget("curator.review", {
     _menu:function () {
         // todo menu like "publish new article"
 
-        var newArticle = $('<div>Add Article</div>')
+        var newArticle = $('<div/>', {text: 'Add Article' })
             .button({
                 icons:{
                     primary:"ui-icon-triangle-1-s"
@@ -26,7 +26,7 @@ $.widget("curator.review", {
 
             });
 
-        return $('<div></div>').append(newArticle);
+        return $('<div/>').append(newArticle);
 
     },
 
@@ -34,17 +34,17 @@ $.widget("curator.review", {
 
         var $this = this;
 
-        var table = $('<table></table>');
+        var table = $('<table/>');
 
         $this.element.append(table);
 
-        util.jsonCall('GET', '/curator/rest/article/list/review', null, null, function (response) {
+        curator.util.jsonCall('GET', '/curator/rest/article/list/review', null, null, function (response) {
 
             var data = [];
             for (var id in response.list) {
                 var article = response.list[id];
 
-                var _title = $('<a></a>').attr('href', '/curator/rest/link/' + article.id).text(article.title).wrap('<div>').parent().html();
+                var _title = $('<a/>', {href: '/curator/rest/link/' + article.id, text: article.text}).wrap('<div>').parent().html();
                 var _source = article.url.replace('http://', '').replace('https://', '').replace('www.', '').replace(/\/.*/g, '');
                 var _quality = Math.max(0, parseInt(article.quality * 100));
                 var _rating = $this._getRating(article);
@@ -100,8 +100,8 @@ $.widget("curator.review", {
 
                             click:function (score, evt) {
                                 var params = {'{articleId}':articleId, '{rating}':score};
-                                util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {
-                                    console.log('success');
+                                curator.util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {
+                                    noty({text: 'Thanks for rating!', timeout: 2000});
                                 });
                             }
                         });
@@ -124,14 +124,21 @@ $.widget("curator.review", {
     },
 
     _getRating:function (article) {
-        return $('<div></div>').append('<div class="rating" ratingscount="' + article.ratingsCount + '" ratingssum="' + article.ratingsSum + '" articleid="' + article.id + '"></div>')
+//        return $('<div/>').append('<div class="rating" ratingscount="' + article.ratingsCount + '" ratingssum="' + article.ratingsSum + '" articleid="' + article.id + '"></div>')
+        return $('<div/>').append(
+            $('<div/>', {
+                class: 'rating',
+                ratingscount: article.ratingsCount,
+                ratingssum: article.ratingsSum,
+                articleid: article.id
+            }));
     },
 
     _newDateField:function (dateStr) {
-        var date = util.strToDate(dateStr);
-        return $('<div></div>')
-            .append($('<span style="display: none"></span>').text(date.getTime()))
-            .append($('<span></span>').text($.timeago(date)));
+        var date = curator.util.strToDate(dateStr);
+        return $('<div/>')
+            .append($('<span/>', {text:date.getTime()}).hide())
+            .append($('<span/>', {text: $.timeago(date)}));
     }
 
 });
@@ -152,9 +159,9 @@ $.widget("curator.publish", {
 
         var target = $this.element;
 
-        util.jsonCall('GET', '/curator/rest/article/{id}', {'{id}':$this.options.articleId}, null, function (article) {
+        curator.util.jsonCall('GET', '/curator/rest/article/{id}', {'{id}':$this.options.articleId}, null, function (article) {
 
-            var link = $('<a></a>').attr('href', article.url).text(article.url.replace(/http[s]?:\/\/[w.]?]/g, ''));
+            var link = $('<a/>', {href: article.url, text: article.url.replace(/http[s]?:\/\/[w.]?]/g, '')});
 
             target.find('.org-link').empty().append(link);
             target.find('.org-title').text(article.title);
@@ -176,7 +183,7 @@ $.widget("curator.publish", {
                         var customText = target.find('.custom-text').text();
                         var customTitle = target.find('.custom-title').text();
 
-                        util.jsonCall('POST', '/curator/rest/article/publish/{id}?text={text}&title={title}', {'{id}':$this.options.articleId, '{text}':customText, '{title}':customTitle}, null, function (article) {
+                        curator.util.jsonCall('POST', '/curator/rest/article/publish/{id}?text={text}&title={title}', {'{id}':$this.options.articleId, '{text}':customText, '{title}':customTitle}, null, function (article) {
                             //$this.oTable.dataTable().fnUpdate(article.publishedTime, pos[0], pos[1]);
                             target.dialog('destroy');
                         });

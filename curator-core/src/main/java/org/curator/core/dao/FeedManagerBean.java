@@ -14,6 +14,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FeedManagerBean implements FeedManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void add(Feed feed) throws CuratorException {
+    public boolean add(Feed feed) throws CuratorException {
 
         if (feed == null) {
             throw new IllegalArgumentException("feed is null");
@@ -47,7 +48,7 @@ public class FeedManagerBean implements FeedManager {
         Feed old = getByUrl(feed.getUrl());
         if (old != null) {
             LOGGER.trace(String.format("article already exists %s", feed.getUrl()));
-            return;
+            return false;
         }
 
         em.persist(feed);
@@ -55,6 +56,8 @@ public class FeedManagerBean implements FeedManager {
         LOGGER.trace(String.format("add article %s", feed.getUrl()));
 
         em.flush();
+
+        return true;
     }
 
     @Override
@@ -74,10 +77,11 @@ public class FeedManagerBean implements FeedManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Feed getByUrl(String url) {
+    public Feed getByUrl(String feedUrl) {
         try {
             Query query = em.createNamedQuery(Feed.QUERY_BY_URL);
-            query.setParameter("URL", url);
+            URL url = new URL(feedUrl);
+            query.setParameter("URL", url.toString());
             List list = query.getResultList();
             if (list == null || list.isEmpty()) {
                 return null;

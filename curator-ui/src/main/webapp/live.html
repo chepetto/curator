@@ -30,22 +30,50 @@
     <script src="js/vendor/jquery.dataTables.js"></script>
     <script src="js/vendor/jquery.timeago.js"></script>
     <script src="js/vendor/jquery.paginate.js"></script>
+
+    <!-- notifications -->
+    <!-- see http://needim.github.com/noty/-->
+    <script src="js/vendor/jquery.noty.js"></script>
+    <script src="js/vendor/noty/layouts/top.js"></script>
+    <script src="js/vendor/noty/themes/default.js"></script>
+
     <script src="js/plugins.js"></script>
     <script src="js/util.js"></script>
     <script src="js/review.js"></script>
 
     <script type="text/javascript">
 
-        (function(curator) {
-            curator.I18n = {};
+//        $.noty.defaults = {
+//            layout: 'top',
+//            theme: 'default',
+//            type: 'alert',
+//            text: '',
+//            dismissQueue: true, // If you want to use queue feature set this true
+//            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+//            animation: {
+//                open: {height: 'toggle'},
+//                close: {height: 'toggle'},
+//                easing: 'swing',
+//                speed: 500 // opening & closing animation speed
+//            },
+//            timeout: 1000, // delay for closing event. Set false for sticky notifications
+//            force: false, // adds notification to the beginning of queue when set to true
+//            modal: false,
+//            closeWith: ['click'], // ['click', 'button', 'hover']
+//            callback: {
+//                onShow: function() {},
+//                afterShow: function() {},
+//                onClose: function() {},
+//                afterClose: function() {}
+//            },
+//            buttons: false // an array of buttons
+//        };
 
-        })('curator');
+        $(document).ready(function () {
 
-//        $(document).ready(function () {
-//
-//            $('#review').review();
-//
-//        });
+            $('#review').review();
+
+        });
 
     </script>
 

@@ -166,6 +166,25 @@ body {
 
 /* -- Navigation -- ------------------------------------------------------------------------------------------------ --*/
 
+.topbar {
+    padding: 5px 4px;
+    position: fixed;
+    line-height: 40px;
+    white-space: nowrap;
+    height: 44px;
+    font-size: 13px;
+    line-break: loose;
+    overflow: hidden;
+}​
+.topbar.info {
+    background: #ffe94c;
+    border-bottom: solid 2px #3a3116;
+    color: #282828;
+}​
+
+
+/* -- Navigation -- ------------------------------------------------------------------------------------------------ --*/
+
 #nav ul {
     list-style-type:none;
     margin:0;
