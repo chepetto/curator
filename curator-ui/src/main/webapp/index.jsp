@@ -44,10 +44,10 @@
 
     <script type="text/javascript">
 
-        (function(curator) {
+        (function (curator) {
             curator.I18n = {
                 <% for (Map.Entry<String, String> entry : ResourceBundle.getEntries(request.getLocale(), "ui").entrySet()) { %>
-                "<%=entry.getKey()%>":"<%=entry.getValue()%>",<% } %>
+                "<%=entry.getKey()%>": "<%=entry.getValue()%>", <% } %>
             };
         })('curator');
     </script>
@@ -62,9 +62,9 @@
 
 <div id="nav">
     <ul>
-        <li><a href="#home">Hot</a></li>
-        <li><a href="#news">Live</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#hot">Hot</a></li>
+        <li><a href="#live">Live</a></li>
+        <li><a href="#publish">Publish</a></li>
         <li><a href="#about">About</a></li>
     </ul>
 </div>

@@ -117,7 +117,10 @@ public class Article implements Serializable {
     private String customTitle;
 
     @Basic
-    private String customText;
+    private String customTextRendered;
+
+    @Basic
+    private String customTextMarkup;
 
     @Column
     @JsonDeserialize(using = CustomDateDeserializer.class)
@@ -363,12 +366,20 @@ public class Article implements Serializable {
         this.mediaType = mediaType;
     }
 
-    public String getCustomText() {
-        return customText;
+    public String getCustomTextRendered() {
+        return customTextRendered;
     }
 
-    public void setCustomText(String customText) {
-        this.customText = customText;
+    public void setCustomTextRendered(String customText) {
+        this.customTextRendered = customText;
+    }
+
+    public String getCustomTextMarkup() {
+        return customTextMarkup;
+    }
+
+    public void setCustomTextMarkup(String customTextMarkup) {
+        this.customTextMarkup = customTextMarkup;
     }
 
     public Special getSpecial() {

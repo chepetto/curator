@@ -16,6 +16,7 @@ import org.curator.core.eval.Evaluator;
 import org.curator.core.extract.TopicExtractor;
 import org.curator.core.interfaces.ArticleManager;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
+import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 import org.hibernate.Hibernate;
 
@@ -27,6 +28,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.*;
 
@@ -211,19 +214,15 @@ public class ArticleManagerBean implements ArticleManager {
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
 
-            if (article.isPublished()) {
-                throw new CuratorException("Already published");
-            }
+//            if (article.isPublished()) {
+//                throw new CuratorException("Already published");
+//            }
 
             article.setPublished(true);
             article.setPublishedTime(new Date());
 
-            MarkupParser markupParser = new MarkupParser();
-            markupParser.setMarkupLanguage(new MediaWikiLanguage());
-            String htmlContent = markupParser.parseToHtml(customText);
-            article.setCustomText(htmlContent);
-
-            article.setCustomTitle(customTitle);
+            article.setCustomTextRendered(_wikiMarkupToHtml(customText));
+            article.setCustomTextMarkup(customText);
 
             em.merge(article);
             em.flush();
@@ -236,6 +235,31 @@ public class ArticleManagerBean implements ArticleManager {
             return article;
         } catch (Throwable t) {
             throw new CuratorRollbackException("getById failed", t);
+        }
+    }
+
+    private String _wikiMarkupToHtml(String text) {
+
+        StringWriter writer = null;
+
+        try {
+            MarkupParser markupParser = new MarkupParser();
+            markupParser.setMarkupLanguage(new MediaWikiLanguage());
+            writer = new StringWriter(text.length() * 2);
+            HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
+            builder.setEmitAsDocument(false);
+            markupParser.setBuilder(builder);
+            markupParser.parse(text);
+
+            return writer.getBuffer().toString();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
 

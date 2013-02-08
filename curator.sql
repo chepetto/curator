@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: curator
 -- ------------------------------------------------------
--- Server version	5.5.29-0ubuntu0.12.04.1
+-- Server version	5.5.29-0ubuntu0.12.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,28 +24,29 @@ DROP TABLE IF EXISTS `Article`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Article` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `author` varchar(128) DEFAULT NULL,
-  `customText` varchar(255) DEFAULT NULL,
-  `date` datetime NOT NULL,
-  `locale` varchar(255) DEFAULT NULL,
-  `mediaType` varchar(255) NOT NULL,
+  `author` VARCHAR(128) DEFAULT NULL,
+  `customTextMarkup` VARCHAR(255) DEFAULT NULL,
+  `customTextRendered` VARCHAR(255) DEFAULT NULL,
+  `customTitle` VARCHAR(255) DEFAULT NULL,
+  `DATE` datetime NOT NULL,
+  `locale` VARCHAR(255) DEFAULT NULL,
+  `mediaType` VARCHAR(255) NOT NULL,
   `published` tinyint(1) NOT NULL,
   `publishedTime` datetime DEFAULT NULL,
-  `quality` double DEFAULT NULL,
-  `ratingsCount` int(11) NOT NULL,
-  `ratingsSum` int(11) NOT NULL,
+  `quality` DOUBLE DEFAULT NULL,
+  `ratingsCount` INT(11) NOT NULL,
+  `ratingsSum` INT(11) NOT NULL,
   `special_id` bigint(20) DEFAULT NULL,
   `text` longtext,
-  `title` varchar(1024) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `views` int(11) DEFAULT NULL,
-  `customtitle` varchar(256) DEFAULT NULL,
+  `title` VARCHAR(1024) NOT NULL,
+  `url` VARCHAR(255) NOT NULL,
+  `views` INT(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`),
   KEY `urlIdx` (`url`),
   KEY `FK379164D6F2623894` (`special_id`),
   CONSTRAINT `FK379164D6F2623894` FOREIGN KEY (`special_id`) REFERENCES `Special` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4526 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,17 +59,17 @@ DROP TABLE IF EXISTS `Feed`;
 CREATE TABLE `Feed` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `active` tinyint(1) NOT NULL,
-  `articlesCount` int(11) NOT NULL,
+  `articlesCount` INT(11) NOT NULL,
   `creationTime` datetime NOT NULL,
   `harvestRequired` tinyint(1) NOT NULL,
   `lastArticleTime` datetime DEFAULT NULL,
   `lastHarvestTime` datetime DEFAULT NULL,
   `reviewRequired` tinyint(1) NOT NULL,
-  `url` varchar(255) NOT NULL,
+  `url` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`),
   KEY `feedUrlIdx` (`url`)
-) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,15 +81,15 @@ DROP TABLE IF EXISTS `MetricResult`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `MetricResult` (
   `articleId` bigint(20) NOT NULL,
-  `metric` int(11) NOT NULL,
-  `result` double NOT NULL,
+  `metric` INT(11) NOT NULL,
+  `result` DOUBLE NOT NULL,
   `id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`articleId`,`metric`),
   UNIQUE KEY `metric` (`metric`,`articleId`),
   KEY `FK6880FA0D79ED878B` (`id`),
   KEY `FK6880FA0D9B46EF01` (`articleId`),
-  CONSTRAINT `FK6880FA0D79ED878B` FOREIGN KEY (`id`) REFERENCES `Article` (`id`),
-  CONSTRAINT `FK6880FA0D9B46EF01` FOREIGN KEY (`articleId`) REFERENCES `Article` (`id`)
+  CONSTRAINT `FK6880FA0D9B46EF01` FOREIGN KEY (`articleId`) REFERENCES `Article` (`id`),
+  CONSTRAINT `FK6880FA0D79ED878B` FOREIGN KEY (`id`) REFERENCES `Article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -100,9 +101,9 @@ DROP TABLE IF EXISTS `Related`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Related` (
-  `b` varchar(255) NOT NULL,
-  `a` varchar(255) NOT NULL,
-  `frequency` int(11) NOT NULL,
+  `b` VARCHAR(255) NOT NULL,
+  `a` VARCHAR(255) NOT NULL,
+  `frequency` INT(11) NOT NULL,
   PRIMARY KEY (`b`,`a`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,8 +116,8 @@ DROP TABLE IF EXISTS `Request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Request` (
-  `url` varchar(255) NOT NULL,
-  `timestamp` bigint(20) DEFAULT NULL,
+  `url` VARCHAR(255) NOT NULL,
+  `TIMESTAMP` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -131,10 +132,10 @@ DROP TABLE IF EXISTS `Special`;
 CREATE TABLE `Special` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `active` tinyint(1) NOT NULL,
-  `date` datetime NOT NULL,
-  `description` varchar(1024) NOT NULL,
-  `title` varchar(512) NOT NULL,
-  `url` varchar(255) NOT NULL,
+  `DATE` datetime NOT NULL,
+  `description` VARCHAR(1024) NOT NULL,
+  `title` VARCHAR(512) NOT NULL,
+  `url` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url` (`url`),
   KEY `urlIdx` (`url`)
@@ -150,10 +151,10 @@ DROP TABLE IF EXISTS `Topic`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Topic` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `value` varchar(255) NOT NULL,
+  `VALUE` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `value` (`value`),
-  KEY `valueIdx` (`value`)
+  UNIQUE KEY `VALUE` (`VALUE`),
+  KEY `valueIdx` (`VALUE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -161,12 +162,12 @@ CREATE TABLE `Topic` (
 -- Table structure for table `User`
 --
 
-DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `USER`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `User` (
+CREATE TABLE `USER` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `usernameIdx` (`username`)
@@ -186,8 +187,8 @@ CREATE TABLE `article_topic_mapping` (
   PRIMARY KEY (`articleId`,`topicId`),
   KEY `FK31AFA6358EA4DBB3` (`topicId`),
   KEY `FK31AFA6359B46EF01` (`articleId`),
-  CONSTRAINT `FK31AFA6358EA4DBB3` FOREIGN KEY (`topicId`) REFERENCES `Topic` (`id`),
-  CONSTRAINT `FK31AFA6359B46EF01` FOREIGN KEY (`articleId`) REFERENCES `Article` (`id`)
+  CONSTRAINT `FK31AFA6359B46EF01` FOREIGN KEY (`articleId`) REFERENCES `Article` (`id`),
+  CONSTRAINT `FK31AFA6358EA4DBB3` FOREIGN KEY (`topicId`) REFERENCES `Topic` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -204,8 +205,8 @@ CREATE TABLE `related_topics` (
   PRIMARY KEY (`relatedId`,`topicId`),
   KEY `FK89FE43B88EA4DBB3` (`topicId`),
   KEY `FK89FE43B8D215DBAF` (`relatedId`),
-  CONSTRAINT `FK89FE43B88EA4DBB3` FOREIGN KEY (`topicId`) REFERENCES `Topic` (`id`),
-  CONSTRAINT `FK89FE43B8D215DBAF` FOREIGN KEY (`relatedId`) REFERENCES `Topic` (`id`)
+  CONSTRAINT `FK89FE43B8D215DBAF` FOREIGN KEY (`relatedId`) REFERENCES `Topic` (`id`),
+  CONSTRAINT `FK89FE43B88EA4DBB3` FOREIGN KEY (`topicId`) REFERENCES `Topic` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -240,7 +241,7 @@ CREATE TABLE `user_topic_mapping` (
   PRIMARY KEY (`topicId`,`userId`),
   KEY `FKBB10AC4A8EA4DBB3` (`topicId`),
   KEY `FKBB10AC4A1706F2B7` (`userId`),
-  CONSTRAINT `FKBB10AC4A1706F2B7` FOREIGN KEY (`userId`) REFERENCES `User` (`id`),
+  CONSTRAINT `FKBB10AC4A1706F2B7` FOREIGN KEY (`userId`) REFERENCES `USER` (`id`),
   CONSTRAINT `FKBB10AC4A8EA4DBB3` FOREIGN KEY (`topicId`) REFERENCES `Topic` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -254,4 +255,4 @@ CREATE TABLE `user_topic_mapping` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-05 23:32:10
+-- Dump completed on 2013-02-08 16:55:47

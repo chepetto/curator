@@ -38,36 +38,41 @@
     <script src="js/vendor/noty/themes/default.js"></script>
 
     <script src="js/plugins.js"></script>
+
+    <script type="text/javascript">
+        var curator = {};
+    </script>
+
     <script src="js/util.js"></script>
     <script src="js/review.js"></script>
 
     <script type="text/javascript">
 
-//        $.noty.defaults = {
-//            layout: 'top',
-//            theme: 'default',
-//            type: 'alert',
-//            text: '',
-//            dismissQueue: true, // If you want to use queue feature set this true
-//            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-//            animation: {
-//                open: {height: 'toggle'},
-//                close: {height: 'toggle'},
-//                easing: 'swing',
-//                speed: 500 // opening & closing animation speed
-//            },
-//            timeout: 1000, // delay for closing event. Set false for sticky notifications
-//            force: false, // adds notification to the beginning of queue when set to true
-//            modal: false,
-//            closeWith: ['click'], // ['click', 'button', 'hover']
-//            callback: {
-//                onShow: function() {},
-//                afterShow: function() {},
-//                onClose: function() {},
-//                afterClose: function() {}
-//            },
-//            buttons: false // an array of buttons
-//        };
+        //        $.noty.defaults = {
+        //            layout: 'top',
+        //            theme: 'default',
+        //            type: 'alert',
+        //            text: '',
+        //            dismissQueue: true, // If you want to use queue feature set this true
+        //            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        //            animation: {
+        //                open: {height: 'toggle'},
+        //                close: {height: 'toggle'},
+        //                easing: 'swing',
+        //                speed: 500 // opening & closing animation speed
+        //            },
+        //            timeout: 1000, // delay for closing event. Set false for sticky notifications
+        //            force: false, // adds notification to the beginning of queue when set to true
+        //            modal: false,
+        //            closeWith: ['click'], // ['click', 'button', 'hover']
+        //            callback: {
+        //                onShow: function() {},
+        //                afterShow: function() {},
+        //                onClose: function() {},
+        //                afterClose: function() {}
+        //            },
+        //            buttons: false // an array of buttons
+        //        };
 
         $(document).ready(function () {
 
@@ -86,9 +91,9 @@
 
 <div id="nav">
     <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#hot">Hot</a></li>
+        <li><a href="#live">Live</a></li>
+        <li><a href="#publish">Publish</a></li>
         <li><a href="#about">About</a></li>
     </ul>
 </div>
@@ -103,29 +108,30 @@
         <!--<h3>Special</h3>-->
         <!--<label>Publish as Special <input type="text"/></label> <span class="button add-special">Add Special</span>-->
         <!--</div>-->
-        <div class="section">
+        <div class="section original-data">
 
             <h3>Link</h3>
 
             <div class="org-link"></div>
 
-            <h3>Original Title</h3>
+            <h4>Title</h4>
             <!--suppress HtmlFormInputWithoutLabel -->
-            <input class="org-title" type="text" style="width: 100%; "/>
+            <div class="org-title"></div>
 
-            <h3>Original Description</h3>
+            <h4>Description</h4>
 
             <div class="org-text" style="overflow: auto; max-height: 150px"></div>
 
         </div>
-        <div class="section">
-            <h3>Custom Title</h3>
+
+        <div class="section custom-data">
+            <h2>Custom Title</h2>
             <!--suppress HtmlFormInputWithoutLabel -->
             <input class="custom-title" type="text" style="width: 100%; "/>
 
-            <h3>Custom Description</h3>
+            <h2>Custom Description</h2>
             <!--suppress HtmlFormInputWithoutLabel -->
-            <textarea class="custom-text" style="width: 100%; height: 150px"></textarea>
+            <textarea class="custom-text" style="width: 100%; height: 50px"></textarea>
         </div>
     </div>
 </div>
