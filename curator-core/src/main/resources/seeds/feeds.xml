@@ -5,24 +5,24 @@
     <feed url="http://www.kanzlei-hoenig.info/feed/"/>
     <feed url="http://sixtus.cc/rss.xml"/>
     <feed url="http://www.bzw-weiterdenken.de/feed/"/>
-    <!--<feed url="http://dorotheemarkert.wordpress.com/feed/" />-->
-    <!--<feed url="http://www.lawblog.de/index.php/feed/" />-->
-    <!--<feed url="http://antjeschrupp.com/feed/" />-->
-    <!--<feed url="http://thesandworm.wordpress.com/feed/" />-->
-    <!--<feed url="http://feeds.feedburner.com/DerSpiegelfechter?format=xml" />-->
-    <!--<feed url="http://oeffingerfreidenker.blogspot.com/feeds/posts/default" />-->
-    <!--<feed url="http://www.klaus-baum.info/feed/" />-->
-    <!--<feed url="http://www.nachdenkseiten.de/?feed=rss2" />-->
-    <!--<feed url="http://guardianoftheblind.de/blog/feed/" />-->
-    <!--<feed url="http://feeds.feedburner.com/fixmbr_de?format=xml" />-->
-    <!--<feed url="http://feynsinn.org/?feed=rss2" />-->
-    <!--<feed url="http://feeds.feedburner.com/citronengras?format=xml" />-->
-    <!--<feed url="http://www.blogsgesang.de/feed/" />-->
-    <!--<feed url="http://feeds.feedburner.com/Gonorrea?format=xml" />-->
-    <!--&lt;!&ndash;feed url="https://netzpolitik.org/feed/" /&ndash;&gt;-->
-    <!--<feed url="http://www.freitag.de/rss" />-->
-    <!--<feed url="http://www.meinpolitikblog.de/feed/" />-->
-    <!--<feed url="http://endlessgoodnews.blogspot.com/feeds/posts/default?alt=rss" />-->
+    <feed url="http://dorotheemarkert.wordpress.com/feed/"/>
+    <feed url="http://www.lawblog.de/index.php/feed/"/>
+    <feed url="http://antjeschrupp.com/feed/"/>
+    <feed url="http://thesandworm.wordpress.com/feed/"/>
+    <feed url="http://feeds.feedburner.com/DerSpiegelfechter?format=xml"/>
+    <feed url="http://oeffingerfreidenker.blogspot.com/feeds/posts/default"/>
+    <feed url="http://www.klaus-baum.info/feed/"/>
+    <feed url="http://www.nachdenkseiten.de/?feed=rss2"/>
+    <feed url="http://guardianoftheblind.de/blog/feed/"/>
+    <feed url="http://feeds.feedburner.com/fixmbr_de?format=xml"/>
+    <feed url="http://feynsinn.org/?feed=rss2"/>
+    <feed url="http://feeds.feedburner.com/citronengras?format=xml"/>
+    <feed url="http://www.blogsgesang.de/feed/"/>
+    <feed url="http://feeds.feedburner.com/Gonorrea?format=xml"/>
+    <!--feed url="https://netzpolitik.org/feed/" /-->
+    <feed url="http://www.freitag.de/rss"/>
+    <feed url="http://www.meinpolitikblog.de/feed/"/>
+    <feed url="http://endlessgoodnews.blogspot.com/feeds/posts/default?alt=rss"/>
     <!--<feed url="http://www.reichtumsuhr.de/?feed=rss2" />-->
     <!--<feed url="http://markt-zyniker.blogspot.com/feeds/posts/default?alt=rss" />-->
     <!--<feed url="http://www.binsenbrenner.de/wordpress/feed/" />-->
@@ -185,4 +185,5 @@
     <!--<feed url="http://www.humanistische-union.de/?id=1782&amp;type=100" />-->
     <!--<feed url="http://www.politwatch.at/index.rdf" />-->
     <!--<feed url="http://feeds.feedburner.com/litigation-pr-blog" />-->
+    <feed url="http://amerika21.de/feed"/>
 </feeds>

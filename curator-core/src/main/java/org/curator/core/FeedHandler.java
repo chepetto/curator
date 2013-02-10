@@ -103,7 +103,7 @@ public class FeedHandler {
         List<String> feeds = new LinkedList<String>();
 
         // todo fix this path to relative
-        final String SEEDS_FILE = "/home/markus/raw/curator/curator-core/src/main/resources/seeds/feeds.xml";
+        final String SEEDS_FILE = "/home/damoeb/dev/curator/curator-core/src/main/resources/seeds/feeds.xml";
 
         SAXBuilder builder = new SAXBuilder(false);
         try {

@@ -214,12 +214,16 @@ public class ArticleManagerBean implements ArticleManager {
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
 
-//            if (article.isPublished()) {
-//                throw new CuratorException("Already published");
-//            }
+            if (article == null) {
+                throw new IllegalArgumentException(String.format("Article with id %s does not exist.", articleId));
+            }
 
-            article.setPublished(true);
-            article.setPublishedTime(new Date());
+            if (!article.isPublished()) {
+                article.setPublished(true);
+                article.setPublishedTime(new Date());
+            }
+
+            article.setCustomTitle(customTitle);
 
             article.setCustomTextRendered(_wikiMarkupToHtml(customText));
             article.setCustomTextMarkup(customText);
@@ -248,6 +252,7 @@ public class ArticleManagerBean implements ArticleManager {
             writer = new StringWriter(text.length() * 2);
             HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
             builder.setEmitAsDocument(false);
+            builder.setXhtmlStrict(true);
             markupParser.setBuilder(builder);
             markupParser.parse(text);
 

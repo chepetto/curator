@@ -66,11 +66,10 @@ public class ArticleService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/add")
     public Response add(
             Article article
     ) throws Exception {
-        article = articleManager.addArticleInternal(article);
+        article = articleManager.addArticle(article);
         return Response.ok(article);
     }
 
