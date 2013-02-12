@@ -2,38 +2,39 @@ package org.curator.common.model;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.curator.common.model.Article;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-@Entity(name="MetricResult")
-@Table(name="MetricResult",
-    uniqueConstraints =  @UniqueConstraint(columnNames={"metric", "articleId"})
+@Entity(name = "MetricResult")
+@Table(name = "MetricResult",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"metric", "articleId"})
 )
 @IdClass(MetricResultId.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MetricResult {
 
     @Id
-    @Column(name="metric")
+    @Column(name = "metric")
     private MetricName metricName;
 
     @Id
-    @Column(name="articleId")
+    @Column(name = "articleId")
     @JsonIgnore
     private long articelId;
 
     @ManyToOne(
-        fetch = FetchType.LAZY,
-        optional = false,
-        targetEntity = Article.class,
-        cascade = {}
+            fetch = FetchType.LAZY,
+            optional = false,
+            targetEntity = Article.class,
+            cascade = {}
     )
     @JoinColumn(
-        name="articleId",
-        insertable = false,
-        updatable = false,
-        nullable = false
+            name = "articleId",
+            insertable = false,
+            updatable = false,
+            nullable = false
     )
     @JsonIgnore
     private Article article;

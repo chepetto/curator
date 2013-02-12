@@ -1,10 +1,12 @@
-- die date zuordnung verwendet bei vielen artikeln das harvest datum
+- spring security
+- treecache or ehcache @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 - pagination
+- filter possibility for datatable
+
+- die date zuordnung verwendet bei vielen artikeln das harvest datum
 - jenkins
 - url rewrite
-- spring security
-- feedback möglichkeit (modul)
 - spider config mit http://crawljax.com/
   https://developers.google.com/webmasters/ajax-crawling/docs/getting-started
 - captchas for db requests
-- filter possibility for datatable
+- feedback möglichkeit (modul)

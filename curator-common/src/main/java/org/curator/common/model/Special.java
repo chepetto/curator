@@ -1,16 +1,17 @@
 package org.curator.common.model;
 
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.curator.common.exceptions.CuratorException;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity(name = "Special")
@@ -19,6 +20,7 @@ import java.util.*;
         @NamedQuery(name = Special.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Special implements Serializable {
 
     public static final String QUERY_BY_ID = "Special.QUERY_BY_ID";

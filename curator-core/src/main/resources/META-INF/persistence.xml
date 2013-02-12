@@ -26,6 +26,11 @@
             <!-- Needed to recreate EntityManagerFactory -->
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
+
+            <!--&lt;!&ndash; hibernate second level cache &ndash;&gt;-->
+            <!--<property name="hibernate.cache.use_second_level_cache" value="true" />-->
+            <!--<property name="hibernate.cache.region.factory_class" value="net.sf.ehcache.hibernate.EhCacheRegionFactory" />-->
+
         </properties>
     </persistence-unit>
 

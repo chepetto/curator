@@ -1,10 +1,10 @@
 $.widget("curator.review", {
 
-    options:{
-        articles:null
+    options: {
+        articles: null
     },
 
-    _init:function () {
+    _init: function () {
         var $this = this;
 
         $this.element.empty();
@@ -13,20 +13,20 @@ $.widget("curator.review", {
         $this._table();
     },
 
-    _menu:function () {
+    _menu: function () {
         // todo menu like "publish new article"
 
         var openDialog = function () {
 
             //newArticleDialog
-            $('#dialog-add-article-template').clone().attr('id', '').dialog({
-                modal:true,
-                resizable:false,
-                closeOnEscape:true,
-                sticky:true,
-                width:700,
-                buttons:{
-                    'Publish':function () {
+            $('#dialog-add-article-template').clone().removeAttr('id').dialog({
+                modal: true,
+                resizable: false,
+                closeOnEscape: true,
+                sticky: true,
+                width: 700,
+                buttons: {
+                    'Publish': function () {
                         curator.util.jsonCall('POST', '/curator/rest/article', null, null, function (response) {
 
                         });
@@ -35,10 +35,10 @@ $.widget("curator.review", {
             });
         };
 
-        var newArticleBtt = $('<div/>', {text:'Add Article' })
+        var newArticleBtt = $('<div/>', {text: 'Add Article' })
             .button({
-                icons:{
-                    primary:"ui-icon-triangle-1-s"
+                icons: {
+                    primary: "ui-icon-triangle-1-s"
                 }
             })
             .click(openDialog);
@@ -49,7 +49,7 @@ $.widget("curator.review", {
 
     },
 
-    _table:function () {
+    _table: function () {
 
         var $this = this;
 
@@ -63,7 +63,7 @@ $.widget("curator.review", {
             for (var id in response.list) {
                 var article = response.list[id];
 
-                var _title = $('<a/>', {href:'/curator/rest/link/' + article.id, text:article.title}).wrap('<div>').parent().html();
+                var _title = $('<a/>', {href: '/curator/rest/link/' + article.id, text: article.title}).wrap('<div>').parent().html();
                 var _source = article.url.replace('http://', '').replace('https://', '').replace('www.', '').replace(/\/.*/g, '');
                 var _quality = Math.max(0, parseInt(article.quality * 100));
                 var _rating = $this._getRating(article);
@@ -83,28 +83,28 @@ $.widget("curator.review", {
             }
 
             $this.oTable = table.dataTable({
-                'aaData':data,
-                'bStateSave':true,
-                'iDisplayLength':50,
-                "aLengthMenu":[
+                'aaData': data,
+                'bStateSave': true,
+                'iDisplayLength': 50,
+                "aLengthMenu": [
                     [50, 100, -1],
                     [50, 100, 'All']
                 ],
-                'aoColumns':[
-                    { 'sTitle':'Id' },
-                    { 'sTitle':'Title' },
-                    { 'sTitle':'Source' },
-                    { 'sTitle':'Quality', 'sClass':'center' },
-                    { 'sTitle':'Rating', 'sWidth':'150px' },
-                    { 'sTitle':'Date', 'sWidth':'70px' },
-                    { 'sTitle':'Details', 'sWidth':'40px' }
+                'aoColumns': [
+                    { 'sTitle': 'Id' },
+                    { 'sTitle': 'Title' },
+                    { 'sTitle': 'Source' },
+                    { 'sTitle': 'Quality', 'sClass': 'center' },
+                    { 'sTitle': 'Rating', 'sWidth': '150px' },
+                    { 'sTitle': 'Date', 'sWidth': '70px' },
+                    { 'sTitle': 'Details', 'sWidth': '40px' }
                 ],
-                'aaSorting':[
+                'aaSorting': [
                     [4, 'desc'],
                     [5, 'desc']
                 ],
 
-                fnRowCallback:function (nRow, aData, iDisplayIndex) {
+                fnRowCallback: function (nRow, aData, iDisplayIndex) {
                     nRow.className = iDisplayIndex % 2 == 0 ? 'even' : 'odd';
                     if (aData[aData.length - 1]) {
                         nRow.className += ' published';
@@ -112,7 +112,7 @@ $.widget("curator.review", {
                     return nRow;
                 },
 
-                fnDrawCallback:function () {
+                fnDrawCallback: function () {
 
                     table.find('.details').button();
 
@@ -126,13 +126,13 @@ $.widget("curator.review", {
 
                         el.raty({
 
-                            score:ratingsCount == 0 ? 0 : parseInt(ratingsSum / ratingsCount),
-                            noRatedMsg:'anyone rated this product yet!',
+                            score: ratingsCount == 0 ? 0 : parseInt(ratingsSum / ratingsCount),
+                            noRatedMsg: 'anyone rated this product yet!',
 
-                            click:function (score, evt) {
-                                var params = {'{articleId}':articleId, '{rating}':score};
+                            click: function (score, evt) {
+                                var params = {'{articleId}': articleId, '{rating}': score};
                                 curator.util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {
-                                    noty({text:'Thanks for rating!', timeout:2000});
+                                    noty({text: 'Thanks for rating!', timeout: 2000});
                                 });
                             }
                         });
@@ -145,8 +145,7 @@ $.widget("curator.review", {
 
                 var articleId = $(this).parent().parent().children().first().text();
 
-                //$('#dialog-publish-template').clone().publish({articleId:articleId});
-                $('#dialog-publish-template').clone().attr('id', '').publish({articleId:articleId});
+                $('#dialog-publish-template').clone().removeAttr('id').publish({articleId: articleId});
 
             });
 
@@ -154,22 +153,21 @@ $.widget("curator.review", {
 
     },
 
-    _getRating:function (article) {
-//        return $('<div/>').append('<div class="rating" ratingscount="' + article.ratingsCount + '" ratingssum="' + article.ratingsSum + '" articleid="' + article.id + '"></div>')
+    _getRating: function (article) {
         return $('<div/>').append(
             $('<div/>', {
-                class:'rating',
-                ratingscount:article.ratingsCount,
-                ratingssum:article.ratingsSum,
-                articleid:article.id
+                class: 'rating',
+                ratingscount: article.ratingsCount,
+                ratingssum: article.ratingsSum,
+                articleid: article.id
             }));
     },
 
-    _newDateField:function (dateStr) {
+    _newDateField: function (dateStr) {
         var date = curator.util.strToDate(dateStr);
         return $('<div/>')
-            .append($('<span/>', {text:date.getTime()}).hide())
-            .append($('<span/>', {text:$.timeago(date)}));
+            .append($('<span/>', {text: date.getTime()}).hide())
+            .append($('<span/>', {text: $.timeago(date)}));
     }
 
 });
@@ -177,11 +175,11 @@ $.widget("curator.review", {
 
 $.widget("curator.publish", {
 
-    options:{
-        articleId:null
+    options: {
+        articleId: null
     },
 
-    _create:function () {
+    _create: function () {
         if (this.options.articleId == null) {
             var err = 'articleId is null';
             console.error(err);
@@ -189,14 +187,14 @@ $.widget("curator.publish", {
         }
     },
 
-    _init:function () {
+    _init: function () {
         var $this = this;
 
         var target = $this.element;
 
-        curator.util.jsonCall('GET', '/curator/rest/article/{id}', {'{id}':$this.options.articleId}, null, function (article) {
+        curator.util.jsonCall('GET', '/curator/rest/article/{id}', {'{id}': $this.options.articleId}, null, function (article) {
 
-            var link = $('<a/>', {href:article.url, text:article.url.replace(/http[s]?:\/\/[w.]?]/g, '')});
+            var link = $('<a/>', {href: article.url, text: article.url.replace(/http[s]?:\/\/[w.]?]/g, '')});
 
             if (article.published) {
                 target.find('.orgignial-data').hide();
@@ -212,17 +210,17 @@ $.widget("curator.publish", {
 
             target.find('.button').button();
             target.dialog({
-                modal:true,
-                resizable:false,
-                closeOnEscape:true,
-                sticky:true,
-                width:700,
-                buttons:$this._buttons(target, article.published)
+                modal: true,
+                resizable: false,
+                closeOnEscape: true,
+                sticky: true,
+                width: 700,
+                buttons: $this._buttons(target, article.published)
             });
         });
     },
 
-    _buttons:function (target, isPublished) {
+    _buttons: function (target, isPublished) {
 
         var $this = this;
 
@@ -240,8 +238,8 @@ $.widget("curator.publish", {
             var customText = target.find('.custom-text').val();
             var customTitle = target.find('.custom-title').val();
 
-            curator.util.jsonCall('POST', '/curator/rest/article/publish/{id}?text={text}&title={title}', {'{id}':$this.options.articleId, '{text}':customText, '{title}':customTitle}, null, function (article) {
-                noty({text:'Updated!', timeout:2000});
+            curator.util.jsonCall('POST', '/curator/rest/article/publish/{id}?text={text}&title={title}', {'{id}': $this.options.articleId, '{text}': customText, '{title}': customTitle}, null, function (article) {
+                noty({text: 'Updated!', timeout: 2000});
                 target.dialog('destroy').remove();
             });
         };
