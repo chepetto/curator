@@ -2,7 +2,6 @@ package org.curator.common.model;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -18,7 +17,7 @@ import java.util.Set;
         @NamedQuery(name = Topic.QUERY_ALL, query = "SELECT a FROM Topic a")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Topic implements Serializable {
 
     public static final String QUERY_BY_ID = "Topic.QUERY_BY_ID";

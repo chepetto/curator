@@ -1,7 +1,6 @@
 package org.curator.common.model;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ import java.util.Set;
         @NamedQuery(name = User.QUERY_ALL, query = "SELECT a FROM User a")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
 
     public static final String QUERY_BY_ID = "User.QUERY_BY_ID";

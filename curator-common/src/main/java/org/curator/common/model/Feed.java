@@ -4,7 +4,6 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ import java.util.Date;
         @NamedQuery(name = Feed.QUERY_COUNT, query = "SELECT Count(a) FROM Feed a")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Feed implements Serializable {
 
     public static final String QUERY_BY_ID = "Feed.QUERY_BY_ID";

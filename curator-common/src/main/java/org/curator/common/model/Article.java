@@ -7,7 +7,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -27,7 +26,7 @@ import java.util.*;
         @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_CLEANUP, query = "SELECT a FROM Article a WHERE a.date>:A_DAY_AGO AND (a.ratingsCount=0 OR a.ratingsCount IS NULL)")
 })
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Article implements Serializable {
 

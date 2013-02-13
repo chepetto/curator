@@ -4,7 +4,6 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ import java.util.List;
         @NamedQuery(name = Special.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID")
 })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Special implements Serializable {
 
     public static final String QUERY_BY_ID = "Special.QUERY_BY_ID";

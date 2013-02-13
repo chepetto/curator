@@ -42,10 +42,10 @@
             <scope>compile</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.curator</groupId>-->
-            <!--<artifactId>curator-evaluation</artifactId>-->
-            <!--<version>0.1</version>-->
-            <!--<scope>compile</scope>-->
+        <!--<groupId>org.curator</groupId>-->
+        <!--<artifactId>curator-evaluation</artifactId>-->
+        <!--<version>0.1</version>-->
+        <!--<scope>compile</scope>-->
         <!--</dependency>-->
 
         <dependency>
@@ -108,10 +108,10 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.jdom</groupId>-->
-            <!--<artifactId>jdom</artifactId>-->
-            <!--<version>2.0.1</version>-->
-            <!--<scope>compile</scope>-->
+        <!--<groupId>org.jdom</groupId>-->
+        <!--<artifactId>jdom</artifactId>-->
+        <!--<version>2.0.1</version>-->
+        <!--<scope>compile</scope>-->
         <!--</dependency>-->
 
         <dependency>
@@ -125,6 +125,12 @@
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sf.ehcache</groupId>
+                    <artifactId>ehcache</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -134,12 +140,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-core</artifactId>
-            <version>5.1.2.FINAL</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.infinispan</groupId>-->
+        <!--<artifactId>infinispan-core</artifactId>-->
+        <!--<version>5.1.2.FINAL</version>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.kohsuke</groupId>
@@ -149,10 +155,10 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.apache.httpcomponents</groupId>-->
-            <!--<artifactId>httpclient</artifactId>-->
-            <!--<version>4.1.2</version>-->
-            <!--<scope>provided</scope>-->
+        <!--<groupId>org.apache.httpcomponents</groupId>-->
+        <!--<artifactId>httpclient</artifactId>-->
+        <!--<version>4.1.2</version>-->
+        <!--<scope>provided</scope>-->
         <!--</dependency>-->
 
 
@@ -164,9 +170,9 @@
 
         <!-- MySQL -->
         <!--<dependency>-->
-            <!--<groupId>mysql</groupId>-->
-            <!--<artifactId>mysql-connector-java</artifactId>-->
-            <!--<version>5.1.6</version>-->
+        <!--<groupId>mysql</groupId>-->
+        <!--<artifactId>mysql-connector-java</artifactId>-->
+        <!--<version>5.1.6</version>-->
         <!--</dependency>-->
 
         <!-- Retrieval -->
@@ -245,14 +251,14 @@
 
         <!-- Spring -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-core</artifactId>-->
-            <!--<version>${org.springframework.version}</version>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-core</artifactId>-->
+        <!--<version>${org.springframework.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-jdbc</artifactId>-->
-            <!--<version>${org.springframework.version}</version>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-jdbc</artifactId>-->
+        <!--<version>${org.springframework.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
         <!--<groupId>commons-dbcp</groupId>-->
@@ -260,21 +266,21 @@
         <!--<version>1.4</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>cglib</groupId>-->
-            <!--<artifactId>cglib</artifactId>-->
-            <!--<version>2.2.2</version>-->
+        <!--<groupId>cglib</groupId>-->
+        <!--<artifactId>cglib</artifactId>-->
+        <!--<version>2.2.2</version>-->
         <!--</dependency>-->
 
         <!-- Web -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-webmvc</artifactId>-->
-            <!--<version>${org.springframework.version}</version>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-webmvc</artifactId>-->
+        <!--<version>${org.springframework.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-web</artifactId>-->
-            <!--<version>${org.springframework.version}</version>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-web</artifactId>-->
+        <!--<version>${org.springframework.version}</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -378,7 +384,6 @@
             <version>3.0.6.RELEASE</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -407,34 +412,34 @@
 
     <profiles>
         <!--<profile>-->
-            <!--&lt;!&ndash; The default profile skips all tests, though you can tune it-->
-  <!--to run just unit tests based on a custom pattern &ndash;&gt;-->
-            <!--&lt;!&ndash; Seperate profiles are provided for running all tests, including-->
-    <!--Arquillian tests that execute in the specified container &ndash;&gt;-->
-            <!--<id>default</id>-->
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
-            <!--<build>-->
-                <!--<plugins>-->
-                    <!--<plugin>-->
-                        <!--<artifactId>maven-surefire-plugin</artifactId>-->
-                        <!--<version>2.4.3</version>-->
-                        <!--<configuration>-->
-                            <!--<skip>true</skip>-->
-                        <!--</configuration>-->
-                    <!--</plugin>-->
-                    <!--&lt;!&ndash; The JBoss AS plugin deploys your war to a local JBoss-->
-                  <!--AS container &ndash;&gt;-->
-                    <!--&lt;!&ndash; To use, set the JBOSS_HOME environment variable and run:-->
-                 <!--mvn package jboss-as:deploy &ndash;&gt;-->
-                    <!--<plugin>-->
-                        <!--<groupId>org.jboss.as.plugins</groupId>-->
-                        <!--<artifactId>jboss-as-maven-plugin</artifactId>-->
-                        <!--<version>7.1.0.Beta1b</version>-->
-                    <!--</plugin>-->
-                <!--</plugins>-->
-            <!--</build>-->
+        <!--&lt;!&ndash; The default profile skips all tests, though you can tune it-->
+        <!--to run just unit tests based on a custom pattern &ndash;&gt;-->
+        <!--&lt;!&ndash; Seperate profiles are provided for running all tests, including-->
+        <!--Arquillian tests that execute in the specified container &ndash;&gt;-->
+        <!--<id>default</id>-->
+        <!--<activation>-->
+        <!--<activeByDefault>true</activeByDefault>-->
+        <!--</activation>-->
+        <!--<build>-->
+        <!--<plugins>-->
+        <!--<plugin>-->
+        <!--<artifactId>maven-surefire-plugin</artifactId>-->
+        <!--<version>2.4.3</version>-->
+        <!--<configuration>-->
+        <!--<skip>true</skip>-->
+        <!--</configuration>-->
+        <!--</plugin>-->
+        <!--&lt;!&ndash; The JBoss AS plugin deploys your war to a local JBoss-->
+        <!--AS container &ndash;&gt;-->
+        <!--&lt;!&ndash; To use, set the JBOSS_HOME environment variable and run:-->
+        <!--mvn package jboss-as:deploy &ndash;&gt;-->
+        <!--<plugin>-->
+        <!--<groupId>org.jboss.as.plugins</groupId>-->
+        <!--<artifactId>jboss-as-maven-plugin</artifactId>-->
+        <!--<version>7.1.0.Beta1b</version>-->
+        <!--</plugin>-->
+        <!--</plugins>-->
+        <!--</build>-->
         <!--</profile>-->
 
         <profile>
