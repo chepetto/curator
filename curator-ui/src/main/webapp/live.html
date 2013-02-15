@@ -45,39 +45,14 @@
 
     <script src="js/util.js"></script>
     <script src="js/review.js"></script>
+    <script src="js/navigation.js"></script>
 
     <script type="text/javascript">
-
-        //        $.noty.defaults = {
-        //            layout: 'top',
-        //            theme: 'default',
-        //            type: 'alert',
-        //            text: '',
-        //            dismissQueue: true, // If you want to use queue feature set this true
-        //            template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-        //            animation: {
-        //                open: {height: 'toggle'},
-        //                close: {height: 'toggle'},
-        //                easing: 'swing',
-        //                speed: 500 // opening & closing animation speed
-        //            },
-        //            timeout: 1000, // delay for closing event. Set false for sticky notifications
-        //            force: false, // adds notification to the beginning of queue when set to true
-        //            modal: false,
-        //            closeWith: ['click'], // ['click', 'button', 'hover']
-        //            callback: {
-        //                onShow: function() {},
-        //                afterShow: function() {},
-        //                onClose: function() {},
-        //                afterClose: function() {}
-        //            },
-        //            buttons: false // an array of buttons
-        //        };
 
         $(document).ready(function () {
 
             $('#review').review();
-
+            $('#nav').navigation();
         });
 
     </script>
@@ -89,18 +64,9 @@
     your browser</a></p>
 <![endif]-->
 
-<div id="nav">
-    <ul>
-        <li><a href="#hot">Hot</a></li>
-        <li><a href="#live">Live</a></li>
-        <li><a href="#publish">Publish</a></li>
-        <li><a href="#about">About</a></li>
-    </ul>
-</div>
+<div id="nav"><!-- content generated --></div>
 
-<div id="review">
-
-</div>
+<div id="review"><!-- content generated --></div>
 
 <div style="display: none">
     <div id="dialog-publish-template" class="dialog-publish" title="Publish">

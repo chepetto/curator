@@ -101,6 +101,8 @@ public class ArticleManagerBean implements ArticleManager {
         article.setMediaType(MediaType.TEXT);
         article.setLocale(Locale.GERMAN);
 
+        // todo download page and store text or add a text field
+
         return addArticleInternal(article);
     }
 

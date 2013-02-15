@@ -9,44 +9,7 @@ $.widget("curator.review", {
 
         $this.element.empty();
 
-        $this._menu();
         $this._table();
-    },
-
-    _menu: function () {
-        // todo menu like "publish new article"
-
-        var openDialog = function () {
-
-            //newArticleDialog
-            $('#dialog-add-article-template').clone().removeAttr('id').dialog({
-                modal: true,
-                resizable: false,
-                closeOnEscape: true,
-                sticky: true,
-                width: 700,
-                buttons: {
-                    'Publish': function () {
-                        curator.util.jsonCall('POST', '/curator/rest/article', null, null, function (response) {
-
-                        });
-                    }
-                }
-            });
-        };
-
-        var newArticleBtt = $('<div/>', {text: 'Add Article' })
-            .button({
-                icons: {
-                    primary: "ui-icon-triangle-1-s"
-                }
-            })
-            .click(openDialog);
-
-        var menu = $('<div/>').append(newArticleBtt);
-
-        this.element.append(menu);
-
     },
 
     _table: function () {
