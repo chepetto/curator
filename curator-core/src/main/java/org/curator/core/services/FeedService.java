@@ -1,5 +1,6 @@
 package org.curator.core.services;
 
+import org.curator.common.cache.MethodCache;
 import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
@@ -20,6 +21,7 @@ public class FeedService {
     private FeedManager feedManager;
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/status/all")
     public Response getStatusAll() throws Exception {
@@ -28,6 +30,7 @@ public class FeedService {
     }
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/status/{feedId}")
     public Response getStatus(@PathParam("feedId") long feedId) throws Exception {

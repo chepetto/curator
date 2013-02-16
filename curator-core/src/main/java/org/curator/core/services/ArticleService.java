@@ -1,6 +1,7 @@
 package org.curator.core.services;
 
 import org.apache.commons.lang.time.FastDateFormat;
+import org.curator.common.cache.MethodCache;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.common.model.Article;
@@ -32,6 +33,7 @@ public class ArticleService {
     }
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/{id}")
     public Response getById(
@@ -76,6 +78,7 @@ public class ArticleService {
     // -- LIST -- ------------------------------------------------------------------------------------------------------
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/list")
     public Response getList(
@@ -85,6 +88,7 @@ public class ArticleService {
     }
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/list/first:{firstResult}/max:{maxResults}")
     public Response getList(
@@ -102,6 +106,7 @@ public class ArticleService {
     // -- SUGGEST -- ---------------------------------------------------------------------------------------------------
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/list/review")
     public Response getReview(
@@ -144,6 +149,7 @@ public class ArticleService {
     // -- PUBLISHED -- -------------------------------------------------------------------------------------------------
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/list/published")
     public Response getPublished(
@@ -155,6 +161,7 @@ public class ArticleService {
     }
 
     @GET
+    @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/list/published/firstDate:{firstDate}/lastDate:{lastDate}")
     public Response getPublished(

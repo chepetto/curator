@@ -1,11 +1,11 @@
 package org.curator.core.services;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.exceptions.CuratorStatus;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.Date;
 
@@ -22,7 +22,6 @@ public class Response {
     private Date timestamp = new Date();
 
     private String errorMessage;
-
 
     private Response() {
         this.result = null;

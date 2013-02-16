@@ -13,14 +13,4 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>WebFragmentCachingFilter</filter-name>
-        <filter-class>org.curator.common.cache.WebFragmentCachingFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>WebFragmentCachingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
 </web-app>
