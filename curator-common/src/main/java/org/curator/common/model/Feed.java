@@ -8,6 +8,7 @@ import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Date;
 
 /**
@@ -35,6 +36,11 @@ public class Feed implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Basic
+    @Index(name = "feedDomainIdx")
+    @Column(nullable = false, unique = true)
+    private String domain;
 
     @Basic
     @Index(name = "feedUrlIdx")
@@ -75,6 +81,13 @@ public class Feed implements Serializable {
 
     public Feed() {
         // default
+    }
+
+    public Feed(URI uri) {
+
+        setUrl(uri.getPath());
+        // todo what part of the url should be used to avoid spam
+        setDomain(uri.getHost());
     }
 
     @PrePersist
@@ -152,5 +165,13 @@ public class Feed implements Serializable {
 
     public void setArticlesCount(int articlesCount) {
         this.articlesCount = articlesCount;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

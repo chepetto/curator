@@ -4,34 +4,8 @@ $.widget("curator.navigation", {
         items: [
             {name: 'Hot', link: 'published.html'},
             {name: 'Live', link: 'live.html'},
-            {name: 'Post', fn: function () {
-                //newArticleDialog
-                var dialog = $('#dialog-add-article-template').clone().removeAttr('id').dialog({
-                    modal: true,
-                    resizable: false,
-                    closeOnEscape: true,
-                    sticky: true,
-                    width: 700,
-                    buttons: {
-                        'Publish': function () {
-
-                            var title = dialog.find('.custom-title').val();
-                            var url = dialog.find('.custom-link').val();
-                            var text = dialog.find('.custom-text').val();
-
-                            // todo validate
-
-                            var article = {title: title, url: url, text: text};
-
-                            curator.util.jsonCall('POST', '/curator/rest/article', null, JSON.stringify(article), function (response) {
-                                // todo
-                                noty({text: 'Thanks for posting!', timeout: 2000});
-                            });
-                        }
-                    }
-                });
-            }
-            }
+            {name: 'Post Article', fn: curator.util.dialogNewArticle},
+            {name: 'New Feeds', fn: curator.util.dialogNewFeed}
         ]
     },
 

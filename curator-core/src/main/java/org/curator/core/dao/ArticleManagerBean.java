@@ -117,10 +117,12 @@ public class ArticleManagerBean implements ArticleManager {
             throw new IllegalArgumentException("url is null");
         }
 
+        article.validateFields();
+
         Article old = getByUrl(article.getUrl());
         if (old != null) {
             LOGGER.trace(String.format("article already exists %s", article.getUrl()));
-            throw new CuratorException(String.format("article already exists %s", article.getUrl()));
+            throw new CuratorException(String.format("already exists %s", article.getUrl()));
         }
 
         LOGGER.trace(String.format("add article %s", article.getUrl()));

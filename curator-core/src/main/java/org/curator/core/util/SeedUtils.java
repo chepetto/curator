@@ -1,14 +1,14 @@
 package org.curator.core.util;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class SeedUtils {
 
@@ -23,7 +23,7 @@ public final class SeedUtils {
 
             SAXBuilder builder = new SAXBuilder(false);
             try {
-                LOGGER.info(String.format("Loading seed file from %s", SeedUtils.class.getResource(SEEDS_FILE)));
+                LOGGER.trace(String.format("Loading seed file from %s", SeedUtils.class.getResource(SEEDS_FILE)));
                 Document dom = builder.build(SeedUtils.class.getResourceAsStream(SEEDS_FILE));
 
                 XPath path = XPath.newInstance("//feed/@url");

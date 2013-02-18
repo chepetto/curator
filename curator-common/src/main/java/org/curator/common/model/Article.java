@@ -5,17 +5,22 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.curator.common.exceptions.CuratorException;
+import org.curator.common.exceptions.CuratorStatus;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @SuppressWarnings("serial")
 @Entity(name = "Article")
-@Table(name = "Article")
+@Table(name = "Article"
+        //uniqueConstraints = @UniqueConstraint(columnNames = {"version", "foreignId"})
+)
 @NamedQueries({
         @NamedQuery(name = Article.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_BY_URL, query = "SELECT a FROM Article a where LOWER(a.url)=LOWER(:URL)"),
@@ -215,6 +220,66 @@ public class Article implements Serializable {
             }
         }
         text = builder.toString();
+    }
+
+    /**
+     * @throws CuratorException if an assignment is illegal
+     */
+    @SuppressWarnings({"ConstantConditions"})
+    public void validateFields() throws CuratorException {
+
+        final List<String> missingFields = new LinkedList<String>();
+
+        try {
+            // -- Check fields
+            for (Field field : getClass().getDeclaredFields()) {
+                String fieldName = field.getName();
+                Column column = field.getAnnotation(Column.class);
+                try {
+                    if (column != null) {
+                        Object value = getFieldValue(field);
+                        // -- Null-check for inconsistencies
+                        boolean isEmpty = value == null || (value instanceof String && StringUtils.isBlank((String) value));
+                        if (!column.nullable() && isEmpty)
+                            if (!(missingFields.contains(fieldName))) missingFields.add(fieldName);
+
+                        // -- Length
+                        if (value instanceof String) {
+                            String _value = StringUtils.trim((String) value);
+                            int maxLength = column.length() / 2;
+                            if ((!field.isAnnotationPresent(Lob.class)) && _value.length() > maxLength) {
+                                throw new CuratorException(CuratorStatus.PARAMETER_TOO_LONG,
+                                        fieldName + " is too long. Maximal length is " + maxLength);
+                            }
+                        }
+                    }
+
+                } catch (NoSuchMethodException e) {
+                    // ignore
+                }
+            }
+            if (!missingFields.isEmpty()) {
+                throw new CuratorException(CuratorStatus.PARAMETER_MISSING,
+                        "The following field(s) must be set: " + StringUtils.join(missingFields, ", "));
+            }
+
+        } catch (CuratorException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new CuratorException("Article is invalid", t);
+        }
+    }
+
+    private Object getFieldValue(Field field) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        field.setAccessible(true);
+        return field.get(this);
+    }
+
+    private boolean isEmptyField(Field field) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Object value = getFieldValue(field);
+
+        return (value == null
+                || (value instanceof String && StringUtils.isBlank((String) value)));
     }
 
     public Content getContent() {

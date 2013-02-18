@@ -15,7 +15,9 @@ public enum CuratorStatus {
     ERROR(1000),
     CACHE_ERROR(2000),
     GEO_ERROR(3000),
-    CRYPT_ERROR(3001);
+    CRYPT_ERROR(3001),
+    PARAMETER_TOO_LONG(4000),
+    PARAMETER_MISSING(4001);
 
     private int statusCode;
 

@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.io.FileInputStream;
+import java.net.URI;
 import java.util.*;
 
 @LocalBean
@@ -57,8 +58,7 @@ public class FeedHandler {
             }
 
             try {
-                Feed feed = new Feed();
-                feed.setUrl(newUrl);
+                Feed feed = new Feed(new URI(newUrl));
                 feed.setActive(true);
 
                 feedManager.add(feed);
@@ -107,7 +107,7 @@ public class FeedHandler {
 
         SAXBuilder builder = new SAXBuilder(false);
         try {
-            LOGGER.info(String.format("Loading seed file from %s", SEEDS_FILE));
+            LOGGER.trace(String.format("Loading seed file from %s", SEEDS_FILE));
             Document dom = builder.build(new FileInputStream(SEEDS_FILE));
 
             XPath path = XPath.newInstance("//feed/@url");

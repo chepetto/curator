@@ -223,7 +223,7 @@ public class DefaultHarvester implements Harvester {
             try {
                 articleManager.addArticleInternal(article);
             } catch (CuratorException e) {
-                LOGGER.info("Cannot add article: " + e.getMessage());
+                LOGGER.trace("Cannot add article: " + e.getMessage());
             } catch (Throwable t) {
                 LOGGER.error("Cannot add article: " + t.getMessage());
             }
@@ -254,7 +254,7 @@ public class DefaultHarvester implements Harvester {
 
             final String url = instruction.getUrl().toURI().toASCIIString();
 
-            LOGGER.info("Requesting url " + url);
+            LOGGER.trace("Requesting url " + url);
 
             method = new GetMethod(url);
             int status = client.getHttpClient().executeMethod(method);
@@ -264,7 +264,7 @@ public class DefaultHarvester implements Harvester {
                 throw new CuratorException(String.format("Bad http status %s for %s.", status, instruction.getUrl()));
             }
 
-            LOGGER.debug("Receiving status " + status + " for url " + instruction.getUrl());
+            LOGGER.trace("Receiving status " + status + " for url " + instruction.getUrl());
 
             result.setStatus(CrawlerResult.OK);
             result.setInstruction(instruction);

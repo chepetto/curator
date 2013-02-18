@@ -9,6 +9,7 @@ import org.curator.core.status.FeedsStatus;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,13 +69,12 @@ public class FeedService {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/new/")
-    public Response newFeed(
+    @Path(value = "/create/")
+    public Response createFeed(
             @QueryParam("feedUrl") @DefaultValue("") String feedUrl
     ) throws Exception {
 
-        Feed f = new Feed();
-        f.setUrl(feedUrl);
+        Feed f = new Feed(new URI(feedUrl));
         f.setActive(false);
 
         return Response.ok(feedManager.add(f));
