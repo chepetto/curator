@@ -2,6 +2,7 @@ package org.curator.core.crawler.impl;
 
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
+import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.model.Article;
 import org.curator.common.model.Feed;
@@ -275,7 +276,7 @@ public class DefaultHarvester implements Harvester {
 
             LOGGER.trace(String.format("Fetched %s (%s)", instruction.getUrl(), instruction.getId()));
 
-            Thread.sleep(200);
+            Thread.sleep(Configuration.getIntValue(Configuration.REQUEST_DELAY, 200));
 
             return result;
 

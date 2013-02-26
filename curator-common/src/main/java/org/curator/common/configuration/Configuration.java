@@ -7,11 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.*;
 
-public class    Configuration {
+public class Configuration {
 
     private static final Logger _log = Logger.getLogger(Configuration.class);
 
@@ -28,6 +27,7 @@ public class    Configuration {
     public static final String HTTP_CLIENT_LIMIT_MAX_CONNECTIONS = "http.client.limit.max.connections";
     public static final String HTTP_CLIENT_SO_TIMEOUT = "http.client.socket.timeout";
     public static final String HTTP_CLIENT_CONNECTION_MANAGER_TIMEOUT = "http.client.connection.manager.timeout";
+    public static final String REQUEST_DELAY = "curator.request-delay";
 
     public static final String REST_TIME_PATTERN = "curator.rest.time_pattern";
     public static final String VERSION = "curator.version";
@@ -35,7 +35,7 @@ public class    Configuration {
 
 
     private static Configuration getInstance() {
-        if (singleton==null) {
+        if (singleton == null) {
             singleton = new Configuration();
         }
         return singleton;
@@ -47,7 +47,7 @@ public class    Configuration {
     Configuration() {
         //use hardcoded name
         _reload();
-        if (rb==null) {
+        if (rb == null) {
             throw new RuntimeException("Application startup failed");
         }
     }
@@ -73,7 +73,7 @@ public class    Configuration {
     private boolean _initConfigFile(String configFileName) {
         String configFilePath = null;
         try {
-            _log.info("Using Configuration File '" + configFileName+"'");
+            _log.info("Using Configuration File '" + configFileName + "'");
 //            configFilePath = System.getProperty("jboss.server.config.url");
             configFilePath = System.getProperty("jboss.server.config.dir");
             if (StringUtils.isBlank(configFilePath)) {
@@ -82,17 +82,17 @@ public class    Configuration {
             if (!configFilePath.endsWith("/") && !configFilePath.endsWith("\\")) {
                 configFilePath += File.separatorChar;
             }
-            configFilePath= StringUtils.trim(configFilePath) + configFileName;
+            configFilePath = StringUtils.trim(configFilePath) + configFileName;
             InputStream is;
 //            FileURLConnection file = new FileURLConnection(new URL(configFilePath));
 //            is = file.getInputStream();
             is = new FileInputStream(configFilePath);
-            rb =  new PropertyResourceBundle(is);
+            rb = new PropertyResourceBundle(is);
             return true;
         } catch (FileNotFoundException fnf) {
-            _log.fatal("The configuration file '"+configFilePath+"' does not exist!");
+            _log.fatal("The configuration file '" + configFilePath + "' does not exist!");
             return false;
-        }  catch (Throwable t) {
+        } catch (Throwable t) {
             _log.fatal("Failed to access the configuration file '" + configFilePath, t);
             return false;
         }
@@ -109,11 +109,11 @@ public class    Configuration {
         return StringUtils.isBlank(value) ? value : fallback;
     }
 
-    private String _getValue(String key,String... values) {
-        if (rb==null) return null;
+    private String _getValue(String key, String... values) {
+        if (rb == null) return null;
 
         String result = _getValueWithContext(key);
-        if (values!=null && values.length>0) {
+        if (values != null && values.length > 0) {
             result = MessageFormat.format(result, values);
         }
         return result;
@@ -123,11 +123,11 @@ public class    Configuration {
         String contextKey = _buildContextKey(key);
         String result = null;
 
-        if (contextKey!=null) {
+        if (contextKey != null) {
             result = _getValue(contextKey);
         }
 
-        if (result==null) {
+        if (result == null) {
             result = _getValue(key);
         }
 
@@ -139,13 +139,13 @@ public class    Configuration {
 
         String suffix = _getValue(CONTEXT_SUFFIX_KEY);
 
-        if (suffix!=null) result += "." + suffix;
+        if (suffix != null) result += "." + suffix;
 
         return result;
     }
 
     private String _getValue(String key) {
-        if (rb==null) return null;
+        if (rb == null) return null;
         try {
             return rb.getString(key);
         } catch (MissingResourceException mre) {
@@ -159,20 +159,20 @@ public class    Configuration {
     /**
      * This method returns the value from the property file assigned to the key.
      * This value can be populated by values in the same way it is defined for java.text.MessageFormat.format(String, Object...)
-     *
+     * <p/>
      * It will use the version of property (value) asked from it whose key ends with .{environment},
      * if it can not find it or there is no environment property specified it will default to the one without the suffix.
      * Production keys should have no suffix and environment property should be set to no value.
      *
-     * @param key for which to return value
+     * @param key    for which to return value
      * @param values used to populate the returning value
      * @return property value assigned to the key
      */
     @SuppressWarnings({"UnusedDeclaration"})
-    public static String getValue(String key,String... values) {
+    public static String getValue(String key, String... values) {
         try {
             String value = getInstance()._getValue(key, values);
-            if (value==null) value="??" + key + "??";
+            if (value == null) value = "??" + key + "??";
             return value;
         } catch (Throwable t) {
             _log.error("Failed to obtain key='" + key + "', errMsg=" + t.getMessage());
@@ -181,15 +181,14 @@ public class    Configuration {
     }
 
     @SuppressWarnings({"UnusedDeclaration"})
-    public static List<String> getValues(String key,String... values) {
+    public static List<String> getValues(String key, String... values) {
         ArrayList<String> result = new ArrayList<String>(1);
         try {
             String value = getInstance()._getValue(key, values);
-            if (value==null) {
-                value="??" + key + "??";
+            if (value == null) {
+                value = "??" + key + "??";
                 result.add(value);
-            }
-            else {
+            } else {
                 String[] valuesz = StringUtils.split(value, ",");
                 for (String v : valuesz) {
                     result.add(v.trim());
@@ -229,38 +228,38 @@ public class    Configuration {
         getInstance()._reload();
     }
 
-    public static int getIntValue(String key,int defaultValue) {
+    public static int getIntValue(String key, int defaultValue) {
         try {
             String value = getInstance()._getValue(key);
             if (StringUtils.isBlank(value) || value.startsWith("?")) return defaultValue;
             return Integer.valueOf(value);
         } catch (Throwable t) {
-            _log.error("Failed to obtain integer value for key='"+key+"', errMsg="+t.getMessage());
+            _log.error("Failed to obtain integer value for key='" + key + "', errMsg=" + t.getMessage());
             return defaultValue;
         }
     }
 
-    public static String getStringValue(String key,String defaultValue) {
+    public static String getStringValue(String key, String defaultValue) {
         try {
             String value = getInstance()._getValue(key);
-            if (StringUtils.isBlank(value) || value.startsWith("?"))  {
-                _log.warn("The requested key '" + key + "' is not defined in the application configuration, using default value '"+defaultValue+"'");
+            if (StringUtils.isBlank(value) || value.startsWith("?")) {
+                _log.warn("The requested key '" + key + "' is not defined in the application configuration, using default value '" + defaultValue + "'");
                 return defaultValue;
             }
             return value;
         } catch (Throwable t) {
-            _log.error("Failed to obtain value for key='"+key+"', errMsg="+t.getMessage());
+            _log.error("Failed to obtain value for key='" + key + "', errMsg=" + t.getMessage());
             return defaultValue;
         }
     }
 
-    public static long getLongValue(String key,long defaultValue) {
+    public static long getLongValue(String key, long defaultValue) {
         try {
             String value = getInstance()._getValue(key);
             if (StringUtils.isBlank(value) || value.startsWith("?")) return defaultValue;
             return Long.valueOf(value);
         } catch (Throwable t) {
-            _log.error("Failed to obtain long value for key='"+key+"', errMsg="+t.getMessage());
+            _log.error("Failed to obtain long value for key='" + key + "', errMsg=" + t.getMessage());
             return defaultValue;
         }
     }
@@ -271,7 +270,7 @@ public class    Configuration {
             if (StringUtils.isBlank(value) || value.startsWith("?")) return defaultValue;
             return Double.valueOf(value);
         } catch (Throwable t) {
-            _log.error("Failed to obtain long value for key='"+key+"', errMsg="+t.getMessage());
+            _log.error("Failed to obtain long value for key='" + key + "', errMsg=" + t.getMessage());
             return defaultValue;
         }
     }
