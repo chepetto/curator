@@ -94,8 +94,8 @@ $.widget("curator.review", {
 
                             click: function (score, evt) {
                                 var params = {'{articleId}': articleId, '{rating}': score};
-                                curator.util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {
-                                    noty({text: 'Thanks for rating!', timeout: 2000});
+                                curator.util.jsonCall('POST', '/curator/rest/article/vote/{articleId}?rating={rating}', params, null, function (response) {
+                                    noty({text: 'Thanks for voting!', timeout: 2000});
                                 });
                             }
                         });

@@ -4,10 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.MediaType;
-import org.curator.common.model.MetricProvider;
-import org.curator.common.model.MetricResult;
+import org.curator.common.model.*;
 import org.curator.core.constraint.ConstraintViolation;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.simple.*;
@@ -274,16 +271,39 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Article rate(long articleId, int rating) throws CuratorException {
+    public void vote(long articleId, int rating, String remoteAddr) throws CuratorException {
         try {
-            Query query = em.createNamedQuery(Article.QUERY_BY_ID);
+
+            if (StringUtils.isBlank(remoteAddr)) {
+                throw new CuratorException("Cannot resolve remote address.");
+            }
+
+            Query query = em.createNamedQuery(Vote.QUERY_BY_ARTICLE_AND_USER);
+            query.setParameter("ARTICLE", articleId);
+            query.setParameter("USER", remoteAddr.trim());
+            query.setMaxResults(1);
+            boolean hasVoted = !query.getResultList().isEmpty();
+
+            if (hasVoted) {
+                throw new CuratorException("You have already voted, sry.");
+            }
+
+            Vote vote = new Vote();
+            vote.setArticleId(articleId);
+            vote.setUserId(remoteAddr);
+            vote.setDate(new Date());
+            em.persist(vote);
+
+
+            // todo increase just with update statement
+            query = em.createNamedQuery(Article.QUERY_BY_ID);
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
 
 //            long yesterday = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
 //            boolean laterThanYesterday = yesterday > article.getDate().getTime();
 //            if (laterThanYesterday) {
-//                throw new CuratorException("Time frame to rate is expired");
+//                throw new CuratorException("Time frame to vote is expired");
 //            }
 
             article.setRatingsCount(article.getRatingsCount() + 1);
@@ -291,16 +311,10 @@ public class ArticleManagerBean implements ArticleManager {
 
             em.merge(article);
             em.flush();
-            em.refresh(article);
 
-            em.detach(article);
-            article.setTopics(null);
-            article.setMetrics(null);
-
-            return article;
 
         } catch (Throwable t) {
-            throw new CuratorRollbackException("rate failed", t);
+            throw new CuratorRollbackException("vote failed", t);
         }
     }
 

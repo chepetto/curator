@@ -9,7 +9,9 @@ import org.curator.core.interfaces.ArticleManager;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,13 +58,15 @@ public class ArticleService {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/rate/{id}")
+    @Path(value = "/vote/{id}")
     public Response rate(
             @PathParam("id") long articleId,
-            @QueryParam("rating") int rating
+            @QueryParam("rating") int rating,
+            @Context HttpServletRequest request
     ) throws Exception {
-        Article article = articleManager.rate(articleId, rating);
-        return Response.ok(article);
+        // todo test
+        articleManager.vote(articleId, rating, request.getRemoteAddr());
+        return Response.ok();
     }
 
     @POST

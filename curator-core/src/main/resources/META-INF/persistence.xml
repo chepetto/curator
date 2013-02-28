@@ -15,6 +15,7 @@
         <class>org.curator.common.model.Related</class>
         <class>org.curator.common.model.Feed</class>
         <class>org.curator.common.model.Special</class>
+        <class>org.curator.common.model.Vote</class>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
