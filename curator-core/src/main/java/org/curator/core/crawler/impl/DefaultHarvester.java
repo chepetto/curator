@@ -54,6 +54,7 @@ public class DefaultHarvester implements Harvester {
     private Thread crawlerResultListener;
 
     private boolean running;
+    private boolean idle;
 
     @PostConstruct
     public void onInit() {
@@ -91,6 +92,7 @@ public class DefaultHarvester implements Harvester {
             public void run() {
 
                 while (isRunning()) {
+
                     Iterator<Future<CrawlerResult>> lit = futures.iterator();
                     while (lit.hasNext()) {
                         Future<CrawlerResult> future = lit.next();
@@ -107,6 +109,8 @@ public class DefaultHarvester implements Harvester {
                             }
                         }
                     }
+
+                    setIdle(futures.isEmpty());
                 }
             }
         };
@@ -254,7 +258,7 @@ public class DefaultHarvester implements Harvester {
 
             final String url = instruction.getUrl().toURI().toASCIIString();
 
-            LOGGER.trace("Requesting url " + url);
+            LOGGER.info("Requesting url " + url);
 
             method = new GetMethod(url);
             int status = client.getHttpClient().executeMethod(method);
@@ -353,6 +357,17 @@ public class DefaultHarvester implements Harvester {
 
     public boolean isRunning() {
         return running;
+    }
+
+    public boolean isIdle() {
+        return idle;
+    }
+
+    public void setIdle(boolean idle) {
+        if (this.idle != idle) {
+            LOGGER.info("Changed status to " + (idle ? "idle" : "busy"));
+        }
+        this.idle = idle;
     }
 
     @Override

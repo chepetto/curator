@@ -8,14 +8,14 @@
 
                 //noinspection JSUnusedLocalSymbols
                 $.ajax({
-                    type: _type,
-                    url: $this.replaceInUrl(url, urlReplacements),
-                    dataType: "json",
-                    contentType: "application/json",
-                    data: jsonObject,
-                    cache: false,
-                    processData: false,
-                    success: function (data) {
+                    type:_type,
+                    url:$this.replaceInUrl(url, urlReplacements),
+                    dataType:"json",
+                    contentType:"application/json",
+                    data:jsonObject,
+                    cache:false,
+                    processData:false,
+                    success:function (data) {
                         switch (data.statusCode) {
                             case 0:
                                 if (typeof(onSuccess) === 'function') {
@@ -30,7 +30,7 @@
                                 break;
                         }
                     },
-                    error: function (data) {
+                    error:function (data) {
                         if (typeof(onError) === 'function') {
                             onError.call(this);
                         }
@@ -109,14 +109,17 @@
 
         this.dialogNewArticle = function () {
             var dialog = $('#dialog-add-article-template').clone().removeAttr('id').dialog({
-                modal: true,
-                resizable: false,
-                closeOnEscape: true,
-                onClose: function() {$(this).dialog('destroy').remove();},
-                sticky: true,
-                width: 700,
-                buttons: {
-                    'Publish': function () {
+                modal:true,
+                resizable:false,
+                draggable:false,
+                closeOnEscape:true,
+                sticky:true,
+                onClose:function () {
+                    $(this).dialog('destroy').remove();
+                },
+                width:700,
+                buttons:{
+                    'Publish':function () {
 
                         var title = dialog.find('.custom-title').val();
                         var url = dialog.find('.custom-link').val();
@@ -124,34 +127,37 @@
 
                         // todo validate
 
-                        var article = {title: title, url: url, text: text};
+                        var article = {title:title, url:url, text:text};
 
                         curator.util.jsonCall('POST', '/curator/rest/article', null, JSON.stringify(article), function (response) {
                             // todo
-                            noty({text: 'Thanks for posting!', timeout: 2000});
+                            noty({text:'Thanks for posting!', timeout:2000});
                         });
                     }
                 }
             });
         };
 
-        this.dialogNewFeed = function() {
+        this.dialogNewFeed = function () {
 
             var dialog = $('#dialog-add-feed-template').clone().removeAttr('id').dialog({
-                modal: true,
-                resizable: false,
-                closeOnEscape: true,
-                onClose: function() {$(this).dialog('destroy').remove();},
-                sticky: true,
-                width: 700,
-                buttons: {
-                    'Add to database': function () {
+                modal:true,
+                resizable:false,
+                draggable:false,
+                closeOnEscape:true,
+                sticky:true,
+                onClose:function () {
+                    $(this).dialog('destroy').remove();
+                },
+                width:700,
+                buttons:{
+                    'Add to database':function () {
 
                         var url = dialog.find('.url').val();
 
-                        curator.util.jsonCall('GET', '/curator/rest/feed/create?url={url}', {'{url}': url}, null, function (response) {
-                            if(response==true) {
-                                noty({text: 'New feed added.', timeout: 2000});
+                        curator.util.jsonCall('POST', '/curator/rest/feed/create?url={url}', {'{url}':url}, null, function (response) {
+                            if (response == true) {
+                                noty({text:'New feed added.', timeout:2000});
                             }
                         });
                     }

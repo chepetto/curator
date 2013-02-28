@@ -39,7 +39,7 @@ public class Feed implements Serializable {
 
     @Basic
     @Index(name = "feedDomainIdx")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String domain;
 
     @Basic
@@ -85,8 +85,7 @@ public class Feed implements Serializable {
 
     public Feed(URI uri) {
 
-        setUrl(uri.getPath());
-        // todo what part of the url should be used to avoid spam
+        setUrl(uri.toString());
         setDomain(uri.getHost());
     }
 

@@ -139,6 +139,7 @@ public class FeedManagerBean implements FeedManager {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void forceHarvest(long feedId) {
 
         try {

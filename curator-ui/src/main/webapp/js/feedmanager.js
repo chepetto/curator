@@ -17,11 +17,11 @@ $.widget("curator.feedmanager", {
         target.append(count);
 
         var field = $('<input type="text" name="feed-url" class="feed-url">');
-        var checkButton = $('<span>Add</span>').button().click(function() {
+        var checkButton = $('<span>Add</span>').button().click(function () {
 
-            curator.util.jsonCall('GET', '/curator/rest/feed/create?url={url}', {'{url}': field.val()}, null, function (response) {
-                if(response==true) {
-                    noty({text: 'New Feed added.', timeout: 2000});
+            curator.util.jsonCall('POST', '/curator/rest/feed/create?url={url}', {'{url}':field.val()}, null, function (response) {
+                if (response == true) {
+                    noty({text:'New Feed added.', timeout:2000});
                 }
             });
         });

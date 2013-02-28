@@ -71,7 +71,7 @@ public class FeedService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path(value = "/create/")
     public Response createFeed(
-            @QueryParam("feedUrl") @DefaultValue("") String feedUrl
+            @QueryParam("url") @DefaultValue("") String feedUrl
     ) throws Exception {
 
         Feed f = new Feed(new URI(feedUrl));

@@ -1,15 +1,15 @@
 $.widget("curator.navigation", {
 
-    options: {
-        items: [
-            {name: 'Hot', link: 'published.html'},
-            {name: 'Live', link: 'live.html'},
-            {name: 'Post Article', fn: curator.util.dialogNewArticle},
-            {name: 'New Feeds', fn: curator.util.dialogNewFeed}
+    options:{
+        items:[
+            {name:'Hot', link:'published.html'},
+            {name:'Live', link:'live.html'},
+            {name:'Post Article', fn:curator.util.dialogNewArticle},
+            {name:'New Feed', fn:curator.util.dialogNewFeed}
         ]
     },
 
-    _init: function () {
+    _init:function () {
 
         var $this = this;
 
@@ -20,9 +20,9 @@ $.widget("curator.navigation", {
 
             var link;
             if (menuItem.link) {
-                link = $('<a/>', {href: menuItem.link, text: menuItem.name});
+                link = $('<a/>', {href:menuItem.link, text:menuItem.name});
             } else {
-                link = $('<a/>', {href: '#', text: menuItem.name}).click(menuItem.fn);
+                link = $('<a/>', {href:'#', text:menuItem.name}).click(menuItem.fn);
             }
 
             var li = $('<li/>').append(link);

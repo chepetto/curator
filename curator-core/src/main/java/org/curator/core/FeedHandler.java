@@ -69,7 +69,7 @@ public class FeedHandler {
         }
     }
 
-    //@Schedule(persistent=false, minute="*", second="0", hour="*")
+    @Schedule(persistent = false, minute = "*/10", second = "0", hour = "*")
     public void watchFeeds() {
         try {
             if (available) {

@@ -65,7 +65,6 @@ public class Article implements Serializable {
     @Column(length = 128)
     private String author;
 
-    @Basic
     @Lob
     private String text;
 
@@ -122,10 +121,10 @@ public class Article implements Serializable {
     @Basic
     private String customTitle;
 
-    @Basic
+    @Lob
     private String customTextRendered;
 
-    @Basic
+    @Lob
     private String customTextMarkup;
 
     @Column
