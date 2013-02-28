@@ -1,15 +1,15 @@
 //$.widget("curator.suggest", $.curator.subscriptions, {
 $.widget("curator.suggest", {
 
-    options:{
-        articles:null
+    options: {
+        articles: null
     },
 
-    _create:function () {
+    _create: function () {
 
     },
 
-    _init:function () {
+    _init: function () {
         var $this = this;
 
         $this.element.empty();
@@ -21,19 +21,19 @@ $.widget("curator.suggest", {
         $this.element.append(pagination);
 
         pagination.paginate({
-            start:1,
-            count:500,
-            display:5,
-            rotate:false,
-            border_color:'#fff',
-            text_color:'#fff',
-            background_color:'black',
-            border_hover_color:'#ccc',
-            text_hover_color:'#000',
-            background_hover_color:'#fff',
-            images:false,
-            mouse:'press',
-            onChange:function (element) {
+            start: 1,
+            count: 500,
+            display: 5,
+            rotate: false,
+            border_color: '#fff',
+            text_color: '#fff',
+            background_color: 'black',
+            border_hover_color: '#ccc',
+            text_hover_color: '#000',
+            background_hover_color: '#fff',
+            images: false,
+            mouse: 'press',
+            onChange: function (element) {
                 alert(element)
             }
         });
@@ -41,7 +41,7 @@ $.widget("curator.suggest", {
         $this._retrieve('/curator/rest/article/list/published');
     },
 
-    _retrieve:function (url) {
+    _retrieve: function (url) {
 
         var $this = this;
 
@@ -74,23 +74,23 @@ $.widget("curator.suggest", {
                     var article = articles[articleIndex];
 
                     // -- Construct Article - --------------------------------------------------------------------------
-                    var container = $('<div/>', {class:'article'});
+                    var container = $('<div/>', {class: 'article'});
                     var _title = $('<a/>', {
-                        href:'/curator/rest/link/' + article.id,
-                        text:article.customTitle
+                        href: '/curator/rest/link/' + article.id,
+                        text: article.customTitle
                     });
                     var _rating = $this._getRating(article);
                     var _abstract = $('<div/>', {
-                        class:'abstract',
-                        html:article.customTextRendered
+                        class: 'abstract',
+                        html: article.customTextRendered
                     });
-                    var _misc = $('<div/>', {class:'misc'})
+                    var _misc = $('<div/>', {class: 'misc'})
                         .append('on ' + $this._shortUrl(article.url))
                         .append('<br>')
-                        .append($('<span/>', {text:parseInt(article.quality * 100)}));
+                        .append($('<span/>', {text: parseInt(article.quality * 100)}));
 
                     container
-                        .append($('<div/>', {class:'title'}).append(_title))
+                        .append($('<div/>', {class: 'title'}).append(_title))
                         .append(_rating)
                         .append(_abstract)
                         .append(_misc)
@@ -115,45 +115,45 @@ $.widget("curator.suggest", {
         });
     },
 
-    _getToggleHiddenArticlesButton:function (articlesCount, hiddenContainer) {
+    _getToggleHiddenArticlesButton: function (articlesCount, hiddenContainer) {
 
         var link = $('<a/>', {
-            href:'#',
-            text:'Show ' + articlesCount + ' links'
+            href: '#',
+            text: 'Show ' + articlesCount + ' links'
         }).click(function () {
                 hiddenContainer.show();
                 $(this).hide();
             });
 
-        return $('<div/>', {class:'more'})
+        return $('<div/>', {class: 'more'})
             .append(link);
     },
 
-    _shortUrl:function (url) {
+    _shortUrl: function (url) {
         return url
             .replace(/http:\/\//g, '')
             .replace(/www./g, '')
             .replace(/\/.*/g, '')
     },
 
-    _getRating:function (article) {
+    _getRating: function (article) {
 
         // doku see http://wbotelhos.com/raty/
         return $('<div class="rating" style="float:right"></div>')
             .raty({
-                score:article.ratingsCount == 0 ? 0 : parseInt(article.ratingsSum / article.ratingsCount),
-                noRatedMsg:'anyone rated this product yet!',
+                score: article.ratingsCount == 0 ? 0 : parseInt(article.ratingsSum / article.ratingsCount),
+                noRatedMsg: 'anyone rated this product yet!',
 
-                click:function (score, evt) {
-                    var params = {'{articleId}':article.id, '{rating}':score};
-                    curator.util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {
-                        noty({text:'Thanks for rating!', timeout:2000});
+                click: function (score, evt) {
+                    var params = {'{articleId}': article.id, '{rating}': score};
+                    curator.util.jsonCall('POST', '/curator/rest/article/vote/{articleId}?rating={rating}', params, null, function (response) {
+                        noty({text: 'Thanks for voting!', timeout: 2000});
                     });
                 }
             });
     },
 
-    _newCluster:function (index, interval) {
+    _newCluster: function (index, interval) {
         var cluster = $('<div class="cluster"></div>');
         var t;
         switch (parseInt(index)) {
@@ -174,7 +174,7 @@ $.widget("curator.suggest", {
         return cluster;
     },
 
-    _clusterArticlesPerDay:function (interval, firstTime, articleList) {
+    _clusterArticlesPerDay: function (interval, firstTime, articleList) {
         var daysToArticlesMap = {};
 
         // cluster data by days

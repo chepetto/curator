@@ -92,10 +92,10 @@ $.widget("curator.review", {
                             score:ratingsCount == 0 ? 0 : parseInt(ratingsSum / ratingsCount),
                             noRatedMsg:'anyone rated this product yet!',
 
-                            click:function (score, evt) {
-                                var params = {'{articleId}':articleId, '{rating}':score};
-                                curator.util.jsonCall('POST', '/curator/rest/article/rate/{articleId}?rating={rating}', params, null, function (response) {
-                                    noty({text:'Thanks for rating!', timeout:2000});
+                            click: function (score, evt) {
+                                var params = {'{articleId}': articleId, '{rating}': score};
+                                curator.util.jsonCall('POST', '/curator/rest/article/vote/{articleId}?rating={rating}', params, null, function (response) {
+                                    noty({text: 'Thanks for voting!', timeout: 2000});
                                 });
                             }
                         });

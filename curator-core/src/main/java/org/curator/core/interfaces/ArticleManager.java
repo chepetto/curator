@@ -23,7 +23,7 @@ public interface ArticleManager {
 
     Article publish(long articleId, String customText, String customTitle);
 
-    Article rate(long articleId, int rating) throws CuratorException;
+    void vote(long articleId, int rating, String remoteAddr) throws CuratorException;
 
     List<Article> getPublished(Date firstDate, Date lastDate);
 
