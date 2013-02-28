@@ -23,20 +23,20 @@ public class Vote implements Serializable {
 
     public static final String QUERY_BY_ID = "Vote.QUERY_BY_ID";
     public static final String QUERY_BY_ARTICLE_AND_USER = "Vote.QUERY_BY_ARTICLE_AND_USER";
-    public static final String FIELD_ARTICLE_ID = "Vote.Field.articleId";
-    public static final String FIELD_USER_ID = "Vote.Field.userId";
+    public static final String FIELD_ARTICLE_ID = "articleId";
+    public static final String FIELD_USER_ID = "userId";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Basic
-    @Index(name = "Vote.articleIdx")
+    @Index(name = "articleIdx")
     @Column(name = Vote.FIELD_ARTICLE_ID, nullable = false)
     private long articleId;
 
     @Basic
-    @Index(name = "Vote.userIdx")
+    @Index(name = "userIdx")
     @Column(name = Vote.FIELD_USER_ID, nullable = false)
     private String userId;
 

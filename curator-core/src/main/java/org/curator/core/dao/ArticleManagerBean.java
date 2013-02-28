@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
+import org.curator.common.exceptions.CuratorStatus;
 import org.curator.common.model.*;
 import org.curator.core.constraint.ConstraintViolation;
 import org.curator.core.criterion.Goal;
@@ -275,17 +276,17 @@ public class ArticleManagerBean implements ArticleManager {
         try {
 
             if (StringUtils.isBlank(remoteAddr)) {
-                throw new CuratorException("Cannot resolve remote address.");
+                throw new CuratorException(CuratorStatus.PARAMETER_MISSING, "Cannot resolve remote address.");
             }
 
             Query query = em.createNamedQuery(Vote.QUERY_BY_ARTICLE_AND_USER);
-            query.setParameter("ARTICLE", articleId);
-            query.setParameter("USER", remoteAddr.trim());
+            query.setParameter("ARTICLE_ID", articleId);
+            query.setParameter("USER_ID", remoteAddr.trim());
             query.setMaxResults(1);
             boolean hasVoted = !query.getResultList().isEmpty();
 
             if (hasVoted) {
-                throw new CuratorException("You have already voted, sry.");
+                throw new CuratorException(CuratorStatus.REQUEST_ERROR, "You have already voted.");
             }
 
             Vote vote = new Vote();
@@ -313,6 +314,8 @@ public class ArticleManagerBean implements ArticleManager {
             em.flush();
 
 
+        } catch (CuratorException t) {
+            throw t;
         } catch (Throwable t) {
             throw new CuratorRollbackException("vote failed", t);
         }

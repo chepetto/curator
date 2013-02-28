@@ -24,7 +24,7 @@ import java.util.*;
 @NamedQueries({
         @NamedQuery(name = Article.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_BY_URL, query = "SELECT a FROM Article a where LOWER(a.url)=LOWER(:URL)"),
-        @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a"),
+        @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a order by a.date desc, a.quality desc"),
         @NamedQuery(name = Article.QUERY_REVIEW, query = "SELECT a FROM Article a WHERE a.date<:FIRST_DATE AND a.date>:LAST_DATE and a.quality>0.1 ORDER BY a.date DESC, a.ratingsCount desc"),
         @NamedQuery(name = Article.QUERY_PUBLISHED, query = "SELECT a FROM Article a where a.published=true AND a.publishedTime<=:FIRST_DATE AND a.publishedTime>=:LAST_DATE order by a.publishedTime desc"),
         @NamedQuery(name = Article.QUERY_REDIRECT_URL_BY_ID, query = "SELECT a.url FROM Article a where a.id=:ID"),
