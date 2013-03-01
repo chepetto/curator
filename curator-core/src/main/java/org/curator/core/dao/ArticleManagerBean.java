@@ -289,18 +289,14 @@ public class ArticleManagerBean implements ArticleManager {
                 throw new CuratorException(CuratorStatus.REQUEST_ERROR, "You have already voted.");
             }
 
-            Vote vote = new Vote();
-            vote.setArticleId(articleId);
-            vote.setUserId(remoteAddr);
-            vote.setDate(new Date());
-            em.persist(vote);
-
-
             // todo increase just with update statement
             query = em.createNamedQuery(Article.QUERY_BY_ID);
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
 
+            if (article == null) {
+                throw new CuratorException(CuratorStatus.REQUEST_ERROR, String.format("Article '%s' not found", articleId));
+            }
 //            long yesterday = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
 //            boolean laterThanYesterday = yesterday > article.getDate().getTime();
 //            if (laterThanYesterday) {
@@ -313,6 +309,12 @@ public class ArticleManagerBean implements ArticleManager {
             em.merge(article);
             em.flush();
 
+
+            Vote vote = new Vote();
+            vote.setArticleId(articleId);
+            vote.setUserId(remoteAddr);
+            vote.setDate(new Date());
+            em.persist(vote);
 
         } catch (CuratorException t) {
             throw t;
