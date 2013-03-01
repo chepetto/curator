@@ -7,6 +7,8 @@
     <interceptors>
         <class>org.curator.core.request.RequestPropertyInterceptor</class>
         <class>org.curator.common.configuration.ConfigurationInterceptor</class>
+        <class>org.curator.common.cache.MethodCacheInterceptor</class>
+        <class>org.curator.core.request.ErrorHandlingInterceptor</class>
         <!--<class>org.curator.core.measurements.MeasurementInterceptor</class>-->
     </interceptors>
 </beans>
