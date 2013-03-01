@@ -23,7 +23,7 @@ public interface ArticleManager {
 
     Article publish(long articleId, String customText, String customTitle);
 
-    void vote(long articleId, int rating, String remoteAddr) throws CuratorException;
+    void vote(long articleId, int rating, String remoteAddr);
 
     List<Article> getPublished(Date firstDate, Date lastDate);
 
@@ -31,5 +31,5 @@ public interface ArticleManager {
 
     void cleanup();
 
-    Article addArticle(Article article) throws CuratorException;
+    Article addArticle(Article article);
 }

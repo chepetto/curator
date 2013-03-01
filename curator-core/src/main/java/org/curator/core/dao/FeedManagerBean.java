@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
+import org.curator.core.request.CuratorRequestException;
 import org.curator.core.status.FeedsStatus;
 
 import javax.annotation.PostConstruct;
@@ -71,7 +72,7 @@ public class FeedManagerBean implements FeedManager {
 
             return feed;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRequestException("getById failed", t);
         }
     }
 
@@ -91,7 +92,7 @@ public class FeedManagerBean implements FeedManager {
 
             return feed;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getByUrl failed", t);
+            throw new CuratorRequestException("getByUrl failed", t);
         }
     }
 
@@ -104,7 +105,7 @@ public class FeedManagerBean implements FeedManager {
             //noinspection unchecked
             return query.getResultList();
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getOutdatedFeeds failed", t);
+            throw new CuratorRequestException("getOutdatedFeeds failed", t);
         }
     }
 
@@ -115,7 +116,7 @@ public class FeedManagerBean implements FeedManager {
             em.merge(feed);
             em.flush();
         } catch (Throwable t) {
-            throw new CuratorRollbackException("update failed", t);
+            throw new CuratorRequestException("update failed", t);
         }
     }
 
@@ -134,7 +135,7 @@ public class FeedManagerBean implements FeedManager {
 
             return feed;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("setStatus failed", t);
+            throw new CuratorRequestException("setStatus failed", t);
         }
     }
 
@@ -151,7 +152,7 @@ public class FeedManagerBean implements FeedManager {
             em.flush();
 
         } catch (Throwable t) {
-            throw new CuratorRollbackException("forceHarvest failed", t);
+            throw new CuratorRequestException("forceHarvest failed", t);
         }
     }
 
@@ -166,7 +167,7 @@ public class FeedManagerBean implements FeedManager {
             status.setTotalFeedCount(count);
             return status;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("forceHarvest failed", t);
+            throw new CuratorRequestException("forceHarvest failed", t);
         }
     }
 
@@ -187,7 +188,7 @@ public class FeedManagerBean implements FeedManager {
             }
             return feeds;
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRequestException("getById failed", t);
         }
     }
 

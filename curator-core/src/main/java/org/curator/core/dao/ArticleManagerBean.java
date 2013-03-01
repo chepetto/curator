@@ -3,8 +3,8 @@ package org.curator.core.dao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
+import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.exceptions.CuratorStatus;
 import org.curator.common.model.*;
 import org.curator.core.constraint.ConstraintViolation;
 import org.curator.core.criterion.Goal;
@@ -13,6 +13,7 @@ import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.Evaluator;
 import org.curator.core.extract.TopicExtractor;
 import org.curator.core.interfaces.ArticleManager;
+import org.curator.core.request.CuratorRequestException;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -33,6 +35,7 @@ import java.util.*;
 
 //@LocalBean
 @Stateless
+@CuratorInterceptors
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class ArticleManagerBean implements ArticleManager {
 
@@ -84,24 +87,35 @@ public class ArticleManagerBean implements ArticleManager {
     }
 
     @Override
+//    @CatchAll
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Article addArticle(Article article) throws CuratorException {
+    public Article addArticle(Article article) {
 
-        if (article == null) {
-            throw new IllegalArgumentException("article is null");
+        try {
+
+            if (article == null) {
+                throw new IllegalArgumentException("article is null");
+            }
+            if (StringUtils.isBlank(article.getUrl())) {
+                throw new IllegalArgumentException("url is null");
+            }
+
+            article.setPublished(false);
+            article.setDate(new Date());
+            article.setMediaType(MediaType.TEXT);
+            article.setLocale(Locale.GERMAN);
+
+            // todo download page and store text or add a text field
+
+            return addArticleInternal(article);
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
+        } catch (Throwable t) {
+            throw new CuratorRequestException("add article", t);
         }
-        if (StringUtils.isBlank(article.getUrl())) {
-            throw new IllegalArgumentException("url is null");
-        }
-
-        article.setPublished(false);
-        article.setDate(new Date());
-        article.setMediaType(MediaType.TEXT);
-        article.setLocale(Locale.GERMAN);
-
-        // todo download page and store text or add a text field
-
-        return addArticleInternal(article);
     }
 
     @Override
@@ -175,8 +189,13 @@ public class ArticleManagerBean implements ArticleManager {
             em.detach(article);
 
             return article;
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRequestException("get article by id", t);
         }
     }
 
@@ -195,8 +214,13 @@ public class ArticleManagerBean implements ArticleManager {
             em.detach(article);
 
             return article;
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRequestException("get article by url", t);
         }
     }
 
@@ -239,8 +263,13 @@ public class ArticleManagerBean implements ArticleManager {
             //article.setTopics(null);
 
             return article;
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getById failed", t);
+            throw new CuratorRequestException("publish", t);
         }
     }
 
@@ -272,11 +301,11 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void vote(long articleId, int rating, String remoteAddr) throws CuratorException {
+    public void vote(long articleId, int rating, String remoteAddr) {
         try {
 
             if (StringUtils.isBlank(remoteAddr)) {
-                throw new CuratorException(CuratorStatus.PARAMETER_MISSING, "Cannot resolve remote address.");
+                throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, "Cannot resolve remote address.");
             }
 
             Query query = em.createNamedQuery(Vote.QUERY_BY_ARTICLE_AND_USER);
@@ -286,7 +315,7 @@ public class ArticleManagerBean implements ArticleManager {
             boolean hasVoted = !query.getResultList().isEmpty();
 
             if (hasVoted) {
-                throw new CuratorException(CuratorStatus.REQUEST_ERROR, "You have already voted.");
+                throw new CuratorRequestException(Response.Status.CONFLICT, "You have already voted.");
             }
 
             // todo increase just with update statement
@@ -295,7 +324,7 @@ public class ArticleManagerBean implements ArticleManager {
             Article article = (Article) query.getSingleResult();
 
             if (article == null) {
-                throw new CuratorException(CuratorStatus.REQUEST_ERROR, String.format("Article '%s' not found", articleId));
+                throw new CuratorRequestException(Response.Status.NOT_FOUND, String.format("Article '%s' not found", articleId));
             }
 //            long yesterday = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
 //            boolean laterThanYesterday = yesterday > article.getDate().getTime();
@@ -316,10 +345,12 @@ public class ArticleManagerBean implements ArticleManager {
             vote.setDate(new Date());
             em.persist(vote);
 
-        } catch (CuratorException t) {
+        } catch (CuratorRequestException t) {
             throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("vote failed", t);
+            throw new CuratorRequestException("vote", t);
         }
     }
 
@@ -341,8 +372,13 @@ public class ArticleManagerBean implements ArticleManager {
             }
 
             return articles;
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getPublished failed", t);
+            throw new CuratorRequestException("list published articles", t);
         }
     }
 
@@ -360,8 +396,13 @@ public class ArticleManagerBean implements ArticleManager {
             String url = (String) query.getSingleResult();
 
             return new URL(url);
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("redirect failed", t);
+            throw new CuratorRequestException("redirect", t);
         }
     }
 
@@ -380,8 +421,12 @@ public class ArticleManagerBean implements ArticleManager {
                 em.flush();
             }
 
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("cannot delete unrated articles", t);
+            throw new CuratorRequestException("cleanup", t);
         }
     }
 
@@ -403,8 +448,13 @@ public class ArticleManagerBean implements ArticleManager {
                 article.setTopics(null);
             }
             return articles;
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getList failed: " + t.getMessage(), t);
+            throw new CuratorRequestException("getList failed: " + t.getMessage(), t);
         }
     }
 
@@ -432,8 +482,12 @@ public class ArticleManagerBean implements ArticleManager {
                 article.setTopics(null);
             }
             return articles;
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (IllegalArgumentException t) {
+            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRollbackException("getReview failed: " + t.getMessage(), t);
+            throw new CuratorRequestException("getReview failed: " + t.getMessage(), t);
         }
     }
 
