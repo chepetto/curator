@@ -20,7 +20,7 @@ $.widget("curator.review", {
 
         $this.element.append(table);
 
-        curator.util.jsonCall('GET', '/curator/rest/article/list/review', null, null, function (response) {
+        curator.util.jsonCall('GET', '/curator/rest/article/list/live', null, null, function (response) {
 
             var data = [];
             for (var id in response.list) {
@@ -37,7 +37,7 @@ $.widget("curator.review", {
                 var _published = article.published;
                 var _dateField;
                 if (_published) {
-                    _dateField = $this._newDateField(article.publishedTime);
+                    _dateField = $this._newDateField(article.featuredTime);
                 } else {
                     _dateField = $this._newDateField(article.date);
                 }
@@ -92,10 +92,10 @@ $.widget("curator.review", {
                             score:ratingsCount == 0 ? 0 : parseInt(ratingsSum / ratingsCount),
                             noRatedMsg:'anyone rated this product yet!',
 
-                            click: function (score, evt) {
-                                var params = {'{articleId}': articleId, '{rating}': score};
+                            click:function (score, evt) {
+                                var params = {'{articleId}':articleId, '{rating}':score};
                                 curator.util.jsonCall('POST', '/curator/rest/article/vote/{articleId}?rating={rating}', params, null, function (response) {
-                                    noty({text: 'Thanks for voting!', timeout: 2000});
+                                    noty({text:'Thanks for voting!', timeout:2000});
                                 });
                             }
                         });

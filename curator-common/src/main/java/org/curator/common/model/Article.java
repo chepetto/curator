@@ -24,9 +24,9 @@ import java.util.*;
 @NamedQueries({
         @NamedQuery(name = Article.QUERY_BY_ID, query = "SELECT a FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_BY_URL, query = "SELECT a FROM Article a where LOWER(a.url)=LOWER(:URL)"),
-        @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a order by a.date desc, a.quality desc"),
-        @NamedQuery(name = Article.QUERY_REVIEW, query = "SELECT a FROM Article a WHERE a.date<:FIRST_DATE AND a.date>:LAST_DATE and a.quality>0.1 ORDER BY a.date DESC, a.ratingsCount desc"),
-        @NamedQuery(name = Article.QUERY_PUBLISHED, query = "SELECT a FROM Article a where a.published=true AND a.publishedTime<=:FIRST_DATE AND a.publishedTime>=:LAST_DATE order by a.publishedTime desc"),
+        @NamedQuery(name = Article.QUERY_ALL, query = "SELECT a FROM Article a order by a.date desc"),
+        @NamedQuery(name = Article.QUERY_LIVE, query = "SELECT a FROM Article a WHERE a.date<:FIRST_DATE AND a.date>:LAST_DATE and a.quality>0.1 ORDER BY a.quality desc"),
+        @NamedQuery(name = Article.QUERY_FEATURED, query = "SELECT a FROM Article a where a.featured=true AND a.featuredTime<=:FIRST_DATE AND a.featuredTime>=:LAST_DATE order by a.featuredTime desc"),
         @NamedQuery(name = Article.QUERY_REDIRECT_URL_BY_ID, query = "SELECT a.url FROM Article a where a.id=:ID"),
         @NamedQuery(name = Article.UPDATE_INC_VIEWS, query = "UPDATE Article a SET a.views = a.views+1 where a.id=:ID"),
         @NamedQuery(name = Article.QUERY_CLEANUP, query = "SELECT a FROM Article a WHERE a.date>:A_DAY_AGO AND (a.ratingsCount=0 OR a.ratingsCount IS NULL)")
@@ -38,11 +38,11 @@ public class Article implements Serializable {
     public static final String QUERY_BY_ID = "Article.QUERY_BY_ID";
     public static final String QUERY_BY_URL = "Article.QUERY_BY_URL";
     public static final String QUERY_ALL = "Article.QUERY_ALL";
-    public static final String QUERY_PUBLISHED = "Article.QUERY_PUBLISHED";
+    public static final String QUERY_FEATURED = "Article.QUERY_FEATURED";
     public static final String QUERY_REDIRECT_URL_BY_ID = "Article.QUERY_REDIRECT_URL_BY_ID";
     public static final String UPDATE_INC_VIEWS = "Article.UPDATE_INC_VIEWS";
     public static final String QUERY_CLEANUP = "Article.QUERY_CLEANUP";
-    public static final String QUERY_REVIEW = "Article.QUERY_REVIEW";
+    public static final String QUERY_LIVE = "Article.QUERY_LIVE";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -116,7 +116,7 @@ public class Article implements Serializable {
     // -- Review -- ----------------------------------------------------------------------------------------------------
 
     @Basic
-    private boolean published;
+    private boolean featured;
 
     @Basic
     private String customTitle;
@@ -131,7 +131,7 @@ public class Article implements Serializable {
     @JsonDeserialize(using = CustomDateDeserializer.class)
     @JsonSerialize(using = CustomDateSerializer.class)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date publishedTime;
+    private Date featuredTime;
 
 
     // -- Series -- ----------------------------------------------------------------------------------------------------
@@ -407,20 +407,20 @@ public class Article implements Serializable {
         this.quality = quality;
     }
 
-    public boolean isPublished() {
-        return published;
+    public boolean setFeatured() {
+        return featured;
     }
 
-    public void setPublished(boolean published) {
-        this.published = published;
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
     }
 
-    public Date getPublishedTime() {
-        return publishedTime;
+    public Date getFeaturedTime() {
+        return featuredTime;
     }
 
-    public void setPublishedTime(Date publishedTime) {
-        this.publishedTime = publishedTime;
+    public void setFeaturedTime(Date featuredTime) {
+        this.featuredTime = featuredTime;
     }
 
     public MediaType getMediaType() {

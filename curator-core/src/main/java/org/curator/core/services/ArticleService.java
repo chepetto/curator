@@ -107,13 +107,13 @@ public class ArticleService {
         return Response.ok(response);
     }
 
-    // -- SUGGEST -- ---------------------------------------------------------------------------------------------------
+    // -- LIVE -- ------------------------------------------------------------------------------------------------------
 
     @GET
     @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/list/review")
-    public Response getReview(
+    @Path(value = "/list/live")
+    public Response getLive(
             @QueryParam("firstResult") int firstResult,
             @QueryParam("maxResults") int maxResults,
             @QueryParam("firstDate") long firstDate,
@@ -144,43 +144,43 @@ public class ArticleService {
             maxResults = this.maxResults;
         }
 
-        List<Article> list = articleManager.getReview(firstResult, maxResults, _firstDate, _lastDate);
+        List<Article> list = articleManager.getLive(firstResult, maxResults, _firstDate, _lastDate);
         response.put("maxResults", list.size());
         response.put("list", list);
         return Response.ok(response);
     }
 
-    // -- PUBLISHED -- -------------------------------------------------------------------------------------------------
+    // -- FEATURED -- --------------------------------------------------------------------------------------------------
 
     @GET
     @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/list/published")
-    public Response getPublished(
+    @Path(value = "/list/featured")
+    public Response getFeatured(
 
     ) throws Exception {
         Date now = new Date();
         Date oneWeekAgo = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 7);
-        return _getPublished(now, oneWeekAgo);
+        return _getFeatured(now, oneWeekAgo);
     }
 
     @GET
     @MethodCache
     @Produces(MediaType.APPLICATION_JSON)
-    @Path(value = "/list/published/firstDate:{firstDate}/lastDate:{lastDate}")
-    public Response getPublished(
+    @Path(value = "/list/featured/firstDate:{firstDate}/lastDate:{lastDate}")
+    public Response getFeatured(
             @PathParam("firstDate") long firstDate,
             @PathParam("lastDate") long lastDate
     ) throws Exception {
-        return _getPublished(new Date(firstDate), new Date(lastDate));
+        return _getFeatured(new Date(firstDate), new Date(lastDate));
     }
 
-    private Response _getPublished(Date firstDate, Date lastDate) throws Exception {
+    private Response _getFeatured(Date firstDate, Date lastDate) throws Exception {
 
         Map<String, Object> response = new HashMap<String, Object>(5);
         response.put("firstDate", dateFormat.format(firstDate));
         response.put("lastDate", dateFormat.format(lastDate));
-        List<Article> list = articleManager.getPublished(firstDate, lastDate);
+        List<Article> list = articleManager.getFeatured(firstDate, lastDate);
         response.put("maxResults", list.size());
         response.put("list", list);
         return Response.ok(response);

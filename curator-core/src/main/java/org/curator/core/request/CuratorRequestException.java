@@ -15,12 +15,11 @@ public class CuratorRequestException extends WebApplicationException {
     }
 
     public CuratorRequestException(String message, Throwable throwable) {
-        super(throwable, Response.Status.INTERNAL_SERVER_ERROR);
-        this.message = message;
+        this(Response.Status.INTERNAL_SERVER_ERROR, throwable.getMessage());
     }
 
     public CuratorRequestException(Response.Status status, Throwable throwable) {
-        super(throwable, status);
+        this(status, throwable.getMessage());
     }
 
     public Response.Status getStatus() {

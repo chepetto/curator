@@ -6,7 +6,7 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,6 +17,52 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/vendor/layout-default-latest.css">
+    <link rel="stylesheet" href="css/vendor/jquery-ui-1.9.2.custom.css">
+    <link rel="stylesheet" href="css/vendor/jquery.dataTables.css">
+
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+
+    <script src="js/vendor/jquery-1.8.2.min.js"></script>
+    <script src="js/vendor/jquery.raty.js"></script>
+    <script src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
+    <script src="js/vendor/jquery.dataTables.js"></script>
+    <script src="js/vendor/jquery.timeago.js"></script>
+    <script src="js/vendor/jquery.paginate.js"></script>
+
+    <!-- notifications -->
+    <!-- see http://needim.github.com/noty/-->
+    <script src="js/vendor/jquery.noty.js"></script>
+    <script src="js/vendor/noty/layouts/top.js"></script>
+    <script src="js/vendor/noty/themes/default.js"></script>
+
+    <script src="js/plugins.js"></script>
+
+    <script type="text/javascript">
+        var curator = {};
+    </script>
+
+    <script src="js/util.js"></script>
+    <script src="js/live.js"></script>
+    <script src="js/navigation.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#nav').navigation();
+            $('#featured').live({
+                url:'/curator/rest/article/list/live',
+                class:'featured'
+            });
+            $('#live').live({
+                url:'/curator/rest/article/list/live',
+                class:'live'
+            });
+        });
+
+    </script>
 
 </head>
 <body>
@@ -25,11 +71,107 @@
     your browser</a></p>
 <![endif]-->
 
-<p><a href="live.html">Live</a></p>
+<div id="nav"><!-- content generated --></div>
 
-<p><a href="published.html">Published</a></p>
+<div id="featured"><!-- content generated -->
 
-<p><a href="feeds.html">Feeds</a></p>
+    <div class="article">
+        <div>
+            <div class="title" style="float: left;">Kärnten und Niederösterreich: Der Tag der Entscheidung</div>
+            <div class="source" style="float: left;">on <a href="http://derstandard.at">derstandard.at</a></div>
+        </div>
+        <div>
+            <div class="abstract">Dass nach der Wahl in St. Pölten weiterhin die ÖVP regiert, ist klar - die Frage ist
+                nur, ob mit mehr oder weniger als 50 Prozent. In Klagenfurt hingegen könnte ein Machtwechsel anstehen
+            </div>
+        </div>
+        <div style="float: right;">
+            <div class="time">15 min ago</div>
+            <div class="views">1262 views</div>
+            <div class="votes">*****</div>
+        </div>
+    </div>
+
+    <div class="article">
+        <div>
+            <div class="title" style="float: left;">Kärnten und Niederösterreich: Der Tag der Entscheidung</div>
+            <div class="source" style="float: left;">on <a href="http://derstandard.at">derstandard.at</a></div>
+        </div>
+        <div>
+            <div class="abstract">Dass nach der Wahl in St. Pölten weiterhin die ÖVP regiert, ist klar - die Frage ist
+                nur, ob mit mehr oder weniger als 50 Prozent. In Klagenfurt hingegen könnte ein Machtwechsel anstehen
+            </div>
+        </div>
+        <div style="float: right;">
+            <div class="time">15 min ago</div>
+            <div class="views">1262 views</div>
+            <div class="votes">*****</div>
+        </div>
+    </div>
+
+</div>
+<div id="live"><!-- content generated --></div>
+
+<div style="display: none">
+    <div id="dialog-publish-template" class="dialog-publish" title="Publish">
+        <!--<div class="section">-->
+        <!--<h3>Special</h3>-->
+        <!--<label>Publish as Special <input type="text"/></label> <span class="button add-special">Add Special</span>-->
+        <!--</div>-->
+        <div class="section original-data">
+
+            <h4>Link</h4>
+
+            <div class="org-link"></div>
+
+            <h4>Title</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <div class="org-title"></div>
+
+            <h4>Description</h4>
+
+            <div class="org-text" style="overflow: auto; max-height: 150px"></div>
+
+        </div>
+
+        <div class="section custom-data">
+            <h4>Custom Title</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input class="custom-title" type="text" style="width: 100%; "/>
+
+            <h4>Custom Description</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <textarea class="custom-text" style="width: 100%; height: 50px"></textarea>
+        </div>
+    </div>
+
+    <div id="dialog-add-article-template" class="dialog-add-article" title="Add Article">
+
+        <div class="section custom-data">
+            <h4>Title</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input class="custom-title" type="text" style="width: 100%; "/>
+
+            <h4>Link</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input class="custom-link" type="text" style="width: 100%; "/>
+
+            <h4>Description</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <textarea class="custom-text" style="width: 100%; height: 50px"></textarea>
+        </div>
+    </div>
+
+    <div id="dialog-add-feed-template" class="dialog-add-index" title="Add Feed">
+
+        <div class="section custom-data">
+            <h4>Url</h4>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input class="url" type="text" style="width: 100%; "/>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

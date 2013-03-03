@@ -15,7 +15,7 @@ public interface ArticleManager {
 
     List<Article> getList(int firstResult, int maxResults);
 
-    List<Article> getReview(int firstResult, int maxResults, Date _firstDate, Date lastDate);
+    List<Article> getLive(int firstResult, int maxResults, Date _firstDate, Date lastDate);
 
     Article addArticleInternal(Article article) throws CuratorException;
 
@@ -25,7 +25,7 @@ public interface ArticleManager {
 
     void vote(long articleId, int rating, String remoteAddr);
 
-    List<Article> getPublished(Date firstDate, Date lastDate);
+    List<Article> getFeatured(Date firstDate, Date lastDate);
 
     URL redirect(long articleId);
 

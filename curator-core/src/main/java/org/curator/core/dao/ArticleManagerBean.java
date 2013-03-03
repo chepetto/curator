@@ -87,7 +87,6 @@ public class ArticleManagerBean implements ArticleManager {
     }
 
     @Override
-//    @CatchAll
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Article addArticle(Article article) {
 
@@ -100,7 +99,7 @@ public class ArticleManagerBean implements ArticleManager {
                 throw new IllegalArgumentException("url is null");
             }
 
-            article.setPublished(false);
+            article.setFeatured(false);
             article.setDate(new Date());
             article.setMediaType(MediaType.TEXT);
             article.setLocale(Locale.GERMAN);
@@ -111,8 +110,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("add article", t);
         }
@@ -192,8 +189,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("get article by id", t);
         }
@@ -217,8 +212,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("get article by url", t);
         }
@@ -244,9 +237,9 @@ public class ArticleManagerBean implements ArticleManager {
                 throw new IllegalArgumentException(String.format("Article with id %s does not exist.", articleId));
             }
 
-            if (!article.isPublished()) {
-                article.setPublished(true);
-                article.setPublishedTime(new Date());
+            if (!article.setFeatured()) {
+                article.setFeatured(true);
+                article.setFeaturedTime(new Date());
             }
 
             article.setCustomTitle(customTitle);
@@ -266,8 +259,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("publish", t);
         }
@@ -347,8 +338,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("vote", t);
         }
@@ -356,9 +345,9 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public List<Article> getPublished(Date firstDate, Date lastDate) {
+    public List<Article> getFeatured(Date firstDate, Date lastDate) {
         try {
-            Query query = em.createNamedQuery(Article.QUERY_PUBLISHED);
+            Query query = em.createNamedQuery(Article.QUERY_FEATURED);
             query.setParameter("FIRST_DATE", firstDate);
             query.setParameter("LAST_DATE", lastDate);
             query.setMaxResults(maxResults);
@@ -375,8 +364,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("list published articles", t);
         }
@@ -399,8 +386,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("redirect", t);
         }
@@ -423,8 +408,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("cleanup", t);
         }
@@ -451,8 +434,6 @@ public class ArticleManagerBean implements ArticleManager {
 
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
             throw new CuratorRequestException("getList failed: " + t.getMessage(), t);
         }
@@ -460,7 +441,7 @@ public class ArticleManagerBean implements ArticleManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public List<Article> getReview(int firstResult, int maxResults, Date firstDate, Date lastDate) {
+    public List<Article> getLive(int firstResult, int maxResults, Date firstDate, Date lastDate) {
         try {
             _verifyLimits(firstResult, maxResults);
 
@@ -468,7 +449,7 @@ public class ArticleManagerBean implements ArticleManager {
                 throw new IllegalArgumentException("lastDate is null");
             }
 
-            Query query = em.createNamedQuery(Article.QUERY_REVIEW);
+            Query query = em.createNamedQuery(Article.QUERY_LIVE);
             query.setParameter("FIRST_DATE", firstDate);
             query.setParameter("LAST_DATE", lastDate);
             query.setFirstResult(firstResult);
@@ -484,10 +465,8 @@ public class ArticleManagerBean implements ArticleManager {
             return articles;
         } catch (CuratorRequestException t) {
             throw t;
-        } catch (IllegalArgumentException t) {
-            throw new CuratorRequestException(Response.Status.PRECONDITION_FAILED, t);
         } catch (Throwable t) {
-            throw new CuratorRequestException("getReview failed: " + t.getMessage(), t);
+            throw new CuratorRequestException("getLive failed: " + t.getMessage(), t);
         }
     }
 

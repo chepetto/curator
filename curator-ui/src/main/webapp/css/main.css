@@ -110,6 +110,12 @@ body {
     font-size: 11px !important;
 }
 
+a {
+    text-decoration: none;
+    color: #156ad4;
+    border-bottom: 1px solid #156ad4;
+}
+
 .box {
     padding: 10px;
     background-color: white;
@@ -126,29 +132,6 @@ body {
 
 .center {
     text-align: center;
-}
-
-.article {
-    clear: both;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #efefef;
-}
-
-.title,
-.abstract {
-    float: left;
-    width: 80%;
-    clear: both;
-}
-
-.misc,
-.rating {
-    float: right;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 20%;
-    text-align: right;
 }
 
 TR.odd.published {
@@ -169,6 +152,58 @@ TR.even.published {
 .publish {
     float: left;
     width: 150px;
+}
+
+#featured {
+    width: 900px;
+}
+
+#featured .article {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #cccccc;
+    cursor: pointer;
+    overflow-y: hidden;
+}
+
+#featured .article:hover {
+    border-bottom: 1px solid #a6a6a6;
+}
+
+#featured .source {
+    margin-left: 5px;
+}
+
+#featured .title {
+    line-height: 16px;
+}
+
+#featured .title a {
+    background-color: #e6ffe5;
+    text-decoration: none;
+    color: #156ad4;
+    border-bottom: 1px solid #156ad4;
+    font-size: 13px;
+    padding: 2px 1px;
+}
+
+#featured .title a:hover {
+    border-bottom: hidden;
+}
+
+#featured .abstract {
+    margin-top: 5px;
+    width: 600px;
+    line-height: 18px;
+    opacity: 0.8;
+}
+
+#featured .article:hover .abstract {
+    opacity: 1;
+}
+
+#featured .stats {
+    float: right;
 }
 
 .section {
