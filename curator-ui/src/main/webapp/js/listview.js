@@ -1,22 +1,24 @@
 $.widget("curator.listview", {
 
-    options: {
-        url: null,
-        class: null
+    options:{
+        url:null,
+        class:null
     },
 
-    _init: function () {
+    _init:function () {
         var $this = this;
 
         if ($this.options.url == null) {
             throw 'url is null';
         }
 
-        $this.element.empty().addClass($this.options.class);
+        $this.element.empty()
+            .addClass($this.options.class)
+            .addClass('listview');
         $this._table();
     },
 
-    _table: function () {
+    _table:function () {
 
         var $this = this;
 
@@ -26,10 +28,9 @@ $.widget("curator.listview", {
 
         curator.util.jsonCall('GET', $this.options.url, null, null, function (response) {
 
-            for (var id in response.list) {
-                var article = response.list[id];
+            $.each(response.list, function (id, article) {
 
-                var _title = $('<a/>', {href: '/curator/rest/link/' + article.id, text: article.title}).wrap('<div>').parent().html();
+                var _title = $('<a/>', {href:'/curator/rest/link/' + article.id, text:article.title}).wrap('<div>').parent().html();
                 var _source = article.url.replace('http://', '').replace('https://', '').replace('www.', '').replace(/\/.*/g, '');
                 var _quality = Math.max(0, parseInt(article.quality * 100));
 
@@ -50,7 +51,7 @@ $.widget("curator.listview", {
                 var e_abstract = $('<div class="abstract"/>').text(article.text);
 
                 var e_time = $('<div class="time"/>').append(_dateField);
-                var e_views = $('<div class="views"/>', {text: article.views});
+                var e_views = $('<div class="views"/>', {text:article.views});
                 var e_votes = $('<div class="votes"/>').append($this._getRating(article));
                 var e_stats = $('<div class="stats"/>')
                         .append(e_time)
@@ -58,8 +59,11 @@ $.widget("curator.listview", {
                         .append(e_votes)
                     ;
 
+                var e_permalink = $('<a/>', {text:'Permalink', href:'/id/' + article.id}).click(function () {
+                    alert(id)
+                });
                 var e_menu = $('<div class="menu"/>')
-                        .append($('<a>Permalink</a>', {href: '/id/' + article.id}))
+                        .append(e_permalink)
                     ;
 
                 var e_article = $('<div class="article"/>')
@@ -72,38 +76,41 @@ $.widget("curator.listview", {
                         .append('<div style="clear: both;"/>')
                     ;
 
-                e_article.css('max-height', 80).click(function () {
+
+                e_abstract.css('max-height', 18);
+                e_abstract.click(function () {
                     // todo animate
-                    $(this).css('max-height', '');
+                    e_abstract.css('max-height', '');
                 });
                 list.append(e_article);
-            }
+            });
+
         });
 
     },
 
-    _getRating: function (article) {
+    _getRating:function (article) {
         var ratingsCount = article.ratingsCount;
         var ratingsSum = article.ratingsSum;
         return $('<div/>').raty({
 
-            score: ratingsCount == 0 ? 0 : parseInt(ratingsSum / ratingsCount),
-            noRatedMsg: 'anyone rated this product yet!',
+            score:ratingsCount == 0 ? 0 : parseInt(ratingsSum / ratingsCount),
+            noRatedMsg:'anyone rated this product yet!',
 
-            click: function (score, evt) {
-                var params = {'{articleId}': article.id, '{rating}': score};
+            click:function (score, evt) {
+                var params = {'{articleId}':article.id, '{rating}':score};
                 curator.util.jsonCall('POST', '/curator/rest/article/vote/{articleId}?rating={rating}', params, null, function (response) {
-                    noty({text: 'Thanks for voting!', timeout: 2000});
+                    noty({text:'Thanks for voting!', timeout:2000});
                 });
             }
         });
     },
 
-    _newDateField: function (dateStr) {
+    _newDateField:function (dateStr) {
         var date = curator.util.strToDate(dateStr);
         return $('<div/>')
-            .append($('<span/>', {text: date.getTime()}).hide())
-            .append($('<span/>', {text: $.timeago(date)}));
+            .append($('<span/>', {text:date.getTime()}).hide())
+            .append($('<span/>', {text:$.timeago(date)}));
     }
 
 });

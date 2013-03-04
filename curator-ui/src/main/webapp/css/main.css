@@ -154,11 +154,11 @@ TR.even.published {
     width: 150px;
 }
 
-#featured {
+.listview {
     width: 900px;
 }
 
-#featured .article {
+.listview .article {
     margin-bottom: 10px;
     padding: 10px;
     border-bottom: 1px solid #cccccc;
@@ -166,19 +166,19 @@ TR.even.published {
     overflow-y: hidden;
 }
 
-#featured .article:hover {
+.listview .article:hover {
     border-bottom: 1px solid #a6a6a6;
 }
 
-#featured .source {
+.listview .source {
     margin-left: 5px;
 }
 
-#featured .title {
+.listview .title {
     line-height: 16px;
 }
 
-#featured .title a {
+.listview .title a {
     background-color: #e6ffe5;
     text-decoration: none;
     color: #156ad4;
@@ -187,22 +187,23 @@ TR.even.published {
     padding: 2px 1px;
 }
 
-#featured .title a:hover {
+.listview .title a:hover {
     border-bottom: hidden;
 }
 
-#featured .abstract {
+.listview .abstract {
     margin-top: 5px;
     width: 600px;
     line-height: 18px;
     opacity: 0.8;
+    overflow-y: hidden;
 }
 
-#featured .article:hover .abstract {
+.listview .article:hover .abstract {
     opacity: 1;
 }
 
-#featured .stats {
+.listview .stats {
     float: right;
 }
 
