@@ -44,7 +44,7 @@
     </script>
 
     <script src="js/util.js"></script>
-    <script src="js/live.js"></script>
+    <script src="js/listview.js"></script>
     <script src="js/navigation.js"></script>
 
     <script type="text/javascript">
@@ -52,13 +52,13 @@
         $(document).ready(function () {
 
             $('#nav').navigation();
-            $('#featured').live({
-                url:'/curator/rest/article/list/live',
-                class:'featured'
+            $('#featured').listview({
+                url: '/curator/rest/article/list/live',
+                class: 'featured'
             });
-            $('#live').live({
-                url:'/curator/rest/article/list/live',
-                class:'live'
+            $('#live').listview({
+                url: '/curator/rest/article/list/live',
+                class: 'live'
             });
         });
 
