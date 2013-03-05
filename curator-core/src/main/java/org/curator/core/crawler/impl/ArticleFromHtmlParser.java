@@ -1,10 +1,10 @@
 package org.curator.core.crawler.impl;
 
-import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.curator.common.exceptions.CuratorException;
+import org.curator.common.model.Article;
 import org.curator.common.model.Content;
 import org.curator.common.model.MediaType;
 import org.jsoup.Jsoup;
@@ -39,7 +39,7 @@ public class ArticleFromHtmlParser {
         if (selArticle == null) {
             articles.add(getArticle(document, instruction));
         } else {
-            if(instruction.getArticleInstance()!=null) {
+            if (instruction.getArticleInstance() != null) {
                 throw new CuratorException("Should not happen.");
             }
 
@@ -58,7 +58,7 @@ public class ArticleFromHtmlParser {
 
     private Article getArticle(Element context, ComplexHarvestInstruction instruction) throws CuratorException {
         Article article;
-        if(instruction.getArticleInstance()==null) {
+        if (instruction.getArticleInstance() == null) {
             article = new Article();
             MediaType mediaType = MediaType.fromText(instruction.getMediaType());
             article.setMediaType(mediaType);
@@ -69,23 +69,22 @@ public class ArticleFromHtmlParser {
 
         article.setUrl(_getUrl(context, instruction));
 
-        if(!StringUtils.isBlank(instruction.getTitle())) {
+        if (!StringUtils.isBlank(instruction.getTitle())) {
             article.setTitle(context.select(instruction.getTitle()).text());
         }
-        if(!StringUtils.isBlank(instruction.getViews())) {
+        if (!StringUtils.isBlank(instruction.getViews())) {
             article.setViews(_getViews(context, instruction));
         }
-        if(!StringUtils.isBlank(instruction.getTags())) {
-            article.setTags(_getTags(context, instruction));
-        }
-        if(!StringUtils.isBlank(instruction.getText())) {
+//        if(!StringUtils.isBlank(instruction.getTags())) {
+//            article.setTags(_getTags(context, instruction));
+//        }
+        if (!StringUtils.isBlank(instruction.getText())) {
             article.setContent(new Content(context.select(instruction.getText()).text()));
         }
 //        if(!StringUtils.isBlank(instruction.getDate())) {
-            // todo extract date
-            article.setDate(new Date());
+        // todo extract date
+        article.setDate(new Date());
 //        }
-
 
 
         return article;

@@ -52,7 +52,7 @@ public class ArticleFromFeedParser extends AbstractFeedParser<Article> {
                 article.setAuthor(entry.getAuthor());
                 article.setDescription(entry.getDescription() == null ? null : entry.getDescription().getValue());
 
-                article.setTags(_getTags(entry));
+                // todo tags article.setTags(_getTags(entry));
 
                 article.setDate(entry.getPublishedDate());
                 if (entry.getUpdatedDate() != null) {

@@ -5,8 +5,6 @@ import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "User")
@@ -32,13 +30,6 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_topic_mapping",
-            joinColumns = {@JoinColumn(name = "userId")},
-            inverseJoinColumns = {@JoinColumn(name = "topicId")}
-    )
-    private Set<Topic> topics = new HashSet<Topic>();
-
     public long getId() {
         return id;
     }
@@ -55,11 +46,4 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public Set<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(Set<Topic> topics) {
-        this.topics = topics;
-    }
 }

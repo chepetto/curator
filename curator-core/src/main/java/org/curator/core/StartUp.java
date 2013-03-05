@@ -1,9 +1,8 @@
 package org.curator.core;
 
-import org.curator.common.configuration.Configuration;
 import org.apache.log4j.Logger;
+import org.curator.common.configuration.Configuration;
 import org.curator.common.configuration.ConfigurationProperty;
-import org.curator.core.util.DataImport;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -23,8 +22,6 @@ public class StartUp implements Extension {
     @ConfigurationProperty(value = Configuration.VERSION, defaultValue = "<UNKNOWN>")
     private String version = null;
 
-    @Inject
-    private DataImport dataImport;
     @Inject
     private SeedHandler seedHandler;
     @Inject
@@ -47,19 +44,14 @@ public class StartUp implements Extension {
             if (!initialized) {
                 initialized = false;
 
-                if(Configuration.getBooleanValue("retrieve.seeds.onstartup")) {
+                if (Configuration.getBooleanValue("retrieve.seeds.onstartup")) {
                     LOGGER.info("Trigger retrieve seeds/feeds");
                     //seedHandler.watchSeeds();
                     feedHandler.watchFeeds();
                 }
-                _initDataImport();
             }
         }
 
-    }
-
-    private void _initDataImport() {
-//        dataImport.setupRelatedTermsIndex();
     }
 
     @PreDestroy

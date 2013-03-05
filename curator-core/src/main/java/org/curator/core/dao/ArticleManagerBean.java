@@ -11,7 +11,6 @@ import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.simple.*;
 import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.Evaluator;
-import org.curator.core.extract.TopicExtractor;
 import org.curator.core.interfaces.ArticleManager;
 import org.curator.core.request.CuratorRequestException;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
@@ -55,9 +54,6 @@ public class ArticleManagerBean implements ArticleManager {
     private ThesaurusCriterion thesaurusCriterion;
     @Inject
     private ViewCountCriterion viewCountCriterion;
-
-    @Inject
-    private TopicExtractor topicExtractor;
 
     @Inject
     private Evaluator evaluator;
@@ -182,7 +178,6 @@ public class ArticleManagerBean implements ArticleManager {
             query.setParameter("ID", articleId);
             Article article = (Article) query.getSingleResult();
             Hibernate.initialize(article.getMetricResults());
-            Hibernate.initialize(article.getTopics());
             em.detach(article);
 
             return article;
@@ -251,7 +246,6 @@ public class ArticleManagerBean implements ArticleManager {
             em.flush();
 
             Hibernate.initialize(article.getMetricResults());
-            Hibernate.initialize(article.getTopics());
             //em.detach(article);
             //article.setTopics(null);
 
@@ -357,7 +351,6 @@ public class ArticleManagerBean implements ArticleManager {
             for (Article article : articles) {
                 em.detach(article);
                 article.setMetrics(null);
-                article.setTopics(null);
             }
 
             return articles;
@@ -428,7 +421,6 @@ public class ArticleManagerBean implements ArticleManager {
             for (Article article : articles) {
                 em.detach(article);
                 article.setMetrics(null);
-                article.setTopics(null);
             }
             return articles;
 
@@ -460,7 +452,6 @@ public class ArticleManagerBean implements ArticleManager {
             for (Article article : articles) {
                 em.detach(article);
                 article.setMetrics(null);
-                article.setTopics(null);
             }
             return articles;
         } catch (CuratorRequestException t) {

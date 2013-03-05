@@ -105,12 +105,14 @@ public class Article implements Serializable {
     private Set<MetricResult> metrics = new HashSet<MetricResult>(10);
 
 
+    // -- Tags -- ------------------------------------------------------------------------------------------------------
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "article_topic_mapping",
+    @JoinTable(name = "article_tag_mapping",
             joinColumns = {@JoinColumn(name = "articleId")},
-            inverseJoinColumns = {@JoinColumn(name = "topicId")}
+            inverseJoinColumns = {@JoinColumn(name = "tagId")}
     )
-    private Set<Topic> topics = new HashSet<Topic>();
+    private Set<Tag> tags = new HashSet<Tag>();
 
 
     // -- Review -- ----------------------------------------------------------------------------------------------------
@@ -160,9 +162,6 @@ public class Article implements Serializable {
 
     @Transient
     private List<Comment> comments;
-
-    @Transient
-    private List<String> tags;
 
     public Article() {
         // default
@@ -299,11 +298,11 @@ public class Article implements Serializable {
         this.id = id;
     }
 
-    public List<String> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
@@ -389,14 +388,6 @@ public class Article implements Serializable {
 
     public int compareTo(Article a) {
         return getUrl().compareTo(a.getUrl());
-    }
-
-    public Set<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(Set<Topic> topics) {
-        this.topics = topics;
     }
 
     public Double getQuality() {
