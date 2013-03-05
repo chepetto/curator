@@ -205,6 +205,19 @@ TR.even.published {
 
 .listview .stats {
     float: right;
+    margin-top: -18px;
+    text-align: right;
+}
+
+.listview .stats>div {
+    margin-bottom: 5px;
+}
+
+.listview .views {
+    padding: 2px 3px;
+    background-color: #156ad4;
+    color: white;
+    float: right;
 }
 
 .section {

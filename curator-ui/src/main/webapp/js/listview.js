@@ -48,15 +48,18 @@ $.widget("curator.listview", {
                         .append(e_source)
                     ;
 
-                var e_abstract = $('<div class="abstract"/>').text(article.text);
+                var e_abstract = $('<div/>', {class:'abstract', text:article.text});
 
                 var e_time = $('<div class="time"/>').append(_dateField);
-                var e_views = $('<div class="views"/>', {text:article.views});
+                var e_views = $('<div/>', {class:'views', text:article.views});
                 var e_votes = $('<div class="votes"/>').append($this._getRating(article));
+                //var e_tags = $('<div/>', {class:'tags', text:'Tag'});
                 var e_stats = $('<div class="stats"/>')
-                        .append(e_time)
                         .append(e_views)
+                        .append('<div style="clear: both;"/>')
+                        .append(e_time)
                         .append(e_votes)
+                //.append(e_tags)
                     ;
 
                 var e_permalink = $('<a/>', {text:'Permalink', href:'/id/' + article.id}).click(function () {

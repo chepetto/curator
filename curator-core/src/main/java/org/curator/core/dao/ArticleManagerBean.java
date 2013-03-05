@@ -351,6 +351,7 @@ public class ArticleManagerBean implements ArticleManager {
             for (Article article : articles) {
                 em.detach(article);
                 article.setMetrics(null);
+                article.setTags(null);
             }
 
             return articles;
@@ -421,6 +422,7 @@ public class ArticleManagerBean implements ArticleManager {
             for (Article article : articles) {
                 em.detach(article);
                 article.setMetrics(null);
+                article.setTags(null);
             }
             return articles;
 
@@ -452,6 +454,7 @@ public class ArticleManagerBean implements ArticleManager {
             for (Article article : articles) {
                 em.detach(article);
                 article.setMetrics(null);
+                article.setTags(null);
             }
             return articles;
         } catch (CuratorRequestException t) {
