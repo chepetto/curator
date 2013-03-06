@@ -11,10 +11,7 @@ import org.curator.core.criterion.simple.*;
 import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.Evaluator;
 import org.curator.core.interfaces.ArticleManager;
-import org.curator.core.model.Article;
-import org.curator.core.model.MetricProvider;
-import org.curator.core.model.MetricResult;
-import org.curator.core.model.Vote;
+import org.curator.core.model.*;
 import org.curator.core.request.CuratorRequestException;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
@@ -110,6 +107,23 @@ public class ArticleManagerBean implements ArticleManager {
             throw t;
         } catch (Throwable t) {
             throw new CuratorRequestException("add article", t);
+        }
+    }
+
+    @Override
+    public void addTagToArticle(Tag tag) {
+        try {
+
+            if (tag == null) {
+                throw new IllegalArgumentException("tag is null");
+            }
+
+            // todo impl
+
+        } catch (CuratorRequestException t) {
+            throw t;
+        } catch (Throwable t) {
+            throw new CuratorRequestException("add tag", t);
         }
     }
 

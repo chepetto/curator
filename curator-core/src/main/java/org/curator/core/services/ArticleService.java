@@ -6,6 +6,7 @@ import org.curator.common.configuration.Configuration;
 import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.core.interfaces.ArticleManager;
 import org.curator.core.model.Article;
+import org.curator.core.model.Tag;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -77,6 +78,16 @@ public class ArticleService {
     ) throws Exception {
         article = articleManager.addArticle(article);
         return Response.ok(article);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response tag(
+            Tag tag
+    ) throws Exception {
+        articleManager.addTagToArticle(tag);
+        return Response.ok();
     }
 
     // -- LIST -- ------------------------------------------------------------------------------------------------------

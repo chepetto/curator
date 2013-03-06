@@ -2,6 +2,7 @@ package org.curator.core.interfaces;
 
 import org.curator.common.exceptions.CuratorException;
 import org.curator.core.model.Article;
+import org.curator.core.model.Tag;
 
 import javax.ejb.Local;
 import java.net.URL;
@@ -32,4 +33,6 @@ public interface ArticleManager {
     void cleanup();
 
     Article addArticle(Article article);
+
+    void addTagToArticle(Tag tag);
 }
