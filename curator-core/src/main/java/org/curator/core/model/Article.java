@@ -77,10 +77,12 @@ public class Article implements Serializable {
     private Date date;
 
     @Basic
-    private Integer views;
+    @Column(nullable = false)
+    private Integer views = 0;
 
     @Basic
-    private Double quality;
+    @Column(nullable = false)
+    private Double quality = 0d;
 
     // -- User Feedback -- ---------------------------------------------------------------------------------------------
 
