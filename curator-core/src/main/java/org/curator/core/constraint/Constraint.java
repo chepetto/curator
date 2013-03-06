@@ -1,6 +1,6 @@
 package org.curator.core.constraint;
 
-import org.curator.common.model.Article;
+import org.curator.core.model.Article;
 
 public interface Constraint {
 

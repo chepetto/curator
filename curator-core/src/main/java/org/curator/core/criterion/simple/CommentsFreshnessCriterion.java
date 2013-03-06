@@ -1,15 +1,15 @@
 package org.curator.core.criterion.simple;
 
+import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.curator.common.model.Comment;
-import org.curator.common.model.MetricName;
-import org.curator.common.model.MetricProvider;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
 import org.curator.core.criterion.SinglePerformance;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 
 import java.util.*;
 
@@ -29,8 +29,8 @@ public class CommentsFreshnessCriterion extends AbstractFreshnessCriterion imple
         if (source.getComments() == null) {
             return null;
         }
-        if(!source.hasMetricResult(MetricName.COMMENT_FRESHNESS)) {
-            LOGGER.warn("Too few metric results: "+MetricName.COMMENT_FRESHNESS);
+        if (!source.hasMetricResult(MetricName.COMMENT_FRESHNESS)) {
+            LOGGER.warn("Too few metric results: " + MetricName.COMMENT_FRESHNESS);
             return null;
         }
         // -- ----------------------------------------------------------------------------------------------------------

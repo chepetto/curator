@@ -1,20 +1,19 @@
 package org.curator.core.eval.impl;
 
-import org.curator.core.analysis.Analyzer;
+import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
+import org.curator.core.analysis.Analyzer;
+import org.curator.core.constraint.Constraint;
+import org.curator.core.constraint.ConstraintViolation;
 import org.curator.core.constraint.impl.EnsureFreshness;
+import org.curator.core.criterion.Criterion;
+import org.curator.core.criterion.CriterionComposite;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
 import org.curator.core.criterion.complex.*;
-import org.apache.log4j.Logger;
-
-import org.curator.core.constraint.Constraint;
-import org.curator.core.constraint.ConstraintViolation;
-import org.curator.core.criterion.Criterion;
-import org.curator.core.criterion.CriterionComposite;
 import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.Evaluator;
+import org.curator.core.model.Article;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;

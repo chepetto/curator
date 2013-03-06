@@ -1,14 +1,13 @@
 package org.curator.core.constraint.impl;
 
-import java.util.Date;
-
 import org.curator.common.configuration.Configuration;
 import org.curator.core.constraint.Constraint;
 import org.curator.core.constraint.ConstraintViolation;
-import org.curator.common.model.Article;
+import org.curator.core.model.Article;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import java.util.Date;
 
 @LocalBean
 @Stateless

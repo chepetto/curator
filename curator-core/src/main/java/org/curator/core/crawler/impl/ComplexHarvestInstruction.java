@@ -1,7 +1,7 @@
 package org.curator.core.crawler.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.curator.common.model.Article;
+import org.curator.core.model.Article;
 import org.springframework.beans.BeanUtils;
 
 import java.net.URL;
@@ -37,7 +37,7 @@ public class ComplexHarvestInstruction implements HarvestInstruction {
 
     public ComplexHarvestInstruction(ComplexHarvestInstruction source) {
         BeanUtils.copyProperties(source, this);
-        if(source.getPath()!=null) {
+        if (source.getPath() != null) {
             path = new LinkedList<String>();
             path.addAll(source.getPath());
         }
@@ -177,7 +177,6 @@ public class ComplexHarvestInstruction implements HarvestInstruction {
         this.date = date;
     }
 
-    @Override
     public String getMediaType() {
         return mediaType;
     }
@@ -187,23 +186,23 @@ public class ComplexHarvestInstruction implements HarvestInstruction {
     }
 
     public void validate() {
-        if(StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(id)) {
             throw new IllegalArgumentException("id is null");
         }
-        if(StringUtils.isEmpty(contentType)) {
+        if (StringUtils.isEmpty(contentType)) {
             throw new IllegalArgumentException("contentType is null");
         }
-        if(url == null) {
+        if (url == null) {
             throw new IllegalArgumentException("url is null");
         }
-        if(!TYPE_HTML.equalsIgnoreCase(contentType) && !TYPE_RSS.equalsIgnoreCase(contentType)) {
-            throw new IllegalArgumentException("contentType '"+ contentType +"' is not supported");
+        if (!TYPE_HTML.equalsIgnoreCase(contentType) && !TYPE_RSS.equalsIgnoreCase(contentType)) {
+            throw new IllegalArgumentException("contentType '" + contentType + "' is not supported");
         }
-        if(TYPE_HTML.equalsIgnoreCase(contentType)) {
-            if(StringUtils.isEmpty(text)) {
+        if (TYPE_HTML.equalsIgnoreCase(contentType)) {
+            if (StringUtils.isEmpty(text)) {
                 throw new IllegalArgumentException("text is null");
             }
-            if(StringUtils.isEmpty(title)) {
+            if (StringUtils.isEmpty(title)) {
                 throw new IllegalArgumentException("title is null");
             }
         }

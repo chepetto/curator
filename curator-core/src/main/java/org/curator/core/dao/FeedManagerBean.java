@@ -3,8 +3,8 @@ package org.curator.core.dao;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
+import org.curator.core.model.Feed;
 import org.curator.core.request.CuratorRequestException;
 import org.curator.core.status.FeedsStatus;
 

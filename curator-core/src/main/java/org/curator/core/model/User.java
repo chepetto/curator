@@ -1,4 +1,4 @@
-package org.curator.common.model;
+package org.curator.core.model;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Index;

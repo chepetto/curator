@@ -1,9 +1,8 @@
-package org.curator.common.model;
+package org.curator.core.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-public class MetricResultId  implements Serializable {
+public class MetricResultId implements Serializable {
 
     private MetricName metricName;
     private long articelId;

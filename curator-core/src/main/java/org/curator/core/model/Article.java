@@ -1,4 +1,4 @@
-package org.curator.common.model;
+package org.curator.core.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -6,6 +6,8 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.curator.common.exceptions.CuratorException;
 import org.curator.common.exceptions.CuratorStatus;
+import org.curator.common.model.Comment;
+import org.curator.common.model.Content;
 import org.curator.common.service.CustomDateDeserializer;
 import org.curator.common.service.CustomDateSerializer;
 import org.hibernate.annotations.Index;
@@ -79,11 +81,6 @@ public class Article implements Serializable {
 
     @Basic
     private Double quality;
-
-    @Basic
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MediaType mediaType;
 
     // -- User Feedback -- ---------------------------------------------------------------------------------------------
 
@@ -412,14 +409,6 @@ public class Article implements Serializable {
 
     public void setFeaturedTime(Date featuredTime) {
         this.featuredTime = featuredTime;
-    }
-
-    public MediaType getMediaType() {
-        return mediaType;
-    }
-
-    public void setMediaType(MediaType mediaType) {
-        this.mediaType = mediaType;
     }
 
     public String getCustomTextRendered() {

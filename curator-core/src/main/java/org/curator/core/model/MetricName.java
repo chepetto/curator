@@ -1,4 +1,4 @@
-package org.curator.common.model;
+package org.curator.core.model;
 
 public enum MetricName {
     WORD_COUNT,

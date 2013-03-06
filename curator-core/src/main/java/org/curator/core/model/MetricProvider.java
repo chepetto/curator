@@ -1,4 +1,4 @@
-package org.curator.common.model;
+package org.curator.core.model;
 
 import org.curator.common.exceptions.CuratorException;
 

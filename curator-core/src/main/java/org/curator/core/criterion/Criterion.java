@@ -1,7 +1,7 @@
 package org.curator.core.criterion;
 
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
+import org.curator.core.model.Article;
 
 
 public interface Criterion {

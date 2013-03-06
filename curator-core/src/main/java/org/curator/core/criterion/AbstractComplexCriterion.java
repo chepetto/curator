@@ -1,10 +1,10 @@
 package org.curator.core.criterion;
 
-import java.util.List;
-
-import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.apache.log4j.Logger;
+import org.curator.common.exceptions.CuratorException;
+import org.curator.core.model.Article;
+
+import java.util.List;
 
 public abstract class AbstractComplexCriterion extends CriterionComposite<Criterion> implements Criterion {
 
@@ -18,8 +18,8 @@ public abstract class AbstractComplexCriterion extends CriterionComposite<Criter
 
         for (Criterion criterion : getCriteria()) {
             Performance result = criterion.evalCriterion(source, goal);
-            if(result==null) {
-                LOGGER.trace("No performance for "+criterion.name());
+            if (result == null) {
+                LOGGER.trace("No performance for " + criterion.name());
             } else {
                 performance.addResult(result);
             }
@@ -31,14 +31,14 @@ public abstract class AbstractComplexCriterion extends CriterionComposite<Criter
     public String toString() {
         StringBuilder buffer = new StringBuilder(150);
         List<Criterion> criteria = getCriteria();
-        for(int i=0; i<criteria.size(); i++) {
+        for (int i = 0; i < criteria.size(); i++) {
             buffer.append(criteria.get(i).toString());
             Double weight = getWeights().get(i);
-            if(weight!=1) {
+            if (weight != 1) {
                 buffer.append("^").append(weight);
             }
 
-            if (i+1<criteria.size()) {
+            if (i + 1 < criteria.size()) {
                 buffer.append(", ");
             }
         }

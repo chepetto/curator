@@ -8,7 +8,10 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.*;
+import org.curator.common.model.Content;
+import org.curator.common.model.Sentence;
+import org.curator.common.model.Word;
+import org.curator.core.model.Article;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
@@ -104,10 +107,10 @@ public class TermFrequencyUtils {
     @PostConstruct
     public void onInit() {
 
-        if(server==null) {
+        if (server == null) {
             final String url = Configuration.getStringValue("solr.url", "http://localhost:8983/solr");
-    //        final String url = Configuration.getValueProvidingDefaultValue("solr.url", "http://localhost:8983/solr");
-            LOGGER.info("Property solr.url= "+url);
+            //        final String url = Configuration.getValueProvidingDefaultValue("solr.url", "http://localhost:8983/solr");
+            LOGGER.info("Property solr.url= " + url);
 
             try {
                 server = new CommonsHttpSolrServer(url);
@@ -130,6 +133,7 @@ public class TermFrequencyUtils {
 
     /**
      * Creates Sets of Terms that are related and significant for the provided content.
+     *
      * @param content the content
      * @return the related sets
      * @throws CuratorException
@@ -180,6 +184,7 @@ public class TermFrequencyUtils {
      * Mutual information is defined as follows:
      * I(w1,w2) = log(P(w1,w2)/P(w1)*P(w2))
      * see paper "A New Measure for Extracting Semantically Related Words"
+     *
      * @param w1 Term A
      * @param w2 Term B
      * @return
@@ -190,19 +195,19 @@ public class TermFrequencyUtils {
         double pW1 = w1.getProbability();
         double pW2 = w2.getProbability();
 
-        if(pW1w2==0) {
+        if (pW1w2 == 0) {
             return 0;
         }
 
-        return Math.log(pW1w2/Math.max(1, pW1 * pW2));
+        return Math.log(pW1w2 / Math.max(1, pW1 * pW2));
     }
 
     private double _getMutualOccurrenceProbability(Term termA, Term termB) {
-        SolrQuery q = new SolrQuery("text:" + termA.getValue()+" AND text:"+termB.getValue());
+        SolrQuery q = new SolrQuery("text:" + termA.getValue() + " AND text:" + termB.getValue());
         q.setRows(0);
         try {
             double resultCount = server.query(q).getResults().getNumFound();
-            return resultCount/_getDocumentCount();
+            return resultCount / _getDocumentCount();
         } catch (SolrServerException e) {
             LOGGER.error("_getMutualOccurrenceProbability", e);
             return 0;
@@ -211,6 +216,7 @@ public class TermFrequencyUtils {
 
     /**
      * Calculates the relevance-score of terms inside the content usind TF-IDF.
+     *
      * @param content the content
      * @return the scored terms
      * @throws CuratorException
@@ -222,10 +228,10 @@ public class TermFrequencyUtils {
         _getTermFrequency(content, 1, tf);
 
         int termCount = tf.size();
-        LOGGER.trace(termCount+" terms extracted");
+        LOGGER.trace(termCount + " terms extracted");
 
         _filterTerms(tf);
-        LOGGER.trace((termCount-tf.size())+" terms filtered");
+        LOGGER.trace((termCount - tf.size()) + " terms filtered");
 
         return _retrieveTermFrequency(tf);
     }
@@ -253,7 +259,7 @@ public class TermFrequencyUtils {
 //        if(!StringUtils.isBlank(article.getDescription())) {
 //            _getTermFrequency(new Content(article.getDescription()), 2, tf);
 //        }
-        if(!StringUtils.isBlank(article.getTitle())) {
+        if (!StringUtils.isBlank(article.getTitle())) {
             _getTermFrequency(new Content(article.getTitle()), 3, tf);
         }
         return _retrieveTermFrequency(tf);
@@ -265,8 +271,7 @@ public class TermFrequencyUtils {
 
             final SortedSet<Term> scoredTerms = new TreeSet<Term>(COMPARATOR_BEST_SCORE_FIRST);
 
-            LOGGER.trace("retrieving frequency of "+tf.size()+" terms using solr");
-
+            LOGGER.trace("retrieving frequency of " + tf.size() + " terms using solr");
 
 
             long startTime = System.currentTimeMillis();
@@ -286,8 +291,8 @@ public class TermFrequencyUtils {
                     double probabilityOfOccurrence = ((double) docsContainingTerm) / docsTotalCount;
                     term.setProbability(probabilityOfOccurrence);
 
-                    if(probabilityOfOccurrence==0) {
-                        LOGGER.warn("Ignoring '"+value+"' cause occurrence is 0");
+                    if (probabilityOfOccurrence == 0) {
+                        LOGGER.warn("Ignoring '" + value + "' cause occurrence is 0");
                         continue;
                     }
 
@@ -298,20 +303,20 @@ public class TermFrequencyUtils {
                 }
             }
 
-            LOGGER.trace("frequency resolved in "+Math.floor((System.currentTimeMillis()-startTime)/1000d)+"s");
+            LOGGER.trace("frequency resolved in " + Math.floor((System.currentTimeMillis() - startTime) / 1000d) + "s");
 
             tf.clear();
 
             return scoredTerms;
 
         } catch (SolrServerException e) {
-            throw new CuratorException("Cannot retrieve term frequency: "+e.getMessage(), e);
+            throw new CuratorException("Cannot retrieve term frequency: " + e.getMessage(), e);
         }
     }
 
     private long _getDocumentCount() throws SolrServerException {
 
-        if(totalDocumentCount==null) {
+        if (totalDocumentCount == null) {
             SolrQuery q = new SolrQuery("*:*");
             q.setRows(0);  // don't actually request any data
             totalDocumentCount = server.query(q).getResults().getNumFound();
@@ -337,7 +342,7 @@ public class TermFrequencyUtils {
      */
     private void _getTermFrequency(Content content, int boost, Map<String, Integer> tf) {
 
-        if(content == null) {
+        if (content == null) {
             return;
         }
         //GermanStemmer stemmer = new GermanStemmer();
@@ -345,10 +350,10 @@ public class TermFrequencyUtils {
             for (Word w : s.getWords()) {
 
                 String val = w.getValue();
-                if(val.length()<3
+                if (val.length() < 3
                         || STOPWORDS.contains(val.toLowerCase())
                         || val.toLowerCase().equals(val)) {
-                    LOGGER.trace("Dropping word "+val);
+                    LOGGER.trace("Dropping word " + val);
                     continue;
                 }
 

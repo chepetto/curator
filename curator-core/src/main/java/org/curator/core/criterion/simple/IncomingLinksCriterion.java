@@ -1,15 +1,15 @@
 package org.curator.core.criterion.simple;
 
+import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.MetricName;
-import org.curator.common.model.MetricProvider;
 import org.curator.core.criterion.AbstractSimpleCriterion;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
 import org.curator.core.criterion.SinglePerformance;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 import org.json.JSONObject;
 
 import javax.ejb.LocalBean;
@@ -34,7 +34,7 @@ public class IncomingLinksCriterion extends AbstractSimpleCriterion implements M
         if (source == null) {
             throw new IllegalArgumentException("source is null");
         }
-        if(source.getUrl()==null) {
+        if (source.getUrl() == null) {
             return null;
         }
 //        if(!source.hasMetricResult(MetricName.TWEET_COUNT)) {
@@ -46,7 +46,7 @@ public class IncomingLinksCriterion extends AbstractSimpleCriterion implements M
         final Double tweetCount = source.getMetricResult(MetricName.TWEET_COUNT);
 
         double result;
-        if(tweetCount==null) {
+        if (tweetCount == null) {
             result = 0d;
 
         } else if (tweetCount > 60) {

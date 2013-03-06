@@ -1,14 +1,14 @@
 package org.curator.core.criterion.simple;
 
+import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.MetricName;
-import org.curator.common.model.MetricProvider;
 import org.curator.core.criterion.AbstractSimpleCriterion;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
 import org.curator.core.criterion.SinglePerformance;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -36,8 +36,8 @@ public class InverseOutgoingLinksCriterion extends AbstractSimpleCriterion imple
         if (source.getContent() == null || source.getContent().getHtml() == null) {
             return null;
         }
-        if(!source.hasMetricResult(MetricName.OUTGOING_LINK_COUNT)) {
-            LOGGER.warn("Too few metric results: "+MetricName.OUTGOING_LINK_COUNT);
+        if (!source.hasMetricResult(MetricName.OUTGOING_LINK_COUNT)) {
+            LOGGER.warn("Too few metric results: " + MetricName.OUTGOING_LINK_COUNT);
             return null;
         }
         // -- ----------------------------------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public class InverseOutgoingLinksCriterion extends AbstractSimpleCriterion imple
         Double linkCount;
         try {
             linkCount = countLinks(groupByDomain(findLinks(article)));
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             linkCount = 0d;
         }
         article.addMetricResult(MetricName.OUTGOING_LINK_COUNT, linkCount);

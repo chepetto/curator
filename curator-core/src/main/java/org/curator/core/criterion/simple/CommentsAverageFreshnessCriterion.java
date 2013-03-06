@@ -1,13 +1,13 @@
 package org.curator.core.criterion.simple;
 
+import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.curator.common.model.Comment;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
 import org.curator.core.criterion.SinglePerformance;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
 
 import javax.ejb.Stateless;
 import java.util.Date;

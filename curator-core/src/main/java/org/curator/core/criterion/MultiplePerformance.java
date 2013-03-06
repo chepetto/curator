@@ -1,6 +1,6 @@
 package org.curator.core.criterion;
 
-import org.curator.common.model.MetricName;
+import org.curator.core.model.MetricName;
 import org.curator.core.util.VectorUtils;
 
 import java.util.HashMap;

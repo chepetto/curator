@@ -1,13 +1,13 @@
 package org.curator.core.criterion.simple;
 
+import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.MetricName;
-import org.curator.common.model.MetricProvider;
 import org.curator.core.criterion.AbstractSimpleCriterion;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -34,7 +34,7 @@ public class ViewCountCriterion extends AbstractSimpleCriterion implements Metri
 
     @Override
     public void pushMetricResults(Article article) throws CuratorException {
-        if(article.getViews()!=null) {
+        if (article.getViews() != null) {
             double views = getViewCount(article);
             article.addMetricResult(MetricName.VIEW_COUNT, views);
             LOGGER.trace("eval " + MetricName.VIEW_COUNT + ": " + views);

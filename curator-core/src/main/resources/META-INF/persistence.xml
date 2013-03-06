@@ -8,13 +8,13 @@
     <persistence-unit name="primary">
         <jta-data-source>java:jboss/datasources/curator_mysql</jta-data-source>
 
-        <class>org.curator.common.model.Article</class>
-        <class>org.curator.common.model.MetricResult</class>
-        <class>org.curator.common.model.Tag</class>
-        <class>org.curator.common.model.User</class>
-        <class>org.curator.common.model.Feed</class>
-        <class>org.curator.common.model.Special</class>
-        <class>org.curator.common.model.Vote</class>
+        <class>org.curator.core.model.Article</class>
+        <class>org.curator.core.model.MetricResult</class>
+        <class>org.curator.core.model.Tag</class>
+        <class>org.curator.core.model.User</class>
+        <class>org.curator.core.model.Feed</class>
+        <class>org.curator.core.model.Special</class>
+        <class>org.curator.core.model.Vote</class>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>

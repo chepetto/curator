@@ -1,7 +1,7 @@
 package org.curator.core.interfaces;
 
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Feed;
+import org.curator.core.model.Feed;
 import org.curator.core.status.FeedsStatus;
 
 import javax.ejb.Local;

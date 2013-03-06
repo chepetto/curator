@@ -1,13 +1,16 @@
 package org.curator.core.criterion.simple;
 
 import org.apache.commons.lang.StringUtils;
-import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.Comment;
-import org.curator.common.model.MetricName;
-import org.curator.common.model.MetricProvider;
-import org.curator.core.criterion.*;
 import org.apache.log4j.Logger;
+import org.curator.common.exceptions.CuratorException;
+import org.curator.common.model.Comment;
+import org.curator.core.criterion.AbstractSimpleCriterion;
+import org.curator.core.criterion.Goal;
+import org.curator.core.criterion.Performance;
+import org.curator.core.criterion.SinglePerformance;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -37,7 +40,7 @@ public class RecurringUserCriterion extends AbstractSimpleCriterion implements M
         if (comments == null) {
             return null;
         }
-        if(!source.hasMetricResult(MetricName.UNIQUE_USER_COUNT) || !source.hasMetricResult(MetricName.MENTIONED_USER_COUNT)) {
+        if (!source.hasMetricResult(MetricName.UNIQUE_USER_COUNT) || !source.hasMetricResult(MetricName.MENTIONED_USER_COUNT)) {
             LOGGER.warn(String.format("Too few metric results: at least one of %s is missing",
                     StringUtils.join(new MetricName[]{MetricName.UNIQUE_USER_COUNT, MetricName.MENTIONED_USER_COUNT}, ", ")
             ));
@@ -76,7 +79,7 @@ public class RecurringUserCriterion extends AbstractSimpleCriterion implements M
     }
 
     private int getUserMentionsCount(List<Comment> comments) {
-        if(comments==null) {
+        if (comments == null) {
             return 0;
         }
 
@@ -95,7 +98,7 @@ public class RecurringUserCriterion extends AbstractSimpleCriterion implements M
     }
 
     private int getUniqueUserCount(final List<Comment> comments) {
-        if(comments==null) {
+        if (comments == null) {
             return 0;
         }
         final Set<String> users = new HashSet<String>(comments.size());

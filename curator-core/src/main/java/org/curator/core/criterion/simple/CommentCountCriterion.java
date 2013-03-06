@@ -1,14 +1,14 @@
 package org.curator.core.criterion.simple;
 
+import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.MetricProvider;
 import org.curator.core.criterion.Criterion;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.Performance;
 import org.curator.core.criterion.SinglePerformance;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricProvider;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -32,7 +32,7 @@ public class CommentCountCriterion implements Criterion, MetricProvider {
 
         int count = source.getComments().size();
 
-        if (count==0) {
+        if (count == 0) {
             LOGGER.trace("eval " + name() + ": 0");
             return new SinglePerformance(this, 0d);
         }

@@ -1,8 +1,7 @@
 package org.curator.core.crawler.impl;
 
-import org.apache.zookeeper.server.SessionTracker;
-import org.curator.common.model.Article;
-import org.curator.common.model.Feed;
+import org.curator.core.model.Article;
+import org.curator.core.model.Feed;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -11,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.net.URL;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Stateless
 public class HarvestPolicyManager {
@@ -29,21 +30,21 @@ public class HarvestPolicyManager {
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
     public boolean requestRetrieval(HarvestInstruction instruction) {
 
-        if(instruction instanceof FeedHarvestInstruction) {
+        if (instruction instanceof FeedHarvestInstruction) {
             return requestFeedRetrieval((FeedHarvestInstruction) instruction);
         }
 
         Query query = em.createNamedQuery(Article.QUERY_BY_URL);
         query.setParameter("URL", instruction.toString());
 
-        if(!query.getResultList().isEmpty()) {
+        if (!query.getResultList().isEmpty()) {
             return false;
         }
 
 
         // todo move to db
 
-        if(requests.containsKey(instruction.getUrl())) {
+        if (requests.containsKey(instruction.getUrl())) {
             return false;
         }
 
@@ -58,13 +59,13 @@ public class HarvestPolicyManager {
         query.setParameter("URL", instruction.getUrl().toString());
         List list = query.getResultList();
 
-        if(list.isEmpty()) {
-            throw new IllegalArgumentException("Cannot resolve feed by url '"+instruction.getUrl().toString()+"'");
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Cannot resolve feed by url '" + instruction.getUrl().toString() + "'");
         }
 
         Feed feed = (Feed) list.get(0);
 
-        if(feed.getLastHarvestTime() == null) {
+        if (feed.getLastHarvestTime() == null) {
             return true;
         }
 

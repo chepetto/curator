@@ -1,21 +1,21 @@
 package org.curator.core.criterion.simple;
 
-import org.curator.common.model.Corpus;
-import org.curator.common.model.Word;
-import org.curator.common.model.Content;
-import org.curator.common.model.Sentence;
-import org.curator.core.criterion.AbstractSimpleCriterion;
-import org.curator.core.criterion.Goal;
-import org.curator.common.model.MetricName;
-import org.curator.core.criterion.MultiplePerformance;
 import com.itextpdf.text.pdf.hyphenation.Hyphenation;
 import com.itextpdf.text.pdf.hyphenation.Hyphenator;
+import org.apache.log4j.Logger;
+import org.curator.common.model.Content;
+import org.curator.common.model.Corpus;
+import org.curator.common.model.Sentence;
+import org.curator.common.model.Word;
+import org.curator.core.criterion.AbstractSimpleCriterion;
+import org.curator.core.criterion.Goal;
+import org.curator.core.criterion.MultiplePerformance;
+import org.curator.core.model.MetricName;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import org.apache.log4j.Logger;
 import java.util.regex.Pattern;
 
 public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriterion {
@@ -43,6 +43,7 @@ public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriteri
         addAll(Arrays.asList(POST_GREEK));
         addAll(Arrays.asList(POST_LATIN));
     }};
+
     public AbstractReadingEaseCriterion() {
         //
     }
@@ -56,7 +57,7 @@ public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriteri
         max += delta;
         min += delta;
 
-        return (bestResult > worstResult?max:min)/100d;
+        return (bestResult > worstResult ? max : min) / 100d;
     }
 
     protected double getRelativePerformance(double result, double bestResult, double worstResult, MetricName metricName) {
@@ -71,9 +72,9 @@ public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriteri
         result += delta;
 
         double performance;
-        if(result > max) {
+        if (result > max) {
             performance = 1;
-        } else if(result < min) {
+        } else if (result < min) {
             performance = 0;
         } else {
             performance = result / max;
@@ -98,11 +99,11 @@ public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriteri
         double dwortzahl = corpus.getWordCount();
         double drec = corpus.getSentences().size();
         double dsizages = getTotalNumberOfSyllables(locale, corpus);
-        return 180.0 - ((dwortzahl / Math.max(1,drec)) + ((dsizages / Math.max(1,dwortzahl)) * 58.5));
+        return 180.0 - ((dwortzahl / Math.max(1, drec)) + ((dsizages / Math.max(1, dwortzahl)) * 58.5));
     }
 
     private double getAbsWorstPerformance(double max, double min, Goal goal) {
-        if(Goal.MODEST_TEXT == goal) {
+        if (Goal.MODEST_TEXT == goal) {
             return max;
         } else {
             return min;
@@ -110,7 +111,7 @@ public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriteri
     }
 
     private double getAbsBestPerformance(double max, double min, Goal goal) {
-        if(Goal.MODEST_TEXT == goal) {
+        if (Goal.MODEST_TEXT == goal) {
             return min;
         } else {
             return max;
@@ -141,7 +142,7 @@ public abstract class AbstractReadingEaseCriterion extends AbstractSimpleCriteri
     // -- SMOG -- ------------------------------------------------------------------------------------------------------
 
     protected static double getSMOGIndex(Locale locale, Corpus corpus) {
-        if(Locale.ENGLISH.equals(locale)) {
+        if (Locale.ENGLISH.equals(locale)) {
             // http://en.wikipedia.org/wiki/SMOG_(Simple_Measure_Of_Gobbledygook)
             return 1.043 * Math.sqrt(getPolySyllablesCount(locale, corpus) * 30 / corpus.getSentences().size()) + 3.1291;
         } else {

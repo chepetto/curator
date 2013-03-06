@@ -1,10 +1,9 @@
 package org.curator.core.analysis;
 
-import java.util.*;
-
 import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
 
-import org.curator.common.model.Article;
+import java.util.*;
 
 public class KeywordAnalyzer implements Analyzer {
 

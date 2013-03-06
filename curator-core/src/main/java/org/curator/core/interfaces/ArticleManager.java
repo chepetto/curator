@@ -1,7 +1,7 @@
 package org.curator.core.interfaces;
 
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
+import org.curator.core.model.Article;
 
 import javax.ejb.Local;
 import java.net.URL;

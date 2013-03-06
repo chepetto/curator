@@ -1,12 +1,12 @@
 package org.curator.core;
 
+import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.curator.core.crawler.Harvester;
 import org.curator.core.criterion.Goal;
 import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.impl.ArticleEvaluator;
-import org.apache.log4j.Logger;
+import org.curator.core.model.Article;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

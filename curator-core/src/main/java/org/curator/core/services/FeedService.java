@@ -2,8 +2,8 @@ package org.curator.core.services;
 
 import org.curator.common.cache.MethodCache;
 import org.curator.common.configuration.CuratorInterceptors;
-import org.curator.common.model.Feed;
 import org.curator.core.interfaces.FeedManager;
+import org.curator.core.model.Feed;
 import org.curator.core.status.FeedsStatus;
 
 import javax.inject.Inject;

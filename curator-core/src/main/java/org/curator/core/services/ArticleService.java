@@ -4,8 +4,8 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.curator.common.cache.MethodCache;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.configuration.CuratorInterceptors;
-import org.curator.common.model.Article;
 import org.curator.core.interfaces.ArticleManager;
+import org.curator.core.model.Article;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;

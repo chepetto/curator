@@ -1,12 +1,15 @@
 package org.curator.core.criterion.simple;
 
-import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
-import org.curator.common.model.Comment;
-import org.curator.common.model.MetricName;
-import org.curator.common.model.MetricProvider;
-import org.curator.core.criterion.*;
 import org.apache.log4j.Logger;
+import org.curator.common.exceptions.CuratorException;
+import org.curator.common.model.Comment;
+import org.curator.core.criterion.Goal;
+import org.curator.core.criterion.MultiplePerformance;
+import org.curator.core.criterion.Performance;
+import org.curator.core.criterion.SinglePerformance;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -60,27 +63,27 @@ public class CommentReadingEaseCriterion extends AbstractReadingEaseCriterion im
 
     private double getSMOGIndex(Locale locale, List<Comment> comments) {
         double total = 0d;
-        for(Comment c:comments) {
+        for (Comment c : comments) {
             total += getSMOGIndex(locale, c);
         }
-        return total/comments.size();
+        return total / comments.size();
     }
 
     private double getFleschIndex(Locale locale, List<Comment> comments) {
         double total = 0d;
-        for(Comment c:comments) {
+        for (Comment c : comments) {
             total += getFleschIndex(locale, c);
         }
-        return total/comments.size();
+        return total / comments.size();
     }
 
     private double getAmdahlIndex(Locale locale, List<Comment> comments) {
 
         double total = 0d;
-        for(Comment c:comments) {
+        for (Comment c : comments) {
             total += getAmdahlIndex(locale, c);
         }
-        return total/comments.size();
+        return total / comments.size();
     }
 
     @Override

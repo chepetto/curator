@@ -7,12 +7,11 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.curator.common.model.Comment;
 import org.curator.common.model.Content;
-import org.curator.common.model.MediaType;
 import org.curator.core.HtmlUtil;
 import org.curator.core.crawler.AbstractFeedParser;
+import org.curator.core.model.Article;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -39,9 +38,6 @@ public class ArticleFromFeedParser extends AbstractFeedParser<Article> {
         for (SyndEntry entry : getEntries(result.getResponse())) {
             try {
                 final Article article = new Article();
-
-                MediaType mediaType = MediaType.fromText(result.getInstruction().getMediaType());
-                article.setMediaType(mediaType);
 
                 if (_isUrl(entry.getUri())) {
                     article.setUrl(entry.getUri());

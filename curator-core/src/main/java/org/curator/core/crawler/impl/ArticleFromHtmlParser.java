@@ -4,9 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Article;
 import org.curator.common.model.Content;
-import org.curator.common.model.MediaType;
+import org.curator.core.model.Article;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -60,8 +59,6 @@ public class ArticleFromHtmlParser {
         Article article;
         if (instruction.getArticleInstance() == null) {
             article = new Article();
-            MediaType mediaType = MediaType.fromText(instruction.getMediaType());
-            article.setMediaType(mediaType);
         } else {
             // merge with data from feed
             article = instruction.getArticleInstance();

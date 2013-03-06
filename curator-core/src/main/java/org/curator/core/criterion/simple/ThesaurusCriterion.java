@@ -1,10 +1,17 @@
 package org.curator.core.criterion.simple;
 
 import org.apache.commons.lang.StringUtils;
-import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.*;
-import org.curator.core.criterion.*;
 import org.apache.log4j.Logger;
+import org.curator.common.exceptions.CuratorException;
+import org.curator.common.model.Sentence;
+import org.curator.common.model.Word;
+import org.curator.core.criterion.AbstractSimpleCriterion;
+import org.curator.core.criterion.Goal;
+import org.curator.core.criterion.Performance;
+import org.curator.core.criterion.SinglePerformance;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricName;
+import org.curator.core.model.MetricProvider;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -31,8 +38,8 @@ public class ThesaurusCriterion extends AbstractSimpleCriterion implements Metri
         if (source == null) {
             throw new IllegalArgumentException("source is null");
         }
-        if(!source.hasMetricResult(MetricName.TYPE_TOKEN_RATIO)) {
-            LOGGER.warn("Too few metric results: "+MetricName.TYPE_TOKEN_RATIO);
+        if (!source.hasMetricResult(MetricName.TYPE_TOKEN_RATIO)) {
+            LOGGER.warn("Too few metric results: " + MetricName.TYPE_TOKEN_RATIO);
             return null;
         }
         // -- ----------------------------------------------------------------------------------------------------------
@@ -40,7 +47,7 @@ public class ThesaurusCriterion extends AbstractSimpleCriterion implements Metri
         double ttr = source.getMetricResult(MetricName.TYPE_TOKEN_RATIO);
 
         double performance;
-        if(Goal.MODEST_TEXT==getGoal()) {
+        if (Goal.MODEST_TEXT == getGoal()) {
             performance = 1 - ttr;
         } else {
             performance = ttr;
@@ -51,7 +58,7 @@ public class ThesaurusCriterion extends AbstractSimpleCriterion implements Metri
 
     @Override
     public void pushMetricResults(Article article) throws CuratorException {
-        if(article.getContent()==null) {
+        if (article.getContent() == null) {
             return;
         }
         double ttr = getTypeTokenRatio(article);
@@ -63,7 +70,6 @@ public class ThesaurusCriterion extends AbstractSimpleCriterion implements Metri
      * Wortschatz
      * http://de.wikipedia.org/wiki/Type-Token-Relation
      * Hoch, wenn ein großer Wortschatz verwendet wird
-     *
      */
     private double getTypeTokenRatio(Article source) {
 
@@ -73,7 +79,7 @@ public class ThesaurusCriterion extends AbstractSimpleCriterion implements Metri
             for (Word w : s.getWords()) {
                 try {
                     String raw = w.getValue();
-                    if(StringUtils.isBlank(raw)) {
+                    if (StringUtils.isBlank(raw)) {
                         continue;
                     }
                     String stemmed = stemmer.stem(raw);
@@ -84,7 +90,7 @@ public class ThesaurusCriterion extends AbstractSimpleCriterion implements Metri
                     }
                     stemmedMap.get(stemmed).add(raw);
                 } catch (Exception e) {
-                    LOGGER.error("Cannot stem '"+w.getValue()+"': "+e.getMessage());
+                    LOGGER.error("Cannot stem '" + w.getValue() + "': " + e.getMessage());
                 }
             }
         }

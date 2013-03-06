@@ -5,13 +5,16 @@ import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
 import org.curator.common.configuration.CuratorInterceptors;
 import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.*;
 import org.curator.core.constraint.ConstraintViolation;
 import org.curator.core.criterion.Goal;
 import org.curator.core.criterion.simple.*;
 import org.curator.core.eval.Evaluation;
 import org.curator.core.eval.Evaluator;
 import org.curator.core.interfaces.ArticleManager;
+import org.curator.core.model.Article;
+import org.curator.core.model.MetricProvider;
+import org.curator.core.model.MetricResult;
+import org.curator.core.model.Vote;
 import org.curator.core.request.CuratorRequestException;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
@@ -97,7 +100,6 @@ public class ArticleManagerBean implements ArticleManager {
 
             article.setFeatured(false);
             article.setDate(new Date());
-            article.setMediaType(MediaType.TEXT);
             article.setLocale(Locale.GERMAN);
 
             // todo download page and store text or add a text field

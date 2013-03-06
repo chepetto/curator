@@ -2,11 +2,11 @@ package org.curator.core;
 
 import org.apache.log4j.Logger;
 import org.curator.common.configuration.Configuration;
-import org.curator.common.model.Feed;
 import org.curator.core.crawler.Harvester;
 import org.curator.core.crawler.impl.FeedHarvestInstruction;
 import org.curator.core.interfaces.ArticleManager;
 import org.curator.core.interfaces.FeedManager;
+import org.curator.core.model.Feed;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;

@@ -1,9 +1,7 @@
 package org.curator.core.crawler.impl;
 
 import org.apache.log4j.Logger;
-import org.curator.common.exceptions.CuratorException;
-import org.curator.common.model.Feed;
-import org.curator.common.model.MediaType;
+import org.curator.core.model.Feed;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,10 +37,5 @@ public class FeedHarvestInstruction implements HarvestInstruction {
     @Override
     public String getId() {
         return getUrl().getHost();
-    }
-
-    @Override
-    public String getMediaType() {
-        return MediaType.TEXT.name();
     }
 }
