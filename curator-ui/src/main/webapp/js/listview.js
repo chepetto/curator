@@ -62,11 +62,11 @@ $.widget("curator.listview", {
                 //.append(e_tags)
                     ;
 
-                var e_permalink = $('<a/>', {text: 'Permalink', href: '/id/' + article.id}).click(function () {
-                    alert(id)
-                });
+//                var e_permalink = $('<a/>', {text: 'Permalink', href: '/id/' + article.id}).click(function () {
+//                    alert(id)
+//                });
                 var e_menu = $('<div class="menu"/>')
-                        .append(e_permalink)
+//                        .append(e_permalink)
                     ;
 
                 var e_article = $('<div class="article"/>')
@@ -96,7 +96,16 @@ $.widget("curator.listview", {
         var ratingsCount = article.ratingsCount;
         var ratingsSum = article.ratingsSum;
 
-        var calcScore = 4 / 30 * article.quality - 1 / 3;
+        var minStars = 1;
+        var minScore = 10;
+        var maxStars = 5;
+        var maxScore = 40;
+
+        var k = (minStars - maxStars) / (minScore - maxScore);
+        var d = maxStars - maxScore * k;
+
+        //var calcScore = parseInt(4 / 30 * 100 * article.quality - 1 / 3);
+        var calcScore = parseInt(k * 100 * article.quality + d);
 
         return $('<div/>').raty({
 
